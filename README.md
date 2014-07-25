@@ -22,6 +22,10 @@ Inspiration
 Components
 ----------
 
+### libs
+
+* http://wiki.musl-libc.org/wiki/Alternative_libraries
+
 ### init
 
 Supervision based init system based on either runit or s6.
