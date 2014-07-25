@@ -59,3 +59,13 @@ Metadata should be minimal:
 Packages without huge common libraries should be statically linked.
 
 The only valid source of documentation is man pages.
+
+Bootstrap
+---------
+
+Bootstrap from simple shell script based 0n:
+
+* https://github.com/sabotage-linux/sabotage/blob/master/build-stage
+* https://github.com/pikhq/bootstrap-linux
+* https://github.com/jhuntwork/lightcube-bootstrap-musl
+* https://github.com/mwcampbell/docker-muslbase
