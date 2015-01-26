@@ -67,7 +67,7 @@ The only valid source of documentation is man pages.
 Bootstrap
 ---------
 
-Bootstrap from simple shell script based 0n:
+Bootstrap from simple shell script based on:
 
 * https://github.com/sabotage-linux/sabotage/blob/master/build-stage
 * https://github.com/pikhq/bootstrap-linux
