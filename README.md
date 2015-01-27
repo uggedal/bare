@@ -54,6 +54,13 @@ Package format should be a simple tarball with essential metadata.
 
 The database should be a simple text file with a list of key value pairs.
 
+Options:
+
+* pkg sync
+* pkg add
+* pkg rm (automatically recursive)
+* pkg find
+
 ### pkg mk
 
 Package builder based on POSIX shell recipes. Extract commonalities out
