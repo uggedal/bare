@@ -82,3 +82,4 @@ Bootstrap from simple shell script based on:
 * https://github.com/pikhq/bootstrap-linux
 * https://github.com/jhuntwork/lightcube-bootstrap-musl
 * https://github.com/mwcampbell/docker-muslbase
+* http://landley.net/hg/aboriginal
