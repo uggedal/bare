@@ -61,6 +61,8 @@ Options:
 * pkg rm (automatically recursive)
 * pkg find
 
+If too much work xbps could be used in stead.
+
 ### pkg mk
 
 Package builder based on POSIX shell recipes. Extract commonalities out
