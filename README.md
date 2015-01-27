@@ -104,3 +104,7 @@ Bootstrap from simple shell script based on:
 * https://github.com/jhuntwork/lightcube-bootstrap-musl
 * https://github.com/mwcampbell/docker-muslbase
 * http://landley.net/hg/aboriginal
+
+## Required packages
+
+    binutils gcc make tar
