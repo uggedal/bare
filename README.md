@@ -60,12 +60,15 @@ to library functions.
 Metadata should be minimal:
 
 * name
-* url (src)
+* src (url)
+* hash
 * bdep (build dependencies)
 * rdep (runtime dependencies)
-* shared (create shared library sub package)
+* dev (create -dev sub package with headers etc)
 
 Packages without huge common libraries should be statically linked.
+
+Handle shared library dependencies automatically.
 
 The only valid source of documentation is man pages.
 
