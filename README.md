@@ -40,7 +40,8 @@ mksh (with patches for better vi mode support and simple completion system).
 
 ### coreutils
 
-Use sbase, ubase, hbase, and stripped down busybox for rest.
+Toybox (with missing peaces from busybox). Potentially parts from
+openbsd/netbsd.
 
 ### pkg
 
