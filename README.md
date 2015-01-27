@@ -19,6 +19,7 @@ Inspiration
 * Sabotage Linux
 * Dragora
 * Morpheus
+* Void Linux
 
 Components
 ----------
