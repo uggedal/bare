@@ -10,6 +10,7 @@ Design
 * Vanilla kernel without initramfs and module support. Different kernel
   config and package per target system.
 * No translations.
+* Only one package for every use-case.
 
 Inspiration
 -----------
