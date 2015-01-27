@@ -30,7 +30,8 @@ Components
 
 ### init
 
-Supervision based init system based on either runit or s6.
+Supervision based init system based on either runit or s6. Potentially
+patched with cgroup support.
 
 ### sh
 
