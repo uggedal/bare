@@ -11,6 +11,7 @@ Philosophy
   config and package per target system.
 * No translations.
 * Only one package for every use-case.
+* Favor non-GPL licensed software.
 
 Inspiration
 -----------
