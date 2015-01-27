@@ -3,3 +3,4 @@
 cat <<EOF
 pkg <command> [<args>]
 EOF
+exit 64
