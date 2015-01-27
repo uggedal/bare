@@ -62,8 +62,9 @@ to library functions.
 Metadata should be minimal:
 
 * name
+* v (version)
 * src (url)
-* hash
+* cksum
 * bdep (build dependencies)
 * rdep (runtime dependencies)
 * dev (create -dev sub package with headers etc)
