@@ -3,8 +3,8 @@ snix
 
 Simple linux distro.
 
-Design
-------
+Philosophy
+----------
 
 * Keep patching of upstream to a minimum.
 * Vanilla kernel without initramfs and module support. Different kernel
