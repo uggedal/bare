@@ -67,7 +67,8 @@ Metadata should be minimal:
 * cksum
 * bdep (build dependencies)
 * rdep (runtime dependencies)
-* dev (create -dev sub package with headers etc)
+
+Create -dev subpackages (headers etc) automatically.
 
 Packages without huge common libraries should be statically linked.
 
