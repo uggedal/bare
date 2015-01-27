@@ -1,0 +1,10 @@
+#!/bin/sh
+
+_exec() {
+  local f=$(dirname $0)/../libexec/pkg/$1.sh
+
+  [ -x "$f" ] || _exec usage
+  exec $f
+}
+
+[ "$1" ] || _exec usage
