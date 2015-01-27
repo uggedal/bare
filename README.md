@@ -35,7 +35,7 @@ patched with cgroup support.
 
 ### sh
 
-mksh
+mksh (with patches for better vi mode support).
 
 ### coreutils
 
