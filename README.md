@@ -83,6 +83,10 @@ Handle shared library dependencies automatically.
 
 The only valid source of documentation is man pages.
 
+Build in chroot
+
+    clone(CLONE_NEWNS|CLONE_NEWIPC|CLONE_NEWUTS|CLONE_NEWPID|CLONE_NEWNET).
+
 ### pkg check
 
 Check for upstream updates. Single config file with key value pairs for
