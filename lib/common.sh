@@ -1,3 +1,16 @@
+msg() {
+  printf -- '%s\n' "$@" 1>&2
+}
+
+err() {
+  printf -- 'mk: %s\n' "$@" 1>&2
+}
+
+die() {
+  err "$@"
+  exit 1
+}
+
 read_pkg() {
   # TODO: sanity check for variables
   # TODO: unsetting of variables before read
