@@ -33,10 +33,10 @@ EOF
 
 [ "$1" ] || _usage
 
-for _cmdf in $_LIB/cmd/*.sh; do
-  . $_cmdf
+for _f in $_LIB/cmd/*.sh; do
+  . $_f
 done
-unset _cmdf
+unset _f
 
 [ "$(command -v cmd_$1)" ] || _usage
 
