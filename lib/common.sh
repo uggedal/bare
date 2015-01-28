@@ -15,6 +15,10 @@ relative() {
   printf -- '%s' ${1#$(pwd)/*}
 }
 
+uppercase() {
+  printf -- '%s' "$@" | tr '[:lower:]' '[:upper:]'
+}
+
 read_pkg() {
   # TODO: sanity check for variables
   # TODO: unsetting of variables before read
