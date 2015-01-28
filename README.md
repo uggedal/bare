@@ -12,7 +12,6 @@ Philosophy
 * No translations.
 * Only one package for every use-case.
 * Favor non-GPL licensed software (no {A,L,}GPL3 if possible).
-* Use PREFIX=/ and symlink /usr to / (and sbin to bin).
 
 Inspiration
 -----------
