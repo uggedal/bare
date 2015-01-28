@@ -11,6 +11,10 @@ die() {
   exit 1
 }
 
+relative() {
+  printf -- '%s' ${1#$(pwd)/*}
+}
+
 read_pkg() {
   # TODO: sanity check for variables
   # TODO: unsetting of variables before read
@@ -22,4 +26,30 @@ read_pkg() {
   . $pkgfile
 
   fullname=$name-${ver}_$rev
+}
+
+get_archive() {
+  local src=$1
+  local fullname=$2
+  local archive=${src##*/}
+
+  printf -- '%s' $_CACHE/$fullname/$archive
+}
+
+fetch() {
+  local src=$1
+  local fullname=$2
+  local pkgarchive=$(get_archive $src $fullname)
+
+  [ -d $_CACHE ] || die "no cache directory in '$_CACHE'"
+
+  if [ -r $pkgarchive ]; then
+    msg "cached in $pkgarchive"
+  else
+    mkdir -p $(dirname $pkgarchive)
+    msg "fetching $src"
+    curl -L $src > $pkgarchive
+  fi
+
+  printf -- '%s' $pkgarchive
 }
