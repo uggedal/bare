@@ -26,13 +26,12 @@ Commands:
   extract <pkg>
   build <pkg>
   install <pkg>
-  clean <pkg>
+  clean [pkg]
 EOF
   exit 64
 }
 
 [ "$1" ] || _usage
-[ "$2" ] || _usage
 
 for _cmdf in $_LIB/cmd/*.sh; do
   . $_cmdf
@@ -41,5 +40,14 @@ unset _cmdf
 
 [ "$(command -v cmd_$1)" ] || _usage
 
-read_pkg $2
+case "$1" in
+  clean)
+    [ "$2" ] && read_pkg $2
+    ;;
+  *)
+    [ "$2" ] || _usage
+    read_pkg $2
+    ;;
+esac
+
 cmd_$1 $2
