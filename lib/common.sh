@@ -45,8 +45,6 @@ fetch() {
   local fullname=$2
   local pkgarchive=$(get_archive $src $fullname)
 
-  [ -d $_CACHE ] || die "no cache directory in '$_CACHE'"
-
   if [ -r $pkgarchive ]; then
     msg "cached in $pkgarchive"
   else
