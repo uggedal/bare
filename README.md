@@ -10,7 +10,7 @@ Philosophy
 * Vanilla kernel without initramfs and module support. Different kernel
   config and package per target system.
 * No translations.
-* Only one package for every use-case.
+* Only one package for per use-case.
 * Favor non-GPL licensed software (no {A,L,}GPL3 if possible).
 
 Inspiration
