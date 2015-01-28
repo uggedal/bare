@@ -36,6 +36,7 @@ EOF
 for _cmdf in $_LIB/cmd/*.sh; do
   . $_cmdf
 done
+unset _cmdf
 
 [ "$(command -v cmd_$1)" ] || _usage
 
