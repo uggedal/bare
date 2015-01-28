@@ -25,9 +25,9 @@ Inspiration
 Components
 ----------
 
-### libs
+### libc
 
-* http://wiki.musl-libc.org/wiki/Alternative_libraries
+musl.
 
 ### init
 
@@ -62,7 +62,7 @@ Options:
 
 If too much work xbps could be used in stead.
 
-### pkg mk
+### mk
 
 Package builder based on POSIX shell recipes. Extract commonalities out
 to library functions.
@@ -75,10 +75,9 @@ Metadata should be minimal:
 * cksum
 * bdep (build dependencies)
 * rdep (runtime dependencies)
+* style (build system)
 
 Create -dev subpackages (headers etc) automatically.
-
-Packages without huge common libraries should be statically linked.
 
 Handle shared library dependencies automatically.
 
@@ -88,10 +87,9 @@ Build in chroot
 
     clone(CLONE_NEWNS|CLONE_NEWIPC|CLONE_NEWUTS|CLONE_NEWPID|CLONE_NEWNET).
 
-### pkg check
+### mk check
 
-Check for upstream updates. Single config file with key value pairs for
-per-package default overrides.
+Check for upstream updates. Ability to override in `update/<name>.sh`
 
 Bootstrap
 ---------
