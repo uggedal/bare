@@ -26,6 +26,7 @@ Commands:
   extract <pkg>
   build <pkg>
   install <pkg>
+  clean <pkg>
 EOF
   exit 64
 }
