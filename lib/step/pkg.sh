@@ -4,5 +4,5 @@ step_pkg() {
 
   progress pkg "'$name'"
 
-  tar -C $pkgdest -cJf $pkg .
+  tar -C $pkgdest -cJvf $pkg .
 }
