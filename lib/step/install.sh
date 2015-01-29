@@ -1,9 +1,11 @@
-cmd_install() {
+step_install() {
   local func
   local pkgbuild=$_BUILD/$fullname
   local pkgdest=$_DEST/$fullname
 
-  cmd_build
+  step_build
+
+  progress install "'$name' using $style"
 
   local ocwd=$(pwd)
   cd $pkgbuild/$name-$ver

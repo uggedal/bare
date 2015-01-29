@@ -1,8 +1,10 @@
-cmd_build() {
+step_build() {
   local func
   local pkgbuild=$_BUILD/$fullname
 
-  cmd_extract
+  step_extract
+
+  progress build "'$name' using $style"
 
   local ocwd=$(pwd)
   cd $pkgbuild/$name-$ver

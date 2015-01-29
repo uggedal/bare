@@ -33,12 +33,12 @@ EOF
 
 [ "$1" ] || _usage
 
-for _f in $_LIB/cmd/*.sh; do
+for _f in $_LIB/step/*.sh; do
   . $_f
 done
 unset _f
 
-[ "$(command -v cmd_$1)" ] || _usage
+[ "$(command -v step_$1)" ] || _usage
 
 case "$1" in
   clean)
@@ -50,4 +50,4 @@ case "$1" in
     ;;
 esac
 
-cmd_$1 $2
+step_$1 $2

@@ -1,14 +1,32 @@
+color() {
+  local n=$1
+  shift
+
+  if tput colors >/dev/null 2>&1; then
+    printf -- '\033[%dm%s\033[0m' $n "$@"
+  else
+    printf -- '%s' "$@"
+  fi
+}
+
 msg() {
   printf -- '%s\n' "$@" 1>&2
 }
 
 err() {
-  printf -- 'mk: %s\n' "$@" 1>&2
+  msg "$(color 31 mk:) $@"
 }
 
 die() {
   err "$@"
   exit 1
+}
+
+progress() {
+  local step=$1
+  shift
+
+  msg "$(color 33 $step:) $@"
 }
 
 relative() {
@@ -46,10 +64,10 @@ fetch() {
   local pkgarchive=$(get_archive $src $fullname)
 
   if [ -r $pkgarchive ]; then
-    msg "cached in $pkgarchive"
+    progress fetch "'$name' cached in '$(relative $pkgarchive)'"
   else
     mkdir -p $(dirname $pkgarchive)
-    msg "fetching $src"
+    progress fetch "'$name' with '$src'"
     curl -L $src > $pkgarchive
   fi
 

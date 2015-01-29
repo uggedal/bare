@@ -1,10 +1,13 @@
-cmd_extract() {
+step_extract() {
   local pkgbuild=$_BUILD/$fullname
   local pkgarchive=$(get_archive $src $fullname)
+  local archive=${pkgarchive##*/}
 
   [ -d $_BUILD ] || die "no build directory in '$_BUILD'"
 
-  cmd_verify
+  step_verify
+
+  progress extract "'$name' using '$archive'"
 
   mkdir -p $pkgbuild
 
@@ -14,7 +17,7 @@ cmd_extract() {
       args=j
       ;;
     *)
-      die "unsupported archive '${pkgarchive##*/}'"
+      die "unsupported archive '$archive'"
       ;;
   esac
 
