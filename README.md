@@ -17,9 +17,10 @@ Inspiration
 -----------
 
 * Alpine Linux
-* Sabotage Linux
 * Dragora
 * Morpheus
+* Sabotage Linux
+* Slackware
 * Void Linux
 
 Components
