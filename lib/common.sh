@@ -23,10 +23,10 @@ die() {
 }
 
 progress() {
-  local step=$1
+  local step="$(printf '%-10s' $1:)"
   shift
 
-  msg "$(color 33 $step:) $@"
+  msg "$(color 33 "$step") $@"
 }
 
 relative() {
