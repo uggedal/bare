@@ -21,5 +21,5 @@ step_extract() {
       ;;
   esac
 
-  ( cd $pkgbuild && tar -x${args}f $pkgarchive )
+  tar -C $pkgbuild -x${args}f $pkgarchive
 }
