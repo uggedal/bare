@@ -2,8 +2,6 @@ step_build() {
   local func
   local pkgbuild=$_BUILD/$fullname
 
-  step_extract
-
   progress build "'$name' using $style"
 
   local ocwd=$(pwd)

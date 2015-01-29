@@ -3,8 +3,6 @@ step_install() {
   local pkgbuild=$_BUILD/$fullname
   local pkgdest=$_DEST/$fullname
 
-  step_build
-
   progress install "'$name' using $style"
 
   local ocwd=$(pwd)

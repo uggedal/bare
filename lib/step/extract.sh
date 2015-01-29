@@ -5,8 +5,6 @@ step_extract() {
 
   [ -d $_BUILD ] || die "no build directory in '$_BUILD'"
 
-  step_verify
-
   progress extract "'$name' using '$archive'"
 
   mkdir -p $pkgbuild

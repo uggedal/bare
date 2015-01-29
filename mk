@@ -51,4 +51,4 @@ case "$1" in
     ;;
 esac
 
-step_$1 $2
+run_step $1

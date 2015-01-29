@@ -74,6 +74,36 @@ fetch() {
   printf -- '%s' $pkgarchive
 }
 
+run_step() {
+  local step=$1
+  local deps=
+  local hasdeps=
+  local s
+  local d
+  local steps='
+    verify
+    extract
+    build
+    install
+    pkg
+    '
+
+  for s in $steps; do
+    deps="$deps $s"
+
+    if [ "$step" = "$s" ]; then
+      hasdeps=yes
+      break
+    fi
+  done
+
+  [ "$hasdeps" ] || deps=$step
+
+  for d in $deps; do
+    step_$d
+  done
+}
+
 run_style() {
   local style=$1
   local func=$2
