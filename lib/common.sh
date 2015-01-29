@@ -76,10 +76,7 @@ fetch() {
 
 run_step() {
   local step=$1
-  local deps=
-  local hasdeps=
-  local s
-  local d
+  local deps hasdeps s d
   local steps='
     verify
     extract
