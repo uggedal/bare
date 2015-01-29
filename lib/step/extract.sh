@@ -7,8 +7,6 @@ step_extract() {
 
   progress extract "'$name' using '$archive'"
 
-  mkdir -p $pkgbuild
-
   local args
   case $pkgarchive in
     *.tar.bz2)

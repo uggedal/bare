@@ -84,6 +84,7 @@ run_step() {
     install
     pkg
     '
+  local pkgbuild=$_BUILD/$fullname
 
   for s in $steps; do
     deps="$deps $s"
@@ -96,8 +97,12 @@ run_step() {
 
   [ "$hasdeps" ] || deps=$step
 
+  mkdir -p $pkgbuild
+
   for d in $deps; do
+    [ ! -f $pkgbuild/.${d}.done ] || continue
     step_$d
+    touch $pkgbuild/.${d}.done
   done
 }
 
