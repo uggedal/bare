@@ -17,6 +17,7 @@ Inspiration
 -----------
 
 * Alpine Linux
+* CRUX
 * Dragora
 * Morpheus
 * Sabotage Linux
