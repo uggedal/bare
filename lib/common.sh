@@ -107,8 +107,10 @@ run_step() {
     fi
 
     step_$d
-    [ "$hasdeps" ] && touch $pkgbuild/.${d}.done
-    progress $d "'$name' $(color 32 ok)"
+    if [ "$hasdeps" ]; then
+      touch $pkgbuild/.${d}.done
+      progress $d "'$name' $(color 32 ok)"
+    fi
   done
 }
 
