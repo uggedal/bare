@@ -100,9 +100,14 @@ run_step() {
   mkdir -p $pkgbuild
 
   for d in $deps; do
-    [ ! -f $pkgbuild/.${d}.done ] || continue
+    if [ -f $pkgbuild/.${d}.done ]; then
+      progress $d "'$name' $(color 34 cached)"
+      continue
+    fi
+
     step_$d
     touch $pkgbuild/.${d}.done
+    progress $d "'$name' $(color 32 ok)"
   done
 }
 
