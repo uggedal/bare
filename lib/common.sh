@@ -97,6 +97,7 @@ run_step() {
 
   [ "$hasdeps" ] || deps=$step
 
+  # TODO: move to env setup
   mkdir -p $pkgbuild
 
   for d in $deps; do
