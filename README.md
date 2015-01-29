@@ -104,4 +104,4 @@ Bootstrap from simple shell script based on:
 
 ## Required packages
 
-    binutils gcc make tar
+    binutils gcc make tar xz

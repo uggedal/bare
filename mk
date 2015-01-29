@@ -10,7 +10,7 @@ export _CKSUM=$_ROOT/cksum
 
 . $_LIB/common.sh
 
-for _dir in cache build dest; do
+for _dir in cache build dest repo; do
   eval export _$(uppercase $_dir)=$_ROOT/$_dir
   mkdir -p $_ROOT/$_dir
 done
@@ -26,6 +26,7 @@ Commands:
   extract <pkg>
   build <pkg>
   install <pkg>
+  pkg <pkg>
   clean [pkg]
 EOF
   exit 64
