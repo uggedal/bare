@@ -56,29 +56,10 @@ Package format should be a simple tarball with essential metadata.
 
 The database should be a simple text file with a list of key value pairs.
 
-Options:
-
-* pkg sync
-* pkg add
-* pkg rm (automatically recursive)
-* pkg find
-
-If too much work xbps could be used in stead.
-
 ### mk
 
 Package builder based on POSIX shell recipes. Extract commonalities out
 to library functions.
-
-Metadata should be minimal:
-
-* name
-* v (version)
-* src (url)
-* cksum
-* bdep (build dependencies)
-* rdep (runtime dependencies)
-* style (build system)
 
 Create -dev subpackages (headers etc) automatically.
 
