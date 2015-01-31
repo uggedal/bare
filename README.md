@@ -9,8 +9,9 @@ Philosophy
 * Keep patching of upstream to a minimum.
 * Vanilla kernel without initramfs and module support. Different kernel
   config and package per target system.
-* No translations.
 * Only one package for per use-case.
+* Stable timed branches only containing security updates and bug fixes.
+* No translations.
 * Favor non-GPL licensed software (no {A,L,}GPL3 if possible).
 
 Inspiration
