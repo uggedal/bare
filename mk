@@ -34,7 +34,7 @@ EOF
 
 [ "$1" ] || _usage
 
-for _f in $_LIB/env/*.sh $_LIB/step/*.sh; do
+for _f in $_LIB/step/*.sh; do
   . $_f
 done
 unset _f
@@ -51,4 +51,5 @@ case "$1" in
     ;;
 esac
 
+. $_LIB/env.sh
 run_step $1
