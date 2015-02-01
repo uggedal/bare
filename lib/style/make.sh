@@ -1,7 +1,6 @@
 make_default_build() {
   # TODO: set CFLAGS/LDFLAGS/CC etc
-  # TODO: set -j
-  make
+  make -j $MK_NPROC
 }
 
 make_default_install() {

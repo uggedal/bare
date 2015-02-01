@@ -34,7 +34,7 @@ EOF
 
 [ "$1" ] || _usage
 
-for _f in $_LIB/step/*.sh; do
+for _f in $_LIB/step/*.sh $_LIB/env/*.sh; do
   . $_f
 done
 unset _f
