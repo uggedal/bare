@@ -4,5 +4,5 @@ make_default_build() {
 }
 
 make_default_install() {
-  make PREFIX=/usr DESTDIR=$MK_DESTDIR install
+  make PREFIX=$MK_PREFIX DESTDIR=$MK_DESTDIR install
 }
