@@ -10,5 +10,5 @@ pre_build() {
 }
 
 do_install() {
-  PREFIX=$DESTDIR make install
+  PREFIX=$MK_DESTDIR make install
 }

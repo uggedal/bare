@@ -7,8 +7,6 @@ step_install() {
 
   local ocwd=$(pwd)
   cd $pkgbuild/$name-$ver
-  # TODO: move to env setup func
-  export DESTDIR=$pkgdest
   run_style $style install
   cd $ocwd
 }
