@@ -1,5 +1,4 @@
 step_clean() {
-  local name=$1
   local dirs="$_BUILD $_DEST"
   local dir
 
