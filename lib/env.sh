@@ -3,3 +3,5 @@
 
 MK_PREFIX=/usr
 MK_DESTDIR=$_DEST/$fullname
+
+MK_FILE=$_FILE/$name

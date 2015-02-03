@@ -7,6 +7,7 @@ export _ROOT=$(realpath $(dirname $0))
 export _LIB=$_ROOT/lib
 export _PKG=$_ROOT/pkg
 export _CKSUM=$_ROOT/cksum
+export _FILE=$_ROOT/file
 
 . $_LIB/common.sh
 
