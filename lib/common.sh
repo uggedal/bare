@@ -48,6 +48,8 @@ read_pkg() {
   . $pkgfile
 
   fullname=$name-${ver}_$rev
+
+  . $_LIB/env.sh
 }
 
 get_archive() {

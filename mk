@@ -46,7 +46,11 @@ unset _f
 
 case "$1" in
   clean)
-    [ "$2" ] && read_pkg $2
+    if [ "$2" ]; then
+      read_pkg $2
+    else
+      . $_LIB/env.sh
+    fi
     ;;
   *)
     [ "$2" ] || _usage
@@ -54,5 +58,4 @@ case "$1" in
     ;;
 esac
 
-. $_LIB/env.sh
 run_step $1
