@@ -23,6 +23,7 @@ _usage() {
 mk <command> [<args>]
 
 Commands:
+  bootstrap
   gencksum <pkg>
   verify <pkg>
   extract <pkg>
@@ -45,6 +46,9 @@ unset _f
 [ "$(command -v step_$1)" ] || _usage
 
 case "$1" in
+  bootstrap)
+    :
+    ;;
   clean)
     if [ "$2" ]; then
       read_pkg $2
