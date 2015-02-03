@@ -100,13 +100,13 @@ run_step() {
     fi
   done
 
-  if ! [ "$hasdeps" ]; then
-    deps=$step
-  else
+  if [ "$hasdeps" ]; then
     if [ $step = pkg ] && [ -f $_REPO/${fullname}.tar.xz ]; then
       progress pkg "'$name' $(color 34 complete)"
       return
     fi
+  else
+    deps=$step
   fi
 
   # TODO: move to env setup
