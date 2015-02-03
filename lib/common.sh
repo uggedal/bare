@@ -100,7 +100,14 @@ run_step() {
     fi
   done
 
-  [ "$hasdeps" ] || deps=$step
+  if ! [ "$hasdeps" ]; then
+    deps=$step
+  else
+    if [ $step = pkg ] && [ -f $_REPO/${fullname}.tar.xz ]; then
+      progress pkg "'$name' $(color 34 complete)"
+      return
+    fi
+  fi
 
   # TODO: move to env setup
   mkdir -p $pkgbuild

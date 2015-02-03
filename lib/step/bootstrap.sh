@@ -2,15 +2,15 @@ bootstrap_install() {
   local p=$1
 
   read_pkg $p
-  t=$_REPO/${fullname}.tar.xz
 
-  [ -f $t ] || $_ROOT/mk pkg $p
+  $_ROOT/mk pkg $p
 
+  local t=$_REPO/${fullname}.tar.xz
   tar -C $_BOOTSTRAP -xJf $t
 }
 
 step_bootstrap() {
-  local p t d b p
+  local p d b p
   local toolchain=opt/toolchain
 
   for p in toybox busybox binutils; do
