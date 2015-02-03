@@ -9,6 +9,7 @@ export _PKG=$_ROOT/pkg
 export _CKSUM=$_ROOT/cksum
 export _FILE=$_ROOT/file
 
+. $_LIB/def.sh
 . $_LIB/common.sh
 
 for _dir in cache build dest repo; do
