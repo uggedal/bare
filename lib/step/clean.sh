@@ -1,5 +1,5 @@
 step_clean() {
-  local dirs="$_BUILD $_DEST"
+  local dirs="$_BOOTSTRAP $_BUILD $_DEST"
   local dir
 
   if [ "$name" ]; then
