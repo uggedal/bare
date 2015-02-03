@@ -80,6 +80,7 @@ run_step() {
   local steps='
     verify
     extract
+    configure
     build
     install
     pkg

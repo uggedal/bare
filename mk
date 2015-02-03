@@ -25,6 +25,7 @@ Commands:
   gencksum <pkg>
   verify <pkg>
   extract <pkg>
+  configure <pkg>
   build <pkg>
   install <pkg>
   pkg <pkg>
