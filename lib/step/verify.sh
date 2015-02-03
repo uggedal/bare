@@ -5,6 +5,6 @@ step_verify() {
 
   progress verify "'$name' using '$archive'"
 
-  sha256sum --status -c $f ||
+  [ "$(sha256sum $(relative $pkgarchive))" = "$(cat $f)" ] ||
     die "invalid checksum for '$name' ($archive)"
 }
