@@ -10,6 +10,6 @@ step_clean() {
   fi
 
   for dir in $dirs; do
-    rm -r $dir
+    rm -rf $dir
   done
 }
