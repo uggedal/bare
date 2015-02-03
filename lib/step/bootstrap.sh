@@ -1,4 +1,4 @@
-pkg_and_install() {
+bootstrap_install() {
   local p=$1
 
   read_pkg $p
@@ -14,7 +14,7 @@ step_bootstrap() {
   local toolchain=opt/toolchain
 
   for p in toybox busybox binutils; do
-    pkg_and_install $p
+    bootstrap_install $p
   done
 
   local OPATH=$PATH
@@ -32,7 +32,7 @@ step_bootstrap() {
   done
 
   for p in gcc; do
-    pkg_and_install $p
+    bootstrap_install $p
   done
 
   PATH=$OPATH
