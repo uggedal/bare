@@ -1,8 +1,11 @@
 umask 022
 export LC_ALL=C
 
+CC=cc
+
 MK_ARCH=$(uname -m)
-MK_TRIPLET=$MK_ARCH-linux-musl
+MK_TARGET=$MK_ARCH-linux-musl
+MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
 
 [ "$MK_NPROC" ] ||
   MK_NPROC=$(printf -- '%s\n' /sys/devices/system/cpu/cpu[0-9]* | wc -l)
@@ -19,8 +22,8 @@ MK_CONFIGURE="
   --sysconfdir=/etc
   --localstatedir=/var
   --mandir=/usr/share/man
-  --host=$MK_TRIPLET
-  --build=$MK_TRIPLET
-  --target=$MK_TRIPLET
+  --host=$MK_HOST
+  --build=$MK_HOST
+  --target=$MK_TARGET
   --with-sysroot=$MK_PREFIX/$MK_TRIPLET
   "
