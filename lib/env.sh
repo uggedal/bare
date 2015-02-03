@@ -21,4 +21,6 @@ MK_CONFIGURE="
   --mandir=/usr/share/man
   --host=$MK_TRIPLET
   --build=$MK_TRIPLET
+  --target=$MK_TRIPLET
+  --with-sysroot=$MK_PREFIX/$MK_TRIPLET
   "
