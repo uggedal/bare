@@ -7,6 +7,8 @@ MK_TRIPLET=$MK_ARCH-linux-musl
 [ "$MK_NPROC" ] ||
   MK_NPROC=$(printf -- '%s\n' /sys/devices/system/cpu/cpu[0-9]* | wc -l)
 
+export CFLAGS='-Os -pipe'
+
 MK_PREFIX=/usr
 MK_DESTDIR=$_DEST/$fullname
 
