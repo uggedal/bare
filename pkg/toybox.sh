@@ -5,8 +5,7 @@ src=http://landley.net/$name/downloads/$name-${ver}.tar.bz2
 style=make
 
 pre_build() {
-  # TODO: save config and maybe stip it
-  make defconfig
+  cp $MK_FILE/config .config
 }
 
 do_install() {
