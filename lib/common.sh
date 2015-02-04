@@ -39,7 +39,21 @@ uppercase() {
 
 read_pkg() {
   # TODO: sanity check for variables
-  # TODO: unsetting of variables before read
+
+  local _v
+  local _vars='
+    name
+    fullname
+    ver
+    rev
+    src
+    style
+    configure
+    builddir
+    '
+  for _v in _vars; do
+    unset $v
+  done
 
   name=$1
   pkgfile=$_PKG/${name}.sh
