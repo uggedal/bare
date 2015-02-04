@@ -3,7 +3,7 @@ step_clean() {
   local dir
 
   if [ "$name" ]; then
-    dirs="$_BUILD/$fullname $_DEST/$fullname"
+    dirs="$MK_BUILD_ROOT $_DEST/$fullname"
     progress clean "'$name'"
   else
     progress clean "globally"

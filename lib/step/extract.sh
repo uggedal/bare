@@ -1,5 +1,4 @@
 step_extract() {
-  local pkgbuild=$_BUILD/$fullname
   local pkgarchive=$(get_archive $src $fullname)
   local archive=${pkgarchive##*/}
 
@@ -17,5 +16,5 @@ step_extract() {
       ;;
   esac
 
-  tar -C $pkgbuild -x${args}f $pkgarchive
+  tar -C $MK_BUILD_ROOT -x${args}f $pkgarchive
 }

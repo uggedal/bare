@@ -54,8 +54,6 @@ case "$1" in
   clean)
     if [ "$2" ]; then
       read_pkg $2
-    else
-      . $_LIB/env.sh
     fi
     ;;
   *)

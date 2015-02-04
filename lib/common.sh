@@ -90,8 +90,6 @@ run_step() {
     install
     pkg
     '
-  local pkgbuild=$_BUILD/$fullname
-
   for s in $steps; do
     deps="$deps $s"
 
@@ -110,18 +108,15 @@ run_step() {
     deps=$step
   fi
 
-  # TODO: move to env setup
-  mkdir -p $pkgbuild
-
   for d in $deps; do
-    if [ -f $pkgbuild/.${d}.done ]; then
+    if [ -f $MK_BUILD_ROOT/.${d}.done ]; then
       progress $d "'$name' $(color 34 cached)"
       continue
     fi
 
     step_$d
     if [ "$hasdeps" ]; then
-      touch $pkgbuild/.${d}.done
+      touch $MK_BUILD_ROOT/.${d}.done
       progress $d "'$name' $(color 32 ok)"
     fi
   done

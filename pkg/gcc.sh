@@ -16,3 +16,4 @@ configure='
   --enable-languages=c
   --with-newlib
   '
+builddir=gcc-build

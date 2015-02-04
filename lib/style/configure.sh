@@ -1,5 +1,5 @@
 configure_default_configure() {
-  ./configure $MK_CONFIGURE $configure
+  $MK_SRC/configure $MK_CONFIGURE $configure
 }
 
 configure_default_build() {

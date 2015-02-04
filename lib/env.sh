@@ -20,6 +20,17 @@ MK_DESTDIR=$_DEST/$fullname
 MK_FILE=$_FILE/$name
 MK_PATCH=$_PATCH/$name
 
+MK_BUILD_ROOT=$_BUILD/$fullname
+MK_SRC=$MK_BUILD_ROOT/$name-$ver
+MK_BUILD=$MK_SRC
+
+mkdir -p $MK_BUILD_ROOT
+
+if [ "$builddir" ]; then
+  MK_BUILD=$MK_BUILD_ROOT/$builddir
+  mkdir -p $MK_BUILD
+fi
+
 # TOOD: --host/--build/--target is only for bootstrap
 MK_CONFIGURE="
   --prefix=$MK_PREFIX
