@@ -6,6 +6,7 @@ style=configure
 configure='
   --disable-nls
   --disable-decimal-float
+  --disable-libatomic
   --disable-libgomp
   --disable-libmudflap
   --disable-libquadmath
