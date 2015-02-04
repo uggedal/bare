@@ -6,8 +6,9 @@ export LC_ALL=C
 
 CC=cc
 
-export CFLAGS='-Os -pipe'
-export CXXFLAGS="$CFLAGS"
+: ${CFLAGS:='-Os -pipe'}
+: ${CXXFLAGS:=$CFLAGS}
+export CFLAGS CXXFLAGS
 
 MK_PREFIX=/usr
 MK_DESTDIR=$_DEST/$fullname
