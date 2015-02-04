@@ -4,6 +4,7 @@ export LC_ALL=C
 CC=cc
 
 MK_ARCH=$(uname -m)
+MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
 # TODO: only for bootstrap?:
 MK_TARGET=$MK_ARCH-linux-musl
 # TODO: only for bootstrap:
