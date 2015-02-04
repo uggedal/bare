@@ -32,7 +32,7 @@ step_bootstrap() {
     ln -sf $p $_BOOTSTRAP/$toolchain/$b
   done
 
-  for p in gcc linux; do
+  for p in gcc linux musl; do
     bootstrap_install $p
   done
 
