@@ -3,7 +3,7 @@ step_patch() {
   local p
   local pkgbuild=$_BUILD/$fullname
 
-  [ -d $MK_PATCH ] || return
+  [ -d $MK_PATCH ] || return 0
 
 
   local ocwd=$(pwd)
