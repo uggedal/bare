@@ -13,6 +13,7 @@ MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
   MK_NPROC=$(printf -- '%s\n' /sys/devices/system/cpu/cpu[0-9]* | wc -l)
 
 export CFLAGS='-Os -pipe'
+export CXXFLAGS=$CFLAGS
 
 MK_PREFIX=/usr
 MK_DESTDIR=$_DEST/$fullname
