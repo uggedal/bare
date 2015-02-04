@@ -11,6 +11,9 @@ step_extract() {
     *.tar.bz2)
       args=j
       ;;
+    *.tar.xz)
+      args=J
+      ;;
     *)
       die "unsupported archive '$archive'"
       ;;
