@@ -1,7 +1,6 @@
 inherit gcc
 
 configure='
-  --disable-nls
   --disable-decimal-float
   --disable-libatomic
   --disable-libgomp
@@ -9,6 +8,7 @@ configure='
   --disable-libquadmath
   --disable-libssp
   --disable-multilib
+  --disable-nls
   --disable-shared
   --disable-threads
   --enable-languages=c
