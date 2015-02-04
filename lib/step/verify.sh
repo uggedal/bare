@@ -5,6 +5,8 @@ step_verify() {
 
   progress verify "'$name' using '$archive'"
 
+  [ -s "$pkgarchive" ] || die "missing or empty archive for '$name' ($archive)"
+
   [ "$(sha256sum $(relative $pkgarchive))" = "$(cat $f)" ] ||
     die "invalid checksum for '$name' ($archive)"
 }

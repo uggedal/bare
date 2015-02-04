@@ -84,7 +84,7 @@ fetch() {
   else
     mkdir -p $(dirname $pkgarchive)
     progress fetch "'$name' with '$src'"
-    curl -L $src > $pkgarchive
+    curl -fL -o $pkgarchive $src || die "fetch failure for '$name' ($src)"
   fi
 
   printf -- '%s' $pkgarchive
