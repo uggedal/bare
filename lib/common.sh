@@ -100,7 +100,7 @@ run_step() {
   done
 
   if [ "$hasdeps" ]; then
-    if [ $step = pkg ] && [ -f $_REPO/${fullname}.tar.xz ]; then
+    if [ $step = pkg ] && [ -s $_REPO/${fullname}.tar.xz ]; then
       progress pkg "'$name' $(color 34 complete)"
       return
     fi
