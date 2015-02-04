@@ -5,6 +5,8 @@ bootstrap_install() {
 
   MK_BOOTSTRAP=$MK_BOOTSTRAP $_ROOT/mk pkg $p
 
+  progress install "'$name'"
+
   local t=$_REPO/${fullname}.tar.xz
   tar -C $_BOOTSTRAP -xJf $t
 }
