@@ -42,5 +42,5 @@ MK_CONFIGURE="
   --host=$MK_HOST
   --build=$MK_HOST
   --target=$MK_TARGET
-  --with-sysroot=$MK_PREFIX/$MK_TRIPLET
+  --with-sysroot=$MK_PREFIX/$MK_TARGET
   "
