@@ -3,7 +3,7 @@ bootstrap_install() {
 
   read_pkg $p
 
-  $_ROOT/mk pkg $p
+  MK_BOOTSTRAP=$MK_BOOTSTRAP $_ROOT/mk pkg $p
 
   local t=$_REPO/${fullname}.tar.xz
   tar -C $_BOOTSTRAP -xJf $t
