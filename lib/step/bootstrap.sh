@@ -33,6 +33,7 @@ step_bootstrap() {
   done
 
   MK_BOOTSTRAP=yes
+  update_env
 
   for p in binutils gcc-minimal linux-headers musl gcc; do
     bootstrap_install bootstrap-$p
