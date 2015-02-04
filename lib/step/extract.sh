@@ -8,6 +8,9 @@ step_extract() {
 
   local args
   case $pkgarchive in
+    *.tar.gz)
+      args=x
+      ;;
     *.tar.bz2)
       args=j
       ;;
