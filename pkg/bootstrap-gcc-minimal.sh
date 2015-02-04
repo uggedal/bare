@@ -1,5 +1,8 @@
 inherit gcc
 
+CFLAGS='-O0 -g0'
+CXXFLAGS="$CFLAGS"
+
 configure='
   --disable-decimal-float
   --disable-libatomic
