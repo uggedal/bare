@@ -18,7 +18,7 @@ step_bootstrap() {
     bootstrap_install $p
   done
 
-  local OPATH=$PATH
+  local opath=$PATH
   PATH=
   for d in sbin bin usr/sbin usr/bin $toolchain; do
     PATH=${PATH:+$PATH:}$_BOOTSTRAP/$d
@@ -27,7 +27,7 @@ step_bootstrap() {
   mkdir -p $_BOOTSTRAP/$toolchain
 
   for b in $hosttools; do
-    p=$(PATH=$OPATH which $b)
+    p=$(PATH=$opath which $b)
     [ -e $p ] || die "bootstrap needs '$b' in host"
     ln -sf $p $_BOOTSTRAP/$toolchain/$b
   done
@@ -36,5 +36,5 @@ step_bootstrap() {
     bootstrap_install $p
   done
 
-  PATH=$OPATH
+  PATH=$opath
 }
