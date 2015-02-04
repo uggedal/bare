@@ -12,8 +12,8 @@ export CXXFLAGS="$CFLAGS"
 MK_PREFIX=/usr
 MK_DESTDIR=$_DEST/$fullname
 
-MK_FILE=$_FILE/$name
-MK_PATCH=$_PATCH/$name
+MK_FILE=$_FILE/$parentname
+MK_PATCH=$_PATCH/$parentname
 
 MK_BUILD_ROOT=$_BUILD/$fullname
 MK_SRC=$MK_BUILD_ROOT/$parentname-$ver
