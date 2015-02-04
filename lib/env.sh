@@ -23,7 +23,7 @@ MK_FILE=$_FILE/$name
 MK_PATCH=$_PATCH/$name
 
 MK_BUILD_ROOT=$_BUILD/$fullname
-MK_SRC=$MK_BUILD_ROOT/$name-$ver
+MK_SRC=$MK_BUILD_ROOT/$parentname-$ver
 MK_BUILD=$MK_SRC
 
 mkdir -p $MK_BUILD_ROOT

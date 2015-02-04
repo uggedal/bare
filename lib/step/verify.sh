@@ -1,6 +1,6 @@
 step_verify() {
-  local f=$_CKSUM/${name}.sha256sum
-  local pkgarchive=$(fetch $src $fullname)
+  local f=$_CKSUM/${parentname}.sha256sum
+  local pkgarchive=$(fetch)
   local archive=${pkgarchive##*/}
 
   progress verify "'$name' using '$archive'"

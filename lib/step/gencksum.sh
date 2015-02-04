@@ -1,5 +1,5 @@
 step_gencksum() {
-  local pkgarchive=$(fetch $src $fullname)
+  local pkgarchive=$(fetch)
 
   progress gencksum "'$name' with '${pkgarchive##*/}'"
 

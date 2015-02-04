@@ -44,6 +44,7 @@ read_pkg() {
   local _vars='
     name
     fullname
+    parentname
     ver
     rev
     src
@@ -61,23 +62,22 @@ read_pkg() {
   [ -r "$pkgfile" ] || die "no file for '$name' ($pkgfile)"
   . $pkgfile
 
+  : ${parentname:=$name}
+
   fullname=$name-${ver}_$rev
+  fullparentname=$parentname-${ver}_$rev
 
   . $_LIB/env.sh
 }
 
 get_archive() {
-  local src=$1
-  local fullname=$2
   local archive=${src##*/}
 
-  printf -- '%s' $_CACHE/$fullname/$archive
+  printf -- '%s' $_CACHE/$fullparentname/$archive
 }
 
 fetch() {
-  local src=$1
-  local fullname=$2
-  local pkgarchive=$(get_archive $src $fullname)
+  local pkgarchive=$(get_archive)
 
   if [ -r $pkgarchive ]; then
     progress fetch "'$name' cached in '$(relative $pkgarchive)'"
@@ -155,4 +155,9 @@ run_style() {
   if [ "$(command -v post_$func)" ]; then
     post_$func
   fi
+}
+
+inherit() {
+  parentname=$1
+  . $_PKG/${1}.sh
 }

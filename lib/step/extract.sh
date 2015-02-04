@@ -1,5 +1,5 @@
 step_extract() {
-  local pkgarchive=$(get_archive $src $fullname)
+  local pkgarchive=$(get_archive)
   local archive=${pkgarchive##*/}
 
   [ -d $_BUILD ] || die "no build directory in '$_BUILD'"
