@@ -4,7 +4,9 @@ export LC_ALL=C
 CC=cc
 
 MK_ARCH=$(uname -m)
+# TODO: only for bootstrap?:
 MK_TARGET=$MK_ARCH-linux-musl
+# TODO: only for bootstrap:
 MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
 
 [ "$MK_NPROC" ] ||
@@ -17,6 +19,7 @@ MK_DESTDIR=$_DEST/$fullname
 
 MK_FILE=$_FILE/$name
 
+# TOOD: --host/--build/--target is only for bootstrap
 MK_CONFIGURE="
   --prefix=$MK_PREFIX
   --sysconfdir=/etc
