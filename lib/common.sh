@@ -84,6 +84,7 @@ run_step() {
   local steps='
     verify
     extract
+    patch
     configure
     build
     install

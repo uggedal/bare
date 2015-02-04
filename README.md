@@ -33,7 +33,8 @@ Usage
 The following packages are required to bootstrap a self hosting snix
 system:
 
-    binutils gcc gcc-c++ make tar xz gmp-devel mpfr-devel libmpc-devel zlib-devel
+    binutils gcc gcc-c++ make patch tar xz
+    gmp-devel mpfr-devel libmpc-devel zlib-devel
 
 ## Configuration
 

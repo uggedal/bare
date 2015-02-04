@@ -8,6 +8,7 @@ export _LIB=$_ROOT/lib
 export _PKG=$_ROOT/pkg
 export _CKSUM=$_ROOT/cksum
 export _FILE=$_ROOT/file
+export _PATCH=$_ROOT/patch
 
 . $_LIB/def.sh
 . $_LIB/common.sh
@@ -27,6 +28,7 @@ Commands:
   gencksum <pkg>
   verify <pkg>
   extract <pkg>
+  patch <pkg>
   configure <pkg>
   build <pkg>
   install <pkg>

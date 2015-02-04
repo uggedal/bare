@@ -18,6 +18,7 @@ MK_PREFIX=/usr
 MK_DESTDIR=$_DEST/$fullname
 
 MK_FILE=$_FILE/$name
+MK_PATCH=$_PATCH/$name
 
 # TOOD: --host/--build/--target is only for bootstrap
 MK_CONFIGURE="
