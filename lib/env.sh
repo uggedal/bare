@@ -1,17 +1,10 @@
 umask 022
 export LC_ALL=C
 
-CC=cc
-
-MK_ARCH=$(uname -m)
-MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
-# TODO: only for bootstrap?:
-MK_TARGET=$MK_ARCH-linux-musl
-# TODO: only for bootstrap:
-MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
-
 [ "$MK_NPROC" ] ||
   MK_NPROC=$(printf -- '%s\n' /sys/devices/system/cpu/cpu[0-9]* | wc -l)
+
+CC=cc
 
 export CFLAGS='-Os -pipe'
 export CXXFLAGS="$CFLAGS"
@@ -33,14 +26,24 @@ if [ "$builddir" ]; then
   mkdir -p $MK_BUILD
 fi
 
-# TOOD: --host/--build/--target is only for bootstrap
 MK_CONFIGURE="
   --prefix=$MK_PREFIX
   --sysconfdir=/etc
   --localstatedir=/var
   --mandir=/usr/share/man
-  --host=$MK_HOST
-  --build=$MK_HOST
-  --target=$MK_TARGET
-  --with-sysroot=$MK_PREFIX/$MK_TARGET
   "
+
+if [ "$MK_BOOTSTRAP" ]; then
+  MK_ARCH=$(uname -m)
+  MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
+  MK_TARGET=$MK_ARCH-linux-musl
+  MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
+
+  MK_CONFIGURE="
+    $MK_CONFIGURE
+    --host=$MK_HOST
+    --build=$MK_HOST
+    --target=$MK_TARGET
+    --with-sysroot=$MK_PREFIX/$MK_TARGET
+    "
+fi
