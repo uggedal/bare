@@ -12,6 +12,7 @@ bootstrap_install() {
 step_bootstrap() {
   local p d b p
   local toolchain=opt/toolchain
+  local hosttools='ar as nm cc make ld gcc g++ objdump xz'
 
   for p in toybox busybox binutils; do
     bootstrap_install $p
@@ -25,9 +26,9 @@ step_bootstrap() {
 
   mkdir -p $_BOOTSTRAP/$toolchain
 
-  for b in ar as nm cc make ld gcc g++ objdump; do
+  for b in $hosttools; do
     p=$(PATH=$OPATH which $b)
-    [ -e $p ] || die "bootsrrap needs '$b' in host"
+    [ -e $p ] || die "bootstrap needs '$b' in host"
     ln -sf $p $_BOOTSTRAP/$toolchain/$b
   done
 
