@@ -42,8 +42,6 @@ case $name in
 
     MK_CONFIGURE="
       $MK_CONFIGURE
-      --host=$MK_HOST
-      --build=$MK_HOST
       --target=$MK_TARGET
       --with-sysroot=$MK_PREFIX/$MK_TARGET
       "
