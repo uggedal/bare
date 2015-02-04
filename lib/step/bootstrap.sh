@@ -3,7 +3,7 @@ bootstrap_install() {
 
   read_pkg $p
 
-  MK_BOOTSTRAP=$MK_BOOTSTRAP $_ROOT/mk pkg $p
+  $_ROOT/mk pkg $p
 
   progress install "'$name'"
 
@@ -33,9 +33,6 @@ step_bootstrap() {
     [ -e $p ] || die "bootstrap needs '$b' in host"
     ln -sf $p $_BOOTSTRAP/$toolchain/$b
   done
-
-  MK_BOOTSTRAP=yes
-  update_env
 
   for p in binutils gcc-minimal linux-headers musl gcc; do
     bootstrap_install bootstrap-$p

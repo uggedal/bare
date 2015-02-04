@@ -33,17 +33,19 @@ MK_CONFIGURE="
   --mandir=/usr/share/man
   "
 
-if [ "$MK_BOOTSTRAP" ]; then
-  MK_ARCH=$(uname -m)
-  MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
-  MK_TARGET=$MK_ARCH-linux-musl
-  MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
+case $name in
+  bootstrap-*)
+    MK_ARCH=$(uname -m)
+    MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
+    MK_TARGET=$MK_ARCH-linux-musl
+    MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
 
-  MK_CONFIGURE="
-    $MK_CONFIGURE
-    --host=$MK_HOST
-    --build=$MK_HOST
-    --target=$MK_TARGET
-    --with-sysroot=$MK_PREFIX/$MK_TARGET
-    "
-fi
+    MK_CONFIGURE="
+      $MK_CONFIGURE
+      --host=$MK_HOST
+      --build=$MK_HOST
+      --target=$MK_TARGET
+      --with-sysroot=$MK_PREFIX/$MK_TARGET
+      "
+    ;;
+esac

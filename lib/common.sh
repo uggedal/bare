@@ -37,10 +37,6 @@ uppercase() {
   printf -- '%s' "$@" | tr '[:lower:]' '[:upper:]'
 }
 
-update_env() {
-  . $_LIB/env.sh
-}
-
 read_pkg() {
   # TODO: sanity check for variables
 
@@ -71,7 +67,7 @@ read_pkg() {
   fullname=$name-${ver}_$rev
   fullparentname=$parentname-${ver}_$rev
 
-  update_env
+  . $_LIB/env.sh
 }
 
 get_archive() {
