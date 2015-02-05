@@ -1,7 +1,8 @@
 inherit musl
 
 do_configure() {
-  CC=$MK_TARGET-gcc CROSS_COMPILE=${MK_TARGET}- ./configure $MK_CONFIGURE --prefix=/
+  CC=$MK_TARGET-gcc CROSS_COMPILE=${MK_TARGET}- \
+    ./configure $MK_CONFIGURE --prefix=/
 }
 
 do_install() {
