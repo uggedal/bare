@@ -44,7 +44,6 @@ case $name in
     MK_CONFIGURE="
       $MK_CONFIGURE
       --target=$MK_TARGET
-      --with-sysroot=$MK_PREFIX/$MK_TARGET
       "
     ;;
 esac
