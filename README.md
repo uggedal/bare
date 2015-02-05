@@ -36,6 +36,10 @@ system:
     binutils gcc gcc-c++ make patch tar xz curl perl
     gmp-devel mpfr-devel libmpc-devel zlib-devel
 
+For now you'll need this ugly hack:
+
+    sudo ln -s $(pwd)/bootstrap/usr/x86_64-linux-musl /usr
+
 ## Configuration
 
 The following environment variables can be overwritten from the defaults:
