@@ -58,12 +58,11 @@ read_pkg() {
   done
 
   name=$1
+  parentname=$name
   pkgfile=$_PKG/${name}.sh
 
   [ -r "$pkgfile" ] || die "no file for '$name' ($pkgfile)"
   . $pkgfile
-
-  : ${parentname:=$name}
 
   fullname=$name-${ver}_$rev
   fullparentname=$parentname-${ver}_$rev
