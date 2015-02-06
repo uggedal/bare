@@ -1,0 +1,3 @@
+inherit busybox
+
+conflict=busybox
