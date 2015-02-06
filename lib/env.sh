@@ -47,6 +47,13 @@ case $name in
     ;;
 esac
 
+if [ "$MK_CROSS" ]; then
+  MK_CONFIGURE="
+    $MK_CONFIGURE
+    --host=$MK_TARGET
+    "
+fi
+
 for _b in cc cxx cpp gcc ld ar as ranlib strip objdump objcopy nm readelf; do
   if [ "$MK_CROSS" ]; then
     if [ "$_b" = cc ]; then
