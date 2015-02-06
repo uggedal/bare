@@ -38,5 +38,10 @@ step_bootstrap() {
     bootstrap_install bootstrap-$p
   done
 
+  for p in musl binutils gcc make toybox busybox; do
+    read_pkg $p
+    MK_CROSS=yes $_ROOT/mk pkg $p
+  done
+
   PATH=$opath
 }
