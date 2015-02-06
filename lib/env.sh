@@ -49,7 +49,11 @@ esac
 
 for _b in cc cxx cpp gcc ld ar as ranlib strip objdump objcopy nm readelf; do
   if [ "$MK_CROSS" ]; then
-    eval export $(uppercase $_b)=$MK_TARGET-$_b
+    if [ "$_b" = cc ]; then
+      eval export $(uppercase $_b)=$MK_TARGET-gcc
+    else
+      eval export $(uppercase $_b)=$MK_TARGET-$_b
+    fi
   else
     eval export $(uppercase $_b)=$_b
   fi
