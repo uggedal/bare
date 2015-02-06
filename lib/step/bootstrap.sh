@@ -16,7 +16,7 @@ step_bootstrap() {
   local toolchain=opt/toolchain
   local hosttools='ar as nm cc make ld gcc g++ objdump xz curl perl'
 
-  for p in toybox busybox; do
+  for p in host-toybox host-busybox; do
     bootstrap_install $p
   done
 
