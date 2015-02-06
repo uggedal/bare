@@ -1,10 +1,9 @@
 inherit binutils
 
-configure='
-  --disable-multilib
-  --disable-nls
+configure="
+  $configure
   --disable-shared
-  '
+  "
 
 post_configure() {
   make configure-host
