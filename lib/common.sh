@@ -51,6 +51,7 @@ read_pkg() {
     style
     configure
     builddir
+    conflict
     '
   for _v in _vars; do
     unset $v
