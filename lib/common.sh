@@ -34,7 +34,7 @@ relative() {
 }
 
 uppercase() {
-  printf -- '%s' "$@" | tr '[:lower:]' '[:upper:]'
+  printf -- '%s' "$@" | tr 'a-z' 'A-Z'
 }
 
 read_pkg() {
