@@ -4,8 +4,6 @@ export LC_ALL=C
 [ "$MK_NPROC" ] ||
   MK_NPROC=$(printf -- '%s\n' /sys/devices/system/cpu/cpu[0-9]* | wc -l)
 
-CC=cc
-
 : ${CFLAGS:='-Os -pipe'}
 : ${CXXFLAGS:=$CFLAGS}
 export CFLAGS CXXFLAGS
@@ -27,6 +25,10 @@ if [ "$builddir" ]; then
   mkdir -p $MK_BUILD
 fi
 
+MK_ARCH=$(uname -m)
+MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
+MK_TARGET=$MK_ARCH-linux-musl
+
 MK_CONFIGURE="
   --prefix=$MK_PREFIX
   --sysconfdir=/etc
@@ -36,9 +38,6 @@ MK_CONFIGURE="
 
 case $name in
   bootstrap-*)
-    MK_ARCH=$(uname -m)
-    MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
-    MK_TARGET=$MK_ARCH-linux-musl
     MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
 
     MK_CONFIGURE="
@@ -47,3 +46,12 @@ case $name in
       "
     ;;
 esac
+
+for _b in cc cxx cpp gcc ld ar as ranlib strip objdump objcopy nm readelf; do
+  if [ "$MK_CROSS" ]; then
+    eval export $(uppercase $_b)=$MK_TARGET-$_b
+  else
+    eval export $(uppercase $_b)=$_b
+  fi
+done
+unset _b
