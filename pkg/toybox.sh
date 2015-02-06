@@ -1,6 +1,6 @@
 ver=0.5.1
 rev=1
-src=http://landley.net/$name/downloads/$name-${ver}.tar.bz2
+src=http://landley.net/$parentname/downloads/$parentname-${ver}.tar.bz2
 
 style=make
 

@@ -1,0 +1,3 @@
+inherit toybox
+
+conflict=toybox
