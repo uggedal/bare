@@ -1,5 +1,5 @@
-snix
-====
+xunil
+=====
 
 Simple linux distro.
 
@@ -30,8 +30,7 @@ Usage
 
 ## Bootstrap
 
-The following packages are required to bootstrap a self hosting snix
-system:
+The following packages are required to bootstrap a self hosting system:
 
     binutils gcc gcc-c++ make patch tar xz curl perl
     gmp-devel mpfr-devel libmpc-devel zlib-devel
