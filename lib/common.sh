@@ -102,6 +102,7 @@ run_step() {
     configure
     build
     install
+    validate
     pkg
     '
   for s in $steps; do
