@@ -1,6 +1,6 @@
 ver=2.25
 rev=1
-src=$URI_GNU/$parentname/$parentname-${ver}.tar.bz2
+src=$URI_GNU/$name/$name-${ver}.tar.bz2
 
 style=configure
 

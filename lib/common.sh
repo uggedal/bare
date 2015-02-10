@@ -160,5 +160,8 @@ run_style() {
 
 inherit() {
   parentname=$1
+  local oname=$name
+  name=$parentname
   . $_PKG/${1}.sh
+  name=$oname
 }
