@@ -1,7 +1,8 @@
 _validate_conflicts() {
   local fl f prefix path
 
-  fl="$(find $_DEST/$fullname -type f -o -type l | sed "s|^$_DEST/$fullname/||")"
+  fl="$(find $_DEST/$fullname -type f -o -type l |
+          sed "s|^$_DEST/$fullname/||")"
 
   while read prefix path; do
     for f in $fl; do
