@@ -10,6 +10,8 @@ step_pkg() {
 
   tar -C $_DEST/$fullname -cJvf $pkg .
 
+  tar -tJf $pkg | sed 's|^\./|'$fullname'\t|' >> $_REPO/files.txt
+
   stat="$(xz -l $pkg | tail -n1)"
   msg "Uncompressed: $(_xz_stat "$stat" 5 6)"
   msg "Compressed:   $(_xz_stat "$stat" 3 4)"
