@@ -8,9 +8,14 @@ step_pkg() {
 
   progress pkg "'$name'"
 
-  tar -C $_DEST/$fullname -cJvf $pkg .
+  (
+    cd $_DEST/$fullname
+    set -- *
+    [ "$1" != \* ] || die "no files in '$_DEST/$fullname'"
+    tar -cJvf $pkg "$@"
+  )
 
-  tar -tJf $pkg | sed 's|^\./|'$fullname'\t|' >> $_REPO/files.txt
+  tar -tJf $pkg | awk '$0="'$fullname'\t"$0' >> $_REPO/files.txt
 
   stat="$(xz -l $pkg | tail -n1)"
   msg "Uncompressed: $(_xz_stat "$stat" 5 6)"
