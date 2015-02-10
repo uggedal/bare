@@ -38,8 +38,6 @@ uppercase() {
 }
 
 read_pkg() {
-  # TODO: sanity check for variables
-
   local _v
   local _vars='
     name

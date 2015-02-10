@@ -3,7 +3,6 @@ configure_default_configure() {
 }
 
 configure_default_build() {
-  # TODO: set CFLAGS/LDFLAGS/CC etc
   make -j $MK_NPROC
 }
 
