@@ -2,6 +2,8 @@ ver=0.5.1
 rev=1
 src=http://landley.net/$name/downloads/$name-${ver}.tar.bz2
 
+bdep=linux-headers
+
 style=make
 
 pre_build() {
