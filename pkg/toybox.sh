@@ -8,6 +8,10 @@ pre_build() {
   cp $MK_FILE/config .config
 }
 
+do_build() {
+  make CC=$CC HOSTCC=$CC -j $MK_NPROC
+}
+
 do_install() {
   PREFIX=$MK_DESTDIR make install
 }
