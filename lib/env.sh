@@ -6,7 +6,8 @@ export LC_ALL=C
 
 : ${CFLAGS:='-Os -pipe'}
 : ${CXXFLAGS:=$CFLAGS}
-export CFLAGS CXXFLAGS
+: ${CC:=clang}
+export CFLAGS CXXFLAGS CC
 
 MK_PREFIX=/usr
 MK_DESTDIR=$_DEST/$fullname
@@ -27,6 +28,7 @@ fi
 
 MK_ARCH=$(uname -m)
 MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
+
 
 MK_CONFIGURE="
   --prefix=$MK_PREFIX
