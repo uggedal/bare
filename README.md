@@ -19,6 +19,7 @@ Inspiration
 
 * Alpine Linux
 * CRUX
+* [D-os][]
 * Dragora
 * Morpheus
 * Sabotage Linux
@@ -36,3 +37,5 @@ The following environment variables can be overwritten from the defaults:
 
 * `MK_NPROC`: number of parallel processes to build with (defaults to the
   number of CPUs).
+
+[D-os]: https://github.com/D-os
