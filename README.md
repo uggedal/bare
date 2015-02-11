@@ -17,14 +17,14 @@ Philosophy
 Inspiration
 -----------
 
-* Alpine Linux
-* CRUX
+* [Alpine Linux][]
+* [CRUX][]
 * [D-os][]
-* Dragora
-* Morpheus
-* Sabotage Linux
-* Slackware
-* Void Linux
+* [Dragora][]
+* [Morpheus][]
+* [Sabotage Linux][]
+* [Slackware][]
+* [Void Linux][]
 
 Usage
 -----
@@ -38,4 +38,11 @@ The following environment variables can be overwritten from the defaults:
 * `MK_NPROC`: number of parallel processes to build with (defaults to the
   number of CPUs).
 
+[Alpine Linux]: https://www.alpinelinux.org/
+[CRUX]: https://crux.nu/
 [D-os]: https://github.com/D-os
+[Dragora]: http://www.dragora.org/
+[Morpheus]: http://morpheus.2f30.org/
+[Sabotage Linux]: https://github.com/sabotage-linux/sabotage
+[Slackware]: http://www.slackware.com/
+[Void Linux]: http://www.voidlinux.eu/
