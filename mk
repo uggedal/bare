@@ -13,7 +13,7 @@ export _PATCH=$_ROOT/patch
 . $_LIB/def.sh
 . $_LIB/common.sh
 
-for _dir in bootstrap cache build dest repo; do
+for _dir in cache build dest repo; do
   eval export _$(uppercase $_dir)=$_ROOT/$_dir
   mkdir -p $_ROOT/$_dir
 done
@@ -24,7 +24,6 @@ _usage() {
 mk <command> [<args>]
 
 Commands:
-  bootstrap
   gencksum <pkg>
   verify <pkg>
   extract <pkg>
@@ -48,9 +47,6 @@ unset _f
 [ "$(command -v step_$1)" ] || _usage
 
 case "$1" in
-  bootstrap)
-    :
-    ;;
   clean)
     if [ "$2" ]; then
       read_pkg $2

@@ -27,7 +27,6 @@ fi
 
 MK_ARCH=$(uname -m)
 MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
-MK_TARGET=$MK_ARCH-linux-musl
 
 MK_CONFIGURE="
   --prefix=$MK_PREFIX
@@ -35,34 +34,3 @@ MK_CONFIGURE="
   --localstatedir=/var
   --mandir=/usr/share/man
   "
-
-case $name in
-  bootstrap-*)
-    MK_HOST="$($CC -dumpmachine | sed 's/-[^-]*/-cross/')"
-
-    MK_CONFIGURE="
-      $MK_CONFIGURE
-      --target=$MK_TARGET
-      "
-    ;;
-esac
-
-if [ "$MK_CROSS" ]; then
-  MK_CONFIGURE="
-    $MK_CONFIGURE
-    --host=$MK_TARGET
-    "
-fi
-
-for _b in cc cxx cpp gcc ld ar as ranlib strip objdump objcopy nm readelf; do
-  if [ "$MK_CROSS" ]; then
-    if [ "$_b" = cc ]; then
-      eval export $(uppercase $_b)=$MK_TARGET-gcc
-    else
-      eval export $(uppercase $_b)=$MK_TARGET-$_b
-    fi
-  else
-    eval export $(uppercase $_b)=$_b
-  fi
-done
-unset _b

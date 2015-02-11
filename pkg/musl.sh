@@ -7,7 +7,3 @@ style=configure
 configure='
   --disable-gcc-wrapper
   '
-
-if [ "$MK_CROSS" ]; then
-  export CROSS_COMPILE=${MK_TARGET}-
-fi
