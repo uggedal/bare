@@ -6,7 +6,7 @@ step_clean() {
     dirs="$MK_BUILD_ROOT $_DEST/$fullname"
     progress clean "'$name'"
   else
-    progress clean "globally"
+    progress clean "all"
   fi
 
   for dir in $dirs; do
