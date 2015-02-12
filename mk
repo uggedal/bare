@@ -11,6 +11,7 @@ export _FILE=$_ROOT/file
 export _PATCH=$_ROOT/patch
 
 . $_LIB/def.sh
+. $_LIB/conf.sh
 . $_LIB/common.sh
 
 for _dir in cache build dest repo; do
