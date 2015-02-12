@@ -1,5 +1,5 @@
 step_verify() {
-  local f=$_CKSUM/${parentname}.sha256sum
+  local f=$_CKSUM/${parentname}.sum
   local pkgarchive=$(fetch)
   local archive=${pkgarchive##*/}
 
