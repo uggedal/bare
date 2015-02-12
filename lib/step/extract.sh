@@ -6,21 +6,21 @@ step_extract() {
 
   progress extract "'$name' using '$archive'"
 
-  local args
+  local fmt
   case $pkgarchive in
     *.tar.gz)
-      args=z
+      fmt=z
       ;;
     *.tar.bz2)
-      args=j
+      fmt=j
       ;;
     *.tar.xz)
-      args=J
+      fmt=J
       ;;
     *)
       die "unsupported archive '$archive'"
       ;;
   esac
 
-  tar -C $MK_BUILD_ROOT -x${args}f $pkgarchive
+  tar -C $MK_BUILD_ROOT -x${fmt}f $pkgarchive
 }
