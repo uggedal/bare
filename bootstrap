@@ -1,0 +1,57 @@
+#!/bin/sh
+
+set -e
+
+usage() {
+  cat <<EOF
+$0 -x <cross prefix> -r <rootfs prefix>
+
+Example:
+
+    $0 -x /tmp/xunil-cross -r /tmp/xunil-rootfs
+EOF
+  exit 1
+}
+
+reqs() {
+  local b
+  local missing
+
+  for b in cc c++ make patch tar xz curl perl; do
+    which $b >/dev/null 2>&1 || missing="$missing $b"
+  done
+
+  if [ "$missing" ]; then
+    printf "need '%s'\n" $missing
+    exit 1
+  fi
+}
+
+cross() {
+  :
+}
+
+rootfs() {
+  :
+}
+
+while getopts "r:x:h" opt; do
+  case $opt in
+    x)
+      CROSS_PREFIX=$OPTARG
+      ;;
+    r)
+      ROOTFS_PREFIX=$OPTARG
+      ;;
+    h)
+      usage
+      ;;
+  esac
+done
+
+[ "$CROSS_PREFIX" ] || usage
+[ "$ROOTFS_PREFIX" ] || usage
+
+reqs
+cross
+rootfs

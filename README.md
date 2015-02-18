@@ -38,6 +38,11 @@ The following environment variables can be overwritten from the defaults:
 * `MK_NPROC`: number of parallel processes to build with (defaults to the
   number of CPUs).
 
+Bootstrap
+---------
+
+    ./bootstrap
+
 [Alpine Linux]: https://www.alpinelinux.org/
 [CRUX]: https://crux.nu/
 [D-os]: https://github.com/D-os
