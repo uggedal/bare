@@ -6,8 +6,8 @@ export LC_ALL=C
 : ${CC:=gcc}
 export CFLAGS CXXFLAGS CC
 
-MK_PREFIX=/usr
-MK_DESTDIR=$_DEST/$fullname
+: ${MK_PREFIX:=/usr}
+: ${MK_DESTDIR:=$_DEST/$fullname}
 
 MK_FILE=$_FILE/$parentname
 MK_PATCH=$_PATCH/$parentname

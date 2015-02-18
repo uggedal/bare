@@ -28,7 +28,13 @@ reqs() {
 }
 
 cross() {
-  :
+  if ! [ -x $CROSS_PREFIX/$TRIPLE/bin/ar ]; then
+    MK_TARGET=$TRIPLE MK_PREFIX=$CROSS_PREFIX MK_DESTDIR= \
+      ./mk install bootstrap-0-binutils
+  fi
+
+  # Add cross binutils to front of PATH:
+  PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
 }
 
 rootfs() {
@@ -51,6 +57,8 @@ done
 
 [ "$CROSS_PREFIX" ] || usage
 [ "$ROOTFS_PREFIX" ] || usage
+
+TRIPLE=$(uname -m)-linux-musl
 
 reqs
 cross
