@@ -3,7 +3,7 @@ export LC_ALL=C
 
 : ${CFLAGS:='-Os -pipe'}
 : ${CXXFLAGS:=$CFLAGS}
-: ${CC:=clang}
+: ${CC:=gcc}
 export CFLAGS CXXFLAGS CC
 
 MK_PREFIX=/usr
