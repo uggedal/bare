@@ -2,11 +2,13 @@ step_query() {
   local field=$2
   local v ok
 
-  for v in $PKG_VARS; do
-    [ "$v" != "$field" ] || ok=yes
-  done
+  if ! printf -- '%s' $field | grep -q ^MK_; then
+    for v in $PKG_VARS; do
+      [ "$v" != "$field" ] || ok=yes
+    done
 
-  [ "$ok" ] || die "unsupported pkg field '$field'"
+    [ "$ok" ] || die "unsupported pkg field '$field'"
+  fi
 
   eval local v="\$$field"
 
