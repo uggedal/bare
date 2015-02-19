@@ -7,4 +7,9 @@ style=configure
 configure='
   --disable-multilib
   --disable-nls
+  --disable-werror
   '
+
+pre_configure() {
+  sed -i -e 's#MAKEINFO="$MISSING makeinfo"#MAKEINFO=true#g' configure
+}
