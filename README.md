@@ -6,12 +6,12 @@ Simple linux distro.
 Philosophy
 ----------
 
-* Keep patching of upstream to a minimum.
+* Favor minimal applications and libraries.
+* Only one package for per use-case.
+* No translations.
+* Stable timed branches only containing security updates and bug fixes.
 * Vanilla kernel without initramfs and module support. Different kernel
   config and package per target system.
-* Only one package for per use-case.
-* Stable timed branches only containing security updates and bug fixes.
-* No translations.
 
 Inspiration
 -----------
@@ -32,7 +32,7 @@ Usage
 
 ## Configuration
 
-The following environment variables can be overwritten from the defaults:
+The following environment variables can be overridden from the defaults:
 
 * `MK_NPROC`: number of parallel processes to build with (defaults to the
   number of CPUs).
