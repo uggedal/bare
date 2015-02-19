@@ -35,7 +35,7 @@ cross() {
     ln -s . $prefix/$TRIPLE/usr
   fi
 
-  if ! [ -x $prefix/bin/ar ]; then
+  if ! [ -x $prefix/bin/$TRIPLE-ar ]; then
     MK_TARGET=$TRIPLE \
     MK_PREFIX=$prefix \
     MK_CONFIGURE="--prefix=$prefix" \
