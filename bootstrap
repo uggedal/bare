@@ -62,6 +62,12 @@ cross() {
     MK_DESTDIR=no \
       ./mk install bootstrap-0-gcc
   fi
+
+  if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
+    MK_DESTDIR=$prefix \
+    MK_PREFIX=$TRIPLE \
+      ./mk install bootstrap-0-linux-headers
+  fi
 }
 
 rootfs() {
