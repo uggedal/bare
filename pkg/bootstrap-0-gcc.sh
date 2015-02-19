@@ -3,7 +3,7 @@ inherit gcc
 CFLAGS='-O0 -g0'
 CXXFLAGS="$CFLAGS"
 
-configure='
+configure="
   --disable-decimal-float
   --disable-libatomic
   --disable-libgomp
@@ -16,4 +16,5 @@ configure='
   --disable-threads
   --enable-languages=c
   --with-newlib
-  '
+  --target=$MK_TARGET
+  "
