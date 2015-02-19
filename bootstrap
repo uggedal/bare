@@ -28,13 +28,23 @@ reqs() {
 }
 
 cross() {
-  if ! [ -x $CROSS_PREFIX/$TRIPLE/bin/ar ]; then
-    MK_TARGET=$TRIPLE MK_PREFIX=$CROSS_PREFIX MK_DESTDIR= \
+  local prefix=$CROSS_PREFIX/$TRIPLE
+
+  if ! [ -e $prefix/$TRIPLE/usr ]; then
+    mkdir -p $prefix/$TRIPLE
+    ln -s . $prefix/$TRIPLE/usr
+  fi
+
+  if ! [ -x $prefix/bin/ar ]; then
+    MK_TARGET=$TRIPLE \
+    MK_PREFIX=$prefix \
+    MK_CONFIGURE="--prefix=$prefix" \
+    MK_DESTDIR=no \
       ./mk install bootstrap-0-binutils
   fi
 
   # Add cross binutils to front of PATH:
-  PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
+  PATH=$prefix/bin:$PATH
 
   ./mk extract bootstrap-0-gcc
 
@@ -44,6 +54,14 @@ cross() {
     dest=$(./mk query bootstrap-0-gcc MK_SRC)/$dep
     [ -h $dest ] || ln -s $(./mk query $dep MK_SRC) $dest
   done
+
+  if ! [ -x $prefix/bin/gcc ]; then
+    MK_TARGET=$TRIPLE \
+    MK_PREFIX=$prefix \
+    MK_CONFIGURE="--prefix=$prefix" \
+    MK_DESTDIR=no \
+      ./mk install bootstrap-0-gcc
+  fi
 }
 
 rootfs() {
