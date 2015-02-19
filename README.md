@@ -12,7 +12,6 @@ Philosophy
 * Only one package for per use-case.
 * Stable timed branches only containing security updates and bug fixes.
 * No translations.
-* Favor non-GPL licensed software (no {A,L,}GPL3 if possible).
 
 Inspiration
 -----------
