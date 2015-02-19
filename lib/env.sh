@@ -32,9 +32,9 @@ MK_ARCH=$(uname -m)
 MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
 
 
-MK_CONFIGURE="
+: ${MK_CONFIGURE:="
   --prefix=$MK_PREFIX
   --sysconfdir=/etc
   --localstatedir=/var
   --mandir=/usr/share/man
-  "
+  "}
