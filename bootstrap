@@ -46,16 +46,16 @@ cross() {
   # Add cross binutils to front of PATH:
   PATH=$prefix/bin:$PATH
 
-  ./mk extract bootstrap-0-gcc
+  if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
+    ./mk extract bootstrap-0-gcc
 
-  local dep dest
-  for dep in gmp mpfr mpc; do
-    ./mk extract $dep
-    dest=$(./mk query bootstrap-0-gcc MK_SRC)/$dep
-    [ -h $dest ] || ln -s $(./mk query $dep MK_SRC) $dest
-  done
+    local dep dest
+    for dep in gmp mpfr mpc; do
+      ./mk extract $dep
+      dest=$(./mk query bootstrap-0-gcc MK_SRC)/$dep
+      [ -h $dest ] || ln -s $(./mk query $dep MK_SRC) $dest
+    done
 
-  if ! [ -x $prefix/bin/gcc ]; then
     MK_TARGET=$TRIPLE \
     MK_PREFIX=$prefix \
     MK_CONFIGURE="--prefix=$prefix" \
