@@ -7,7 +7,12 @@ export LC_ALL=C
 export CFLAGS CXXFLAGS CC
 
 : ${MK_PREFIX:=/usr}
-: ${MK_DESTDIR:=$_DEST/$fullname}
+
+if [ "$MK_DESTDIR" = no ]; then
+  unset MK_DESTDIR
+else
+  : ${MK_DESTDIR:=$_DEST/$fullname}
+fi
 
 MK_FILE=$_FILE/$parentname
 MK_PATCH=$_PATCH/$parentname

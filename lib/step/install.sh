@@ -1,7 +1,7 @@
 step_install() {
   progress install "'$name' using $style"
 
-  mkdir -p $MK_DESTDIR
+  [ -z "$MK_DESTDIR" ] || mkdir -p $MK_DESTDIR
 
   (
     cd $MK_BUILD
