@@ -6,4 +6,6 @@ style=configure
 
 configure='
   --disable-gcc-wrapper
+  --enable-debug
+  --enable-optimize
   '

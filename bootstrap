@@ -68,6 +68,15 @@ cross() {
     MK_PREFIX=$TRIPLE \
       ./mk install bootstrap-0-linux-headers
   fi
+
+  if ! [ -e $prefix/$TRIPLE/include/stdio.h ]; then
+    MK_PREFIX=$prefix/$TRIPLE \
+    CROSS_COMPILE=$TRIPLE- \
+    CC=$TRIPLE-gcc \
+    MK_CONFIGURE="--prefix=$prefix/$TRIPLE" \
+    MK_DESTDIR=no \
+      ./mk install bootstrap-0-musl
+  fi
 }
 
 rootfs() {
