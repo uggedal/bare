@@ -115,7 +115,8 @@ run_step() {
       continue
     fi
 
-    step_$d
+    shift 2
+    step_$d "$@"
     if [ "$hasdeps" ]; then
       touch $MK_BUILD_ROOT/.${d}.done
       progress $d "'$name' $(color 32 ok)"

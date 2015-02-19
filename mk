@@ -34,6 +34,7 @@ Commands:
   install <pkg>
   pkg <pkg>
   clean [pkg]
+  query <pkg> <field>
 EOF
   exit 64
 }
@@ -59,4 +60,4 @@ case "$1" in
     ;;
 esac
 
-run_step $1
+run_step "$@"
