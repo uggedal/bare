@@ -39,19 +39,7 @@ uppercase() {
 
 read_pkg() {
   local _v
-  local _vars='
-    name
-    fullname
-    parentname
-    ver
-    rev
-    src
-    style
-    configure
-    builddir
-    conflict
-    '
-  for _v in _vars; do
+  for _v in $PKG_VARS; do
     unset $v
   done
 
