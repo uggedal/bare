@@ -18,7 +18,6 @@ Inspiration
 
 * [Alpine Linux][]
 * [CRUX][]
-* [D-os][]
 * [Dragora][]
 * [Morpheus][]
 * [Sabotage Linux][]
@@ -44,7 +43,6 @@ Bootstrap
 
 [Alpine Linux]: https://www.alpinelinux.org/
 [CRUX]: https://crux.nu/
-[D-os]: https://github.com/D-os
 [Dragora]: http://www.dragora.org/
 [Morpheus]: http://morpheus.2f30.org/
 [Sabotage Linux]: https://github.com/sabotage-linux/sabotage
