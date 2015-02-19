@@ -115,7 +115,7 @@ run_step() {
       continue
     fi
 
-    shift 2
+    shift
     step_$d "$@"
     if [ "$hasdeps" ]; then
       touch $MK_BUILD_ROOT/.${d}.done

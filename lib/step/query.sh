@@ -1,5 +1,5 @@
 step_query() {
-  local field=$1
+  local field=$2
   local v ok
 
   for v in $PKG_VARS; do
