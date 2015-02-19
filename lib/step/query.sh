@@ -1,5 +1,5 @@
 step_query() {
-  local field=$2
+  local field=$3
   local v ok
 
   if ! printf -- '%s' $field | grep -q ^MK_; then
