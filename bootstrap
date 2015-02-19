@@ -35,6 +35,15 @@ cross() {
 
   # Add cross binutils to front of PATH:
   PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
+
+  ./mk extract bootstrap-0-gcc
+
+  local dep dest
+  for dep in gmp mpfr mpc; do
+    ./mk extract $dep
+    dest=$(./mk query bootstrap-0-gcc MK_SRC)/$dep
+    [ -h $dest ] || ln -s $(./mk query $dep MK_SRC) $dest
+  done
 }
 
 rootfs() {
