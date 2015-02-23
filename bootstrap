@@ -27,6 +27,26 @@ reqs() {
   fi
 }
 
+build_gcc() {
+  local name=$1
+  local prefix=$2
+
+  ./mk extract $name
+
+  local dep dest
+  for dep in gmp mpfr mpc; do
+    ./mk extract $dep
+    dest=$(./mk query $name MK_SRC)/$dep
+    [ -h $dest ] || ln -s $(./mk query $dep MK_SRC) $dest
+  done
+
+  MK_TARGET=$TRIPLE \
+  MK_PREFIX=$prefix \
+  MK_CONFIGURE="--prefix=$prefix" \
+  MK_DESTDIR=no \
+    ./mk install $name
+}
+
 cross() {
   local prefix=$CROSS_PREFIX/$TRIPLE
 
@@ -47,20 +67,7 @@ cross() {
   PATH=$prefix/bin:$PATH
 
   if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
-    ./mk extract bootstrap-0-gcc-1
-
-    local dep dest
-    for dep in gmp mpfr mpc; do
-      ./mk extract $dep
-      dest=$(./mk query bootstrap-0-gcc-1 MK_SRC)/$dep
-      [ -h $dest ] || ln -s $(./mk query $dep MK_SRC) $dest
-    done
-
-    MK_TARGET=$TRIPLE \
-    MK_PREFIX=$prefix \
-    MK_CONFIGURE="--prefix=$prefix" \
-    MK_DESTDIR=no \
-      ./mk install bootstrap-0-gcc-1
+    build_gcc bootstrap-0-gcc-1 $prefix
   fi
 
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
@@ -76,6 +83,10 @@ cross() {
     MK_CONFIGURE="--prefix=$prefix/$TRIPLE" \
     MK_DESTDIR=no \
       ./mk install bootstrap-0-musl
+  fi
+
+  if ! [ -x $prefix/bin/$TRIPLE-g++ ]; then
+    build_gcc bootstrap-0-gcc-2 $prefix
   fi
 }
 

@@ -1,6 +1,6 @@
 inherit gcc
 
-configure='
+configure="
   --disable-libmudflap
   --disable-libsanitizer
   --disable-multilib
@@ -8,4 +8,5 @@ configure='
   --enable-languages=c,c++,lto
   --enable-lto
   --enable-shared
-  '
+  --target=$MK_TARGET
+  "
