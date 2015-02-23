@@ -91,7 +91,24 @@ cross() {
 }
 
 rootfs() {
-  :
+  local prefix=$ROOTFS_PREFIX/usr
+  local xprefix=$CROSS_PREFIX/$TRIPLE
+
+  export CC=$xprefix/bin/$TRIPLE-gcc
+  export CXX=$xprefix/bin/$TRIPLE-g++
+  export AR=$xprefix/bin/$TRIPLE-ar
+  export AS=$xprefix/bin/$TRIPLE-as
+  export LD=$xprefix/bin/$TRIPLE-ld
+  export RANLIB=$xprefix/bin/$TRIPLE-ranlib
+  export READELF=$xprefix/bin/$TRIPLE-readelf
+  export STRIP=$xprefix/bin/$TRIPLE-strip
+
+  if ! [ -x $prefix/include/linux/inotify.h ]; then
+    MK_PREFIX=$prefix \
+    MK_CONFIGURE="--prefix=$prefix" \
+    MK_DESTDIR=no \
+    ./mk install bootstrap-1-musl
+  fi
 }
 
 while getopts "r:x:h" opt; do
