@@ -47,12 +47,12 @@ cross() {
   PATH=$prefix/bin:$PATH
 
   if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
-    ./mk extract bootstrap-0-gcc
+    ./mk extract bootstrap-0-gcc-1
 
     local dep dest
     for dep in gmp mpfr mpc; do
       ./mk extract $dep
-      dest=$(./mk query bootstrap-0-gcc MK_SRC)/$dep
+      dest=$(./mk query bootstrap-0-gcc-1 MK_SRC)/$dep
       [ -h $dest ] || ln -s $(./mk query $dep MK_SRC) $dest
     done
 
@@ -60,7 +60,7 @@ cross() {
     MK_PREFIX=$prefix \
     MK_CONFIGURE="--prefix=$prefix" \
     MK_DESTDIR=no \
-      ./mk install bootstrap-0-gcc
+      ./mk install bootstrap-0-gcc-1
   fi
 
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
