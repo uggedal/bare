@@ -1,8 +1,10 @@
+_USE_COLOR="$(tput colors >/dev/null 2>&1)"
+
 color() {
   local n=$1
   shift
 
-  if tput colors >/dev/null 2>&1; then
+  if [ "$_USE_COLOR" ]; then
     printf -- '\033[%dm%s\033[39;49m' $n "$@"
   else
     printf -- '%s' "$@"
@@ -10,7 +12,11 @@ color() {
 }
 
 msg() {
-  printf -- '>>> \033[1m%s\033[0m\n' "$@" 1>&2
+  if [ "$_USE_COLOR" ]; then
+    printf -- '>>> \033[1m%s\033[0m\n' "$@" 1>&2
+  else
+    printf -- '>>> %s' "$@" 1>&2
+  fi
 }
 
 err() {
