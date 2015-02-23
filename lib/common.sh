@@ -3,14 +3,14 @@ color() {
   shift
 
   if tput colors >/dev/null 2>&1; then
-    printf -- '\033[%dm%s\033[0m' $n "$@"
+    printf -- '\033[%dm%s\033[39;49m' $n "$@"
   else
     printf -- '%s' "$@"
   fi
 }
 
 msg() {
-  printf -- '%s\n' "$@" 1>&2
+  printf -- '\033[1m%s\033[0m\n' "$@" 1>&2
 }
 
 err() {
