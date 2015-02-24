@@ -18,16 +18,6 @@ index 2c63164be832..9455bc6119f0 100755
  
  # Quick and dirty check to see if anybody's leaked global variables.
  # We should have this, toy_list, toybuf, and toys.
-diff --git a/scripts/genconfig.sh b/scripts/genconfig.sh
-index e59aa3921fb5..d2cd059dbd57 100755
---- a/scripts/genconfig.sh
-+++ b/scripts/genconfig.sh
-@@ -1,4 +1,4 @@
--#!/bin/bash
-+#!/bin/sh
- 
- # This has to be a separate file from scripts/make.sh so it can be called
- # before menuconfig.  (It's called again from scripts/make.sh just to be sure.)
 diff --git a/scripts/install.sh b/scripts/install.sh
 index 8891a314f64a..4068901a1fa4 100755
 --- a/scripts/install.sh
@@ -38,15 +28,70 @@ index 8891a314f64a..4068901a1fa4 100755
  
  # Grab default values for $CFLAGS and such.
  
+@@ -2,7 +2,7 @@
+ 
+ # Grab default values for $CFLAGS and such.
+ 
+-source ./configure
++. ./configure
+ 
+ # Parse command line arguments.
+ 
+@@ -13,19 +13,19 @@ while [ ! -z "$1" ]
+ do
+   # Create symlinks instead of hardlinks?
+ 
+-  [ "$1" == "--symlink" ] && LINK_TYPE="-s"
++  [ "$1" = "--symlink" ] && LINK_TYPE="-s"
+ 
+   # Uninstall?
+ 
+-  [ "$1" == "--uninstall" ] && UNINSTALL=1
++  [ "$1" = "--uninstall" ] && UNINSTALL=1
+ 
+   # Delete destination command if it exists?
+ 
+-  [ "$1" == "--force" ] && DO_FORCE="-f"
++  [ "$1" = "--force" ] && DO_FORCE="-f"
+ 
+   # Use {,usr}/{bin,sbin} paths instead of all files in one directory?
+ 
+-  if [ "$1" == "--long" ]
++  if [ "$1" = "--long" ]
+   then
+     LONG_PATH="bin/"
+   fi
 diff --git a/scripts/make.sh b/scripts/make.sh
 index dab520611ffd..0c11770f37e3 100755
 --- a/scripts/make.sh
 +++ b/scripts/make.sh
-@@ -1,4 +1,4 @@
--#!/bin/bash
-+#!/bin/sh
+@@ -4,8 +4,7 @@
  
- # Grab default values for $CFLAGS and such.
+ export LANG=c
+ export LC_ALL=C
+-set -o pipefail
+-source ./configure
++. ./configure
+ 
+ [ -z "$KCONFIG_CONFIG" ] && KCONFIG_CONFIG=".config"
+ 
+@@ -85,7 +85,7 @@ do
+ 
+   echo "#define NEWTOY(aa,bb,cc) aa $I bb"
+   echo '#define OLDTOY(...)'
+-  if [ "$I" == A ]
++  if [ "$I" = A ]
+   then
+     cat generated/config.h
+   else
+@@ -108,7 +108,7 @@ do
+ # so allflags can define the appropriate zero macros.
+ 
+ done | sort | sed -n 's/ A / /;t pair;h;s/\([^ ]*\).*/\1 " "/;x;b single;:pair;h;n;:single;s/[^ ]* B //;H;g;s/\n/ /;p' |\
+-generated/mkflags > generated/flags.h || exit 1
++./generated/mkflags > generated/flags.h || exit 1
+ 
+ # Extract global structure definitions and flag definitions from toys/*/*.c
  
 @@ -113,7 +113,7 @@ generated/mkflags > generated/flags.h || exit 1
  
@@ -105,3 +150,21 @@ index 81d9f346d087..7557653ffb20 100755
  
  [ -z "$TOPDIR" ] && TOPDIR="$(pwd)"
  
+diff --git a/scripts/genconfig.sh b/scripts/genconfig.sh
+index e59aa3921fb5..58fb458b814c 100755
+--- a/scripts/genconfig.sh
++++ b/scripts/genconfig.sh
+@@ -1,11 +1,11 @@
+-#!/bin/bash
++#!/bin/sh
+ 
+ # This has to be a separate file from scripts/make.sh so it can be called
+ # before menuconfig.  (It's called again from scripts/make.sh just to be sure.)
+ 
+ mkdir -p generated
+ 
+-source configure
++. ./configure
+ 
+ # Probe for a single config symbol with a "compiles or not" test.
+ # Symbol name is first argument, flags second, feed C file to stdin
