@@ -11,7 +11,7 @@ pre_build() {
 }
 
 do_build() {
-  make CC=$CC HOSTCC=$CC -j $MK_NPROC
+  make CC=$CC -j $MK_NPROC
 }
 
 do_install() {

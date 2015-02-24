@@ -109,6 +109,11 @@ rootfs() {
     MK_DESTDIR=no \
     ./mk install bootstrap-1-musl
   fi
+
+  if ! [ -x $ROOTFS_PREFIX/bin/toybox ]; then
+    MK_DESTDIR=$ROOTFS_PREFIX \
+    ./mk install bootstrap-1-toybox
+  fi
 }
 
 while getopts "r:x:h" opt; do
