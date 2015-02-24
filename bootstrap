@@ -103,7 +103,7 @@ rootfs() {
   export READELF=$xprefix/bin/$TRIPLE-readelf
   export STRIP=$xprefix/bin/$TRIPLE-strip
 
-  if ! [ -x $prefix/include/linux/inotify.h ]; then
+  if ! [ -e $prefix/include/stdio.h ]; then
     MK_PREFIX=$prefix \
     MK_CONFIGURE="--prefix=$prefix" \
     MK_DESTDIR=no \
