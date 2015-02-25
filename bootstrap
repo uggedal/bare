@@ -63,9 +63,6 @@ cross() {
       ./mk install bootstrap-0-binutils
   fi
 
-  # Add cross binutils to front of PATH:
-  PATH=$prefix/bin:$PATH
-
   if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
     build_gcc bootstrap-0-gcc-1 $prefix
   fi
@@ -94,14 +91,14 @@ rootfs() {
   local prefix=$ROOTFS_PREFIX/usr
   local xprefix=$CROSS_PREFIX/$TRIPLE
 
-  export CC=$xprefix/bin/$TRIPLE-gcc
-  export CXX=$xprefix/bin/$TRIPLE-g++
-  export AR=$xprefix/bin/$TRIPLE-ar
-  export AS=$xprefix/bin/$TRIPLE-as
-  export LD=$xprefix/bin/$TRIPLE-ld
-  export RANLIB=$xprefix/bin/$TRIPLE-ranlib
-  export READELF=$xprefix/bin/$TRIPLE-readelf
-  export STRIP=$xprefix/bin/$TRIPLE-strip
+  export CC=$TRIPLE-gcc
+  export CXX=$TRIPLE-g++
+  export AR=$TRIPLE-ar
+  export AS=$TRIPLE-as
+  export LD=$TRIPLE-ld
+  export RANLIB=$TRIPLE-ranlib
+  export READELF=$TRIPLE-readelf
+  export STRIP=$TRIPLE-strip
 
   if ! [ -e $prefix/include/stdio.h ]; then
     MK_PREFIX=$prefix \
@@ -140,6 +137,8 @@ done
 [ "$ROOTFS_PREFIX" ] || usage
 
 TRIPLE=$(uname -m)-linux-musl
+
+PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
 
 reqs
 cross
