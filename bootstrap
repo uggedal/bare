@@ -105,7 +105,7 @@ rootfs() {
 
   if ! [ -e $prefix/include/stdio.h ]; then
     MK_PREFIX=$prefix \
-    MK_CONFIGURE="--prefix=$prefix --syslibdir=$ROOTFS_PREFIX/lib" \
+    MK_CONFIGURE="--prefix=$prefix" \
     MK_DESTDIR=no \
     ./mk install bootstrap-1-musl
   fi
