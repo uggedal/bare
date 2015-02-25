@@ -41,6 +41,15 @@ Bootstrap
 
     ./bootstrap
 
+[Public Domain][]
+-----------------
+
+The following does not apply to the packaged software and patches not
+written by Eivind Uggedal.
+
+To the extent possible under law, Eivind Uggedal has waived
+all copyright and related or neighboring rights to this work.
+
 [Alpine Linux]: https://www.alpinelinux.org/
 [CRUX]: https://crux.nu/
 [Dragora]: http://www.dragora.org/
@@ -48,3 +57,4 @@ Bootstrap
 [Sabotage Linux]: https://github.com/sabotage-linux/sabotage
 [Slackware]: http://www.slackware.com/
 [Void Linux]: http://www.voidlinux.eu/
+[Public Domain]: http://creativecommons.org/publicdomain/zero/1.0/
