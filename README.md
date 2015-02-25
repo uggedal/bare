@@ -41,14 +41,21 @@ Bootstrap
 
     ./bootstrap
 
-[Public Domain][]
+Legal Information
 -----------------
 
-The following does not apply to the packaged software and patches not
-written by Eivind Uggedal.
+xunil consists of several packages, each with their own license. These
+can be inspected under `/usr/share/licenses` on a live system.
+
+Some patches under `patches/` are taken from other projects and thus
+carry the license of their respective upstream.
+
+The following applies to the rest of xunil which is released into
+the [Public Domain][].
 
 To the extent possible under law, Eivind Uggedal has waived
-all copyright and related or neighboring rights to this work.
+all copyright and related or neighboring rights to xunil.
+This work is published from: Norway.
 
 [Alpine Linux]: https://www.alpinelinux.org/
 [CRUX]: https://crux.nu/
