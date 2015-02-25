@@ -12,7 +12,11 @@ export _PATCH=$_ROOT/patch
 
 . $_LIB/def.sh
 . $_LIB/conf.sh
-. $_LIB/common.sh
+
+for _f in $_LIB/lib/*.sh; do
+  . $_f
+done
+unset _f
 
 for _dir in cache build dest repo; do
   eval export _$(uppercase $_dir)=$_ROOT/$_dir
