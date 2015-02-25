@@ -2,7 +2,7 @@ run_style() {
   local style=$1
   local func=$2
 
-  . $_LIB/style/${style}.sh
+  . $_SRC/style/${style}.sh
 
   if [ "$(command -v pre_$func)" ]; then
     pre_$func

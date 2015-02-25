@@ -4,16 +4,16 @@ set -e
 
 export _ROOT=$(realpath $(dirname $0))
 
-export _LIB=$_ROOT/lib
+export _SRC=$_ROOT/src
 export _PKG=$_ROOT/pkg
 export _CKSUM=$_ROOT/cksum
 export _FILE=$_ROOT/file
 export _PATCH=$_ROOT/patch
 
-. $_LIB/def.sh
-. $_LIB/conf.sh
+. $_SRC/def.sh
+. $_SRC/conf.sh
 
-for _f in $_LIB/lib/*.sh; do
+for _f in $_SRC/lib/*.sh; do
   . $_f
 done
 unset _f
@@ -45,7 +45,7 @@ EOF
 
 [ "$1" ] || _usage
 
-for _f in $_LIB/step/*.sh; do
+for _f in $_SRC/step/*.sh; do
   . $_f
 done
 unset _f

@@ -14,7 +14,7 @@ read_pkg() {
   fullname=$name-${ver}_$rev
   fullparentname=$parentname-${ver}_$rev
 
-  . $_LIB/env.sh
+  . $_SRC/env.sh
 }
 
 inherit() {
