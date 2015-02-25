@@ -114,6 +114,12 @@ rootfs() {
     MK_DESTDIR=$ROOTFS_PREFIX \
     ./mk install bootstrap-1-toybox
   fi
+
+  if ! [ -x $ROOTFS_PREFIX/bin/busybox ]; then
+    CROSS_COMPILE=$TRIPLE- \
+    MK_DESTDIR=$ROOTFS_PREFIX \
+    ./mk install bootstrap-1-busybox
+  fi
 }
 
 while getopts "r:x:h" opt; do
