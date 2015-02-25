@@ -13,7 +13,7 @@ color() {
 
 msg() {
   if [ "$_USE_COLOR" ]; then
-    printf -- '>>> \033[1m%s\033[0m\n' "$@" 1>&2
+    printf -- '\033[1m%s %s\033[0m\n' $(color 37 '>>>') "$@" 1>&2
   else
     printf -- '>>> %s\n' "$@" 1>&2
   fi
