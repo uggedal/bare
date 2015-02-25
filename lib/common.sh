@@ -1,4 +1,14 @@
-_USE_COLOR="$(tput colors 2>&1)"
+if [ -t 2 ] && tput colors >/dev/null 2>&1; then
+  _USE_COLOR=yes
+fi
+
+strong() {
+  if [ "$_USE_COLOR" ]; then
+    printf -- '\033[1m%s\033[0m\n' "$@"
+  else
+    printf -- '%s' "$@"
+  fi
+}
 
 color() {
   local n=$1
@@ -12,11 +22,7 @@ color() {
 }
 
 msg() {
-  if [ "$_USE_COLOR" ]; then
-    printf -- '\033[1m%s %s\033[0m\n' $(color 37 '>>>') "$@" 1>&2
-  else
-    printf -- '>>> %s\n' "$@" 1>&2
-  fi
+  printf -- '%s\n' "$(strong "$(color 37 '>>>') $@")" 1>&2
 }
 
 err() {
