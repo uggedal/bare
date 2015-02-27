@@ -104,12 +104,12 @@ rootfs() {
     tar -C $ROOTFS_PREFIX -xJf repo/$(./mk query bootstrap-1-musl fullname).tar.xz
   fi
 
-  exit 1
-
+  ./mk pkg bootstrap-1-toybox
   if ! [ -x $ROOTFS_PREFIX/bin/toybox ]; then
-    MK_DESTDIR=$ROOTFS_PREFIX \
-    ./mk install bootstrap-1-toybox
+    tar -C $ROOTFS_PREFIX -xJf repo/$(./mk query bootstrap-1-toybox fullname).tar.xz
   fi
+
+  exit 1
 
   if ! [ -x $ROOTFS_PREFIX/bin/busybox ]; then
     CROSS_COMPILE=$TRIPLE- \
