@@ -87,6 +87,12 @@ cross() {
   fi
 }
 
+rootfs_install() {
+  local name=$1
+
+  tar -C $ROOTFS_PREFIX -xJf repo/$(./mk query $name fullname).tar.xz
+}
+
 rootfs() {
   local prefix=$ROOTFS_PREFIX/usr
 
@@ -101,12 +107,12 @@ rootfs() {
 
   ./mk pkg bootstrap-1-musl
   if ! [ -e $prefix/include/stdio.h ]; then
-    tar -C $ROOTFS_PREFIX -xJf repo/$(./mk query bootstrap-1-musl fullname).tar.xz
+    rootfs_install bootstrap-1-musl
   fi
 
   ./mk pkg bootstrap-1-toybox
   if ! [ -x $ROOTFS_PREFIX/bin/toybox ]; then
-    tar -C $ROOTFS_PREFIX -xJf repo/$(./mk query bootstrap-1-toybox fullname).tar.xz
+    rootfs_install bootstrap-1-toybox
   fi
 
   exit 1
