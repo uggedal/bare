@@ -37,6 +37,7 @@ Commands:
   build <pkg>
   install <pkg>
   optimize <pkg>
+  validate <pkg>
   pkg <pkg>
   clean [pkg]
   query <pkg> <field>
