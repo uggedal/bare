@@ -123,6 +123,12 @@ rootfs() {
     MK_CONFIGURE="--host=$TRIPLE --prefix=/usr" \
     ./mk install bootstrap-1-gmp
   fi
+
+  if ! [ -x $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
+    MK_DESTDIR=$ROOTFS_PREFIX \
+    MK_CONFIGURE="--host=$TRIPLE --prefix=/usr --with-gmp=$prefix" \
+    ./mk install bootstrap-1-mpfr
+  fi
 }
 
 while getopts "r:x:h" opt; do
