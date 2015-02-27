@@ -120,7 +120,7 @@ rootfs() {
 
   if ! [ -x $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
     MK_DESTDIR=$ROOTFS_PREFIX \
-    MK_CONFIGURE="--host=$TRIPLE" \
+    MK_CONFIGURE="--host=$TRIPLE --prefix=/usr" \
     ./mk install bootstrap-1-gmp
   fi
 }
