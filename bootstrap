@@ -17,7 +17,7 @@ reqs() {
   local b
   local missing
 
-  for b in cc c++ make patch tar xz curl perl; do
+  for b in cc c++ make patch tar xz curl perl m4; do
     which $b >/dev/null 2>&1 || missing="$missing $b"
   done
 
@@ -116,6 +116,12 @@ rootfs() {
     CROSS_COMPILE=$TRIPLE- \
     MK_DESTDIR=$ROOTFS_PREFIX \
     ./mk install bootstrap-1-busybox
+  fi
+
+  if ! [ -x $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
+    MK_DESTDIR=$ROOTFS_PREFIX \
+    MK_CONFIGURE="--host=$TRIPLE" \
+    ./mk install bootstrap-1-gmp
   fi
 }
 
