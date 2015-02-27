@@ -5,6 +5,8 @@ PKG_VARS='
   ver
   rev
   src
+  bdep
+  rdep
   style
   configure
   builddir
