@@ -120,14 +120,29 @@ rootfs() {
 
   if ! [ -x $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
     MK_DESTDIR=$ROOTFS_PREFIX \
-    MK_CONFIGURE="--host=$TRIPLE --prefix=/usr" \
+    MK_CONFIGURE="
+      --host=$TRIPLE
+      --prefix=/usr" \
     ./mk install bootstrap-1-gmp
   fi
 
   if ! [ -x $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
     MK_DESTDIR=$ROOTFS_PREFIX \
-    MK_CONFIGURE="--host=$TRIPLE --prefix=/usr --with-gmp=$prefix" \
+    MK_CONFIGURE="
+      --host=$TRIPLE
+      --prefix=/usr
+      --with-gmp=$prefix" \
     ./mk install bootstrap-1-mpfr
+  fi
+
+  if ! [ -x $ROOTFS_PREFIX/usr/lib/libmpc.so ]; then
+    MK_DESTDIR=$ROOTFS_PREFIX \
+    MK_CONFIGURE="
+      --host=$TRIPLE
+      --prefix=/usr
+      --with-gmp=$prefix
+      --with-mpfr=$prefix" \
+    ./mk install bootstrap-1-mpc
   fi
 }
 
