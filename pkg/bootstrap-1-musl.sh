@@ -1,7 +1,7 @@
 inherit musl
 
 post_install() {
-  local libdir=$MK_PREFIX/../lib
+  local libdir=$MK_DESTDIR/lib
   mkdir -p $libdir
-  ln -s ../usr/lib/libc.so $libdir/ld-musl-${MK_ARCH}.so.1
+  ln -sf ../usr/lib/libc.so $libdir/ld-musl-${MK_ARCH}.so.1
 }

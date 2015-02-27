@@ -89,7 +89,6 @@ cross() {
 
 rootfs() {
   local prefix=$ROOTFS_PREFIX/usr
-  local xprefix=$CROSS_PREFIX/$TRIPLE
 
   export CC=$TRIPLE-gcc
   export CXX=$TRIPLE-g++
@@ -100,12 +99,12 @@ rootfs() {
   export READELF=$TRIPLE-readelf
   export STRIP=$TRIPLE-strip
 
+  ./mk pkg bootstrap-1-musl
   if ! [ -e $prefix/include/stdio.h ]; then
-    MK_PREFIX=$prefix \
-    MK_CONFIGURE="--prefix=$prefix" \
-    MK_DESTDIR=no \
-    ./mk install bootstrap-1-musl
+    tar -C $ROOTFS_PREFIX -xJf repo/$(./mk query bootstrap-1-musl fullname).tar.xz
   fi
+
+  exit 1
 
   if ! [ -x $ROOTFS_PREFIX/bin/toybox ]; then
     MK_DESTDIR=$ROOTFS_PREFIX \
@@ -162,6 +161,8 @@ done
 
 [ "$CROSS_PREFIX" ] || usage
 [ "$ROOTFS_PREFIX" ] || usage
+
+mkdir -p $CROSS_PREFIX $ROOTFS_PREFIX
 
 TRIPLE=$(uname -m)-linux-musl
 
