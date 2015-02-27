@@ -15,8 +15,8 @@ step_pkg() {
     tar -cJvf $pkg "$@"
   )
 
+  sed -i "/^$fullname\t/d" $_REPO/files.txt
   tar -tJf $pkg | awk '$0="'$fullname'\t"$0' >> $_REPO/files.txt
-  sort -u $_REPO/files.txt -o $_REPO/files.txt
 
   stat="$(xz -l $pkg | tail -n1)"
   msg "Uncompressed: $(_xz_stat "$stat" 5 6)"
