@@ -115,13 +115,13 @@ rootfs() {
     rootfs_install bootstrap-1-toybox
   fi
 
-  exit 1
-
+  CROSS_COMPILE=$TRIPLE- \
+    ./mk pkg bootstrap-1-busybox
   if ! [ -x $ROOTFS_PREFIX/bin/busybox ]; then
-    CROSS_COMPILE=$TRIPLE- \
-    MK_DESTDIR=$ROOTFS_PREFIX \
-    ./mk install bootstrap-1-busybox
+    rootfs_install bootstrap-1-busybox
   fi
+
+  exit 1
 
   if ! [ -x $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
     MK_DESTDIR=$ROOTFS_PREFIX \
