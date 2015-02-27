@@ -121,34 +121,37 @@ rootfs() {
     rootfs_install bootstrap-1-busybox
   fi
 
-  exit 1
+  # TODO: binutils
 
+  MK_CONFIGURE="
+    --host=$TRIPLE
+    --prefix=/usr" \
+    ./mk pkg bootstrap-1-gmp
   if ! [ -x $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
-    MK_DESTDIR=$ROOTFS_PREFIX \
-    MK_CONFIGURE="
-      --host=$TRIPLE
-      --prefix=/usr" \
-    ./mk install bootstrap-1-gmp
+    rootfs_install bootstrap-1-gmp
   fi
 
+  MK_CONFIGURE="
+    --host=$TRIPLE
+    --prefix=/usr
+    --with-gmp=$prefix" \
+    ./mk pkg bootstrap-1-mpfr
   if ! [ -x $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
-    MK_DESTDIR=$ROOTFS_PREFIX \
-    MK_CONFIGURE="
-      --host=$TRIPLE
-      --prefix=/usr
-      --with-gmp=$prefix" \
-    ./mk install bootstrap-1-mpfr
+    rootfs_install bootstrap-1-mpfr
   fi
 
+  MK_CONFIGURE="
+    --host=$TRIPLE
+    --prefix=/usr
+    --with-gmp=$prefix
+    --with-mpfr=$prefix" \
+    ./mk pkg bootstrap-1-mpc
   if ! [ -x $ROOTFS_PREFIX/usr/lib/libmpc.so ]; then
-    MK_DESTDIR=$ROOTFS_PREFIX \
-    MK_CONFIGURE="
-      --host=$TRIPLE
-      --prefix=/usr
-      --with-gmp=$prefix
-      --with-mpfr=$prefix" \
-    ./mk install bootstrap-1-mpc
+    rootfs_install bootstrap-1-mpc
   fi
+
+  # TODO: gcc
+  # TODO: make
 }
 
 while getopts "r:x:h" opt; do
