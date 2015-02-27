@@ -20,6 +20,16 @@ remve_info_pages() {
   done
 }
 
+remove_empty_dirs() {
+  local d
+
+  find $_DEST/$fullname -depth -type d | while read d; do
+    if rmdir $d 2>/dev/null; then
+      msg "remove empty dir: $(_rootify $d)"
+    fi
+  done
+}
+
 strip_binaries() {
   local f type args
 
@@ -55,4 +65,5 @@ step_optimize() {
   remove_libtool_archives
   remve_info_pages
   strip_binaries
+  remove_empty_dirs
 }
