@@ -10,6 +10,7 @@ run_step() {
     configure
     build
     install
+    optimize
     validate
     pkg
     '
