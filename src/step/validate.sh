@@ -4,11 +4,11 @@ _validate_conflicts() {
   fl="$(find $_DEST/$fullname -type f -o -type l |
           sed "s|^$_DEST/$fullname/||")"
 
-  while read prefix path; do
+  < $_REPO/files.txt | sed "/^$fullname\t/d" | while read prefix path; do
     for f in $fl; do
       [ "$f" != "$path" ] || die "conflicting file in '$prefix' ($f)"
     done
-  done < $_REPO/files.txt
+  done
 }
 
 step_validate() {
