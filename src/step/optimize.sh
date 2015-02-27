@@ -11,11 +11,16 @@ remove_libtool_archives() {
   done
 }
 
-remve_info_pages() {
+remove_below() {
+  local dir=$1
+  local desc="$2"
+
   local f
 
-  find $_DEST/$fullname$MK_PREFIX/share/info -type f | while read f; do
-    msg "remove info page: $(_rootify $f)"
+  [ -d $_DEST/$fullname$MK_PREFIX/$dir ] || return 0
+
+  find $_DEST/$fullname$MK_PREFIX/$dir -type f | while read f; do
+    msg "remove $desc: $(_rootify $f)"
     rm $f
   done
 }
@@ -63,7 +68,8 @@ step_optimize() {
   progress optmimize "'$name'"
 
   remove_libtool_archives
-  remve_info_pages
+  remove_below share/info 'info page'
+  remove_below share/doc doc
   strip_binaries
   remove_empty_dirs
 }
