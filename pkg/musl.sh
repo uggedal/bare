@@ -11,7 +11,7 @@ configure='
   '
 
 post_install() {
-  local libdir=$MK_DESTDIR/lib
-  mkdir -p $libdir
-  ln -sf ../usr/lib/libc.so $libdir/ld-musl-${MK_ARCH}.so.1
+  mkdir -p $MK_DESTDIR/lib $MK_DESTDIR$MK_PREFIX/bin
+  ln -sf ..$MK_PREFIX/lib/libc.so $MK_DESTDIR/lib/ld-musl-${MK_ARCH}.so.1
+  ln -s ../lib/libc.so $MK_DESTDIR$MK_PREFIX/bin/ldd
 }
