@@ -84,15 +84,6 @@ index dab520611ffd..0c11770f37e3 100755
    then
      cat generated/config.h
    else
-@@ -108,7 +108,7 @@ do
- # so allflags can define the appropriate zero macros.
- 
- done | sort | sed -n 's/ A / /;t pair;h;s/\([^ ]*\).*/\1 " "/;x;b single;:pair;h;n;:single;s/[^ ]* B //;H;g;s/\n/ /;p' |\
--generated/mkflags > generated/flags.h || exit 1
-+./generated/mkflags > generated/flags.h || exit 1
- 
- # Extract global structure definitions and flag definitions from toys/*/*.c
- 
 @@ -113,7 +113,7 @@ generated/mkflags > generated/flags.h || exit 1
  
  # Extract global structure definitions and flag definitions from toys/*/*.c
