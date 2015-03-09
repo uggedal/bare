@@ -135,7 +135,7 @@ rootfs() {
     --host=$TRIPLE
     --prefix=/usr" \
     ./mk pkg bootstrap-1-gmp
-  if ! [ -x $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
+  if ! [ -e $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
     rootfs_install bootstrap-1-gmp
   fi
 
@@ -144,7 +144,7 @@ rootfs() {
     --prefix=/usr
     --with-gmp=$prefix" \
     ./mk pkg bootstrap-1-mpfr
-  if ! [ -x $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
+  if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
     rootfs_install bootstrap-1-mpfr
   fi
 
@@ -154,7 +154,7 @@ rootfs() {
     --with-gmp=$prefix
     --with-mpfr=$prefix" \
     ./mk pkg bootstrap-1-mpc
-  if ! [ -x $ROOTFS_PREFIX/usr/lib/libmpc.so ]; then
+  if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpc.so ]; then
     rootfs_install bootstrap-1-mpc
   fi
 
@@ -170,7 +170,13 @@ rootfs() {
     rootfs_install bootstrap-1-gcc
   fi
 
-  # TODO: make
+  MK_CONFIGURE="
+    --host=$TRIPLE
+    --prefix=/usr" \
+    ./mk pkg bootstrap-1-make
+  if ! [ -x $ROOTFS_PREFIX/usr/bin/make ]; then
+    rootfs_install bootstrap-1-make
+  fi
 }
 
 while getopts "r:x:h" opt; do
