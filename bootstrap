@@ -158,7 +158,18 @@ rootfs() {
     rootfs_install bootstrap-1-mpc
   fi
 
-  # TODO: gcc
+  MK_CONFIGURE="
+    --host=$TRIPLE
+    --target=$TRIPLE
+    --prefix=/usr
+    --with-gmp=$prefix
+    --with-mpfr=$prefix
+    --with-mpc=$prefix" \
+    ./mk pkg bootstrap-1-gcc
+  if ! [ -x $ROOTFS_PREFIX/usr/bin/gcc ]; then
+    rootfs_install bootstrap-1-gcc
+  fi
+
   # TODO: make
 }
 
