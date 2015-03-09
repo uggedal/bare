@@ -7,6 +7,7 @@ style=configure
 
 configure='
   --disable-libsanitizer
+  --disable-libstdcxx-pch
   --disable-multilib
   --disable-nls
   --enable-languages=c,c++,lto
