@@ -16,5 +16,4 @@ configure="
   --disable-threads
   --enable-languages=c
   --with-newlib
-  --target=$MK_TARGET
   "
