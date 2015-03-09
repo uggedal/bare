@@ -6,6 +6,7 @@ bdep='mpc-dev'
 style=configure
 
 configure='
+  --disable-libsanitizer
   --disable-multilib
   --disable-nls
   --enable-languages=c,c++,lto
