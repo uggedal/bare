@@ -121,7 +121,13 @@ rootfs() {
     rootfs_install bootstrap-1-busybox
   fi
 
-  # TODO: binutils
+  MK_CONFIGURE="
+    --host=$TRIPLE
+    --prefix=/usr" \
+    ./mk pkg bootstrap-1-binutils
+  if ! [ -x $ROOTFS_PREFIX/usr/bin/ar ]; then
+    rootfs_install bootstrap-1-binutils
+  fi
 
   MK_CONFIGURE="
     --host=$TRIPLE
