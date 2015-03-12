@@ -1,4 +1,6 @@
 fetch() {
+  [ "$src" ] || return 0
+
   local pkgarchive=$(get_archive)
 
   if [ -r $pkgarchive ]; then

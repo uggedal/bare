@@ -3,6 +3,8 @@ step_verify() {
   local pkgarchive=$(fetch)
   local archive=${pkgarchive##*/}
 
+  [ "$src" ] || return 0
+
   progress verify "'$name' using '$archive'"
 
   [ -s "$pkgarchive" ] ||
