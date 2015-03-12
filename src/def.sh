@@ -11,6 +11,7 @@ PKG_VARS='
   configure
   builddir
   conflict
+  emptydirs
   '
 
 URI_GNU=http://ftp.uninett.no/pub/gnu
