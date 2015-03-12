@@ -87,6 +87,12 @@ cross() {
   if ! [ -x $prefix/bin/$TRIPLE-g++ ]; then
     build_gcc bootstrap-0-gcc-2 $prefix
   fi
+
+  if ! [ -x $prefix/bin/pkg-contain ]; then
+    MK_PREFIX=$prefix \
+    MK_DESTDIR=no \
+      ./mk install bootstrap-0-pkg
+  fi
 }
 
 rootfs_install() {
@@ -184,6 +190,11 @@ rootfs() {
   fi
 }
 
+contain() {
+  HOSTDIR=$(pwd) \
+    $CROSS_PREFIX/$TRIPLE/bin/pkg-contain $ROOTFS_PREFIX /bin/sh
+}
+
 while getopts "r:x:h" opt; do
   case $opt in
     x)
@@ -210,3 +221,4 @@ PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
 reqs
 cross
 rootfs
+contain
