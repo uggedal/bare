@@ -9,5 +9,5 @@ do_build() {
 }
 
 do_install() {
-  install -Dm755 pkg-contain $MK_DESTDIR/usr/bin/pkg-contain
+  install -Dm755 pkg-contain $MK_DESTDIR$MK_PREFIX/bin/pkg-contain
 }
