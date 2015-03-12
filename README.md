@@ -39,7 +39,10 @@ The following environment variables can be overridden from the defaults:
 Bootstrap
 ---------
 
-    ./bootstrap
+To bootstrap from a linux system with the necessary toolchain and
+a kernel with `user_namespaces(7)` support:
+
+    ./bootstrap -x <cross-dir> -r <rootfs-dir>
 
 Legal Information
 -----------------
