@@ -177,6 +177,11 @@ rootfs() {
   if ! [ -x $ROOTFS_PREFIX/usr/bin/make ]; then
     rootfs_install bootstrap-1-make
   fi
+
+  ./mk pkg hier
+  if ! [ -d $ROOTFS_PREFIX/dev ]; then
+    rootfs_install hier
+  fi
 }
 
 while getopts "r:x:h" opt; do
