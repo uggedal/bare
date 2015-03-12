@@ -104,7 +104,7 @@ int main(int argc, char **argv) {
 		mnt("/sys", "./sys", 0, MS_BIND|MS_REC);
 
 		char *hosttarget = "./host";
-		if (mkdir(hosttarget, 0) == -1 && errno != EEXIST) {
+		if (mkdir(hosttarget, 0700) == -1 && errno != EEXIST) {
 			die("Unable to mkdir %s", hosttarget);
 		}
 		mnt(hostdir, hosttarget, 0, MS_BIND);
