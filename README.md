@@ -27,6 +27,8 @@ Inspiration
 Usage
 -----
 
+To build packages in a native xunil system:
+
     ./mk <command>
 
 ## Configuration
