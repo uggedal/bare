@@ -118,11 +118,6 @@ rootfs() {
     rootfs_install bootstrap-1-musl
   fi
 
-  ./mk pkg bootstrap-1-toybox
-  if ! [ -x $ROOTFS_PREFIX/bin/toybox ]; then
-    rootfs_install bootstrap-1-toybox
-  fi
-
   CROSS_COMPILE=$TRIPLE- \
     ./mk pkg bootstrap-1-busybox
   if ! [ -x $ROOTFS_PREFIX/bin/busybox ]; then
