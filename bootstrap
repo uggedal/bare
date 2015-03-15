@@ -189,7 +189,7 @@ rootfs() {
 }
 
 contain() {
-  HOSTDIR=$(pwd) \
+  env -i PATH="/usr/bin:/usr/sbin:/bin:/sbin" HOSTDIR=$(pwd) \
     $CROSS_PREFIX/$TRIPLE/bin/pkg-contain $ROOTFS_PREFIX /bin/sh
 }
 
