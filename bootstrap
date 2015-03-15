@@ -171,21 +171,16 @@ rootfs() {
     rootfs_install bootstrap-1-gcc
   fi
 
-  MK_CONFIGURE="
-    --host=$TRIPLE
-    --prefix=/usr" \
-    ./mk pkg bootstrap-1-make
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/make ]; then
-    rootfs_install bootstrap-1-make
-  fi
-
-  MK_CONFIGURE="
-    --host=$TRIPLE
-    --prefix=/usr" \
-    ./mk pkg bootstrap-1-xz
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/xz ]; then
-    rootfs_install bootstrap-1-xz
-  fi
+  local bin
+  for bin in make xz file; do
+    MK_CONFIGURE="
+      --host=$TRIPLE
+      --prefix=/usr" \
+      ./mk pkg bootstrap-1-$bin
+    if ! [ -x $ROOTFS_PREFIX/usr/bin/$bin ]; then
+      rootfs_install bootstrap-1-$bin
+    fi
+  done
 
   ./mk pkg hier
   if ! [ -d $ROOTFS_PREFIX/dev ]; then
