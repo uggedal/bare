@@ -144,8 +144,8 @@ CONFIG_BUNZIP2=y
 # CONFIG_UNLZMA is not set
 # CONFIG_FEATURE_LZMA_FAST is not set
 # CONFIG_LZMA is not set
-CONFIG_UNXZ=y
-CONFIG_XZ=y
+# CONFIG_UNXZ is not set
+# CONFIG_XZ is not set
 CONFIG_BZIP2=y
 # CONFIG_CPIO is not set
 # CONFIG_FEATURE_CPIO_O is not set
