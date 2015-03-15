@@ -13,17 +13,6 @@ Philosophy
 * Vanilla kernel without initramfs and module support. Different kernel
   config and package per target system.
 
-Inspiration
------------
-
-* [Alpine Linux][]
-* [CRUX][]
-* [Dragora][]
-* [Morpheus][]
-* [Sabotage Linux][]
-* [Slackware][]
-* [Void Linux][]
-
 Usage
 -----
 
@@ -56,17 +45,10 @@ Some patches under `patches/` are taken from other projects and thus
 carry the license of their respective upstream.
 
 The following applies to the rest of xunil which is released into
-the [Public Domain][].
+the Public Domain[1].
 
 To the extent possible under law, Eivind Uggedal has waived
 all copyright and related or neighboring rights to xunil.
 This work is published from: Norway.
 
-[Alpine Linux]: https://www.alpinelinux.org/
-[CRUX]: https://crux.nu/
-[Dragora]: http://www.dragora.org/
-[Morpheus]: http://morpheus.2f30.org/
-[Sabotage Linux]: https://github.com/sabotage-linux/sabotage
-[Slackware]: http://www.slackware.com/
-[Void Linux]: http://www.voidlinux.eu/
-[Public Domain]: http://creativecommons.org/publicdomain/zero/1.0/
+1: http://creativecommons.org/publicdomain/zero/1.0/
