@@ -5,7 +5,7 @@ style=noop
 builddir=.
 
 do_build() {
-  $CC $CFLAGS $MK_FILE/pkg-contain.c -o pkg-contain
+  $CC $CFLAGS -Wall $MK_FILE/pkg-contain.c -o pkg-contain
 }
 
 do_install() {
