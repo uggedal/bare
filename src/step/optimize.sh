@@ -36,12 +36,13 @@ remove_empty_dirs() {
 }
 
 strip_binaries() {
-  local f type args
+  local f mime type args
 
   find $_DEST/$fullname -type f | while read f; do
+    mime="$(file -bi "$f")"
     type=
     args=
-    case "$(file -bi "$f")" in
+    case "$mime" in
       application/x-executable*)
         type=executable
         ;;
