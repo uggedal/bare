@@ -179,6 +179,14 @@ rootfs() {
     rootfs_install bootstrap-1-make
   fi
 
+  MK_CONFIGURE="
+    --host=$TRIPLE
+    --prefix=/usr" \
+    ./mk pkg bootstrap-1-xz
+  if ! [ -x $ROOTFS_PREFIX/usr/bin/xz ]; then
+    rootfs_install bootstrap-1-xz
+  fi
+
   ./mk pkg hier
   if ! [ -d $ROOTFS_PREFIX/dev ]; then
     rootfs_install hier
