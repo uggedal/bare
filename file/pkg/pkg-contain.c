@@ -14,6 +14,8 @@
 
 #define USAGE_FMT "Usage: HOSTDIR=hostdir %s <dir> <command> [args]\n"
 
+#define ck(STMT, ...) if((STMT) == -1) { die(__VA_ARGS__); }
+
 static const int clone_flags = SIGCHLD|
 	CLONE_NEWUSER|
 	CLONE_NEWNS|
@@ -43,31 +45,26 @@ static void die(const char *fmt, ...) {
 }
 
 static void denysetgroups(void) {
+	char *fname = "/proc/self/setgroups";
 	int fd;
-	if ((fd = open("/proc/self/setgroups", O_RDWR)) != -1 &&
-			write(fd, "deny", 4) == -1) {
-		die("Unable to deny setgroups");
-	}
-	close(fd);
+
+	ck(fd = open(fname, O_WRONLY), "Unable to open '%s'", fname);
+	ck(write(fd, "deny", 4), "Unable to write to '%s'", fname);
+	ck(close(fd), "Unable to close '%s'", fname);
 }
 
 static void idmap(const char *fname, const uid_t id) {
 	int fd;
 	char buf[32];
 
-	if ((fd = open(fname, O_RDWR)) != -1 &&
-			write(fd, buf, snprintf(buf, sizeof buf, "0 %u 1\n", id)) != -1) {
-		close(fd);
-		return;
-	}
-
-	die("Unable to change idmap of '%s'", fname);
+	ck(fd = open(fname, O_WRONLY), "Unable to open '%s'", fname);
+	ck(write(fd, buf, snprintf(buf, sizeof buf, "0 %u 1\n", id)),
+			"Unable to write to '%s'", fname);
+	ck(close(fd), "Unable to close '%s'", fname);
 }
 
 static void mnt(const char *s, const char *d, const char *t, const int f) {
-	if (mount(s, d, t, f, 0) == -1) {
-		die("Unable to mount '%s' to '%s'", s, d);
-	}
+	ck(mount(s, d, t, f, 0), "Unable to mount '%s' to '%s'", s, d);
 }
 
 int main(int argc, char **argv) {
@@ -86,18 +83,14 @@ int main(int argc, char **argv) {
 	}
 
 	pid_t pid;
-	if ((pid = syscall(__NR_clone, clone_flags, NULL)) == -1) {
-		die("Unable to clone");
-	}
+	ck(pid = syscall(__NR_clone, clone_flags, NULL), "Unable to clone");
 
 	if (pid == 0) {
 		denysetgroups();
 		idmap("/proc/self/uid_map", uid);
 		idmap("/proc/self/gid_map", gid);
 
-		if (chdir(argv[1]) == -1) {
-			die("Unable to chdir to '%s'", argv[1]);
-		}
+		ck(chdir(argv[1]), "Unable to chdir to '%s'", argv[1]);
 
 		mnt("/dev", "./dev", 0, MS_BIND|MS_REC);
 		mnt("proc", "./proc", "proc", 0);
@@ -109,19 +102,13 @@ int main(int argc, char **argv) {
 		}
 		mnt(hostdir, hosttarget, 0, MS_BIND);
 
-		if (chroot(".") == -1) {
-			die("Unable to chroot");
-		}
+		ck(chroot("."), "Unable to chroot");
 
-		if (execv(argv[2], argv+2)) {
-			die("Unable to exec '%s'", argv[2]);
-		}
+		ck(execv(argv[2], argv+2), "Unable to exec '%s'", argv[2]);
 	}
 
 	siginfo_t info;
-	if (waitid(P_PID, pid, &info, WEXITED) == -1) {
-		die("Unable to wait for '%u'", pid);
-	}
+	ck(waitid(P_PID, pid, &info, WEXITED), "Unable to wait for '%u'", pid);
 
 	return info.si_status;
 }
