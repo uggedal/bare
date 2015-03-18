@@ -113,40 +113,40 @@ rootfs() {
   export READELF=$TRIPLE-readelf
   export STRIP=$TRIPLE-strip
 
-  ./mk pkg bootstrap-1-musl
+  ./mk pkg musl
   if ! [ -e $prefix/include/stdio.h ]; then
-    rootfs_install bootstrap-1-musl
+    rootfs_install musl
   fi
 
   CROSS_COMPILE=$TRIPLE- \
-    ./mk pkg bootstrap-1-busybox
+    ./mk pkg busybox
   if ! [ -x $ROOTFS_PREFIX/bin/busybox ]; then
-    rootfs_install bootstrap-1-busybox
+    rootfs_install busybox
   fi
 
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr" \
-    ./mk pkg bootstrap-1-binutils
+    ./mk pkg binutils
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ar ]; then
-    rootfs_install bootstrap-1-binutils
+    rootfs_install binutils
   fi
 
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr" \
-    ./mk pkg bootstrap-1-gmp
+    ./mk pkg gmp
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
-    rootfs_install bootstrap-1-gmp
+    rootfs_install gmp
   fi
 
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr
     --with-gmp=$prefix" \
-    ./mk pkg bootstrap-1-mpfr
+    ./mk pkg mpfr
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
-    rootfs_install bootstrap-1-mpfr
+    rootfs_install mpfr
   fi
 
   MK_CONFIGURE="
@@ -154,9 +154,9 @@ rootfs() {
     --prefix=/usr
     --with-gmp=$prefix
     --with-mpfr=$prefix" \
-    ./mk pkg bootstrap-1-mpc
+    ./mk pkg mpc
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpc.so ]; then
-    rootfs_install bootstrap-1-mpc
+    rootfs_install mpc
   fi
 
   MK_CONFIGURE="
@@ -166,9 +166,9 @@ rootfs() {
     --with-gmp=$prefix
     --with-mpfr=$prefix
     --with-mpc=$prefix" \
-    ./mk pkg bootstrap-1-gcc
+    ./mk pkg gcc
   if ! [ -x $ROOTFS_PREFIX/usr/bin/gcc ]; then
-    rootfs_install bootstrap-1-gcc
+    rootfs_install gcc
   fi
 
   local bin
@@ -176,9 +176,9 @@ rootfs() {
     MK_CONFIGURE="
       --host=$TRIPLE
       --prefix=/usr" \
-      ./mk pkg bootstrap-1-$bin
+      ./mk pkg $bin
     if ! [ -x $ROOTFS_PREFIX/usr/bin/$bin ]; then
-      rootfs_install bootstrap-1-$bin
+      rootfs_install $bin
     fi
   done
 
