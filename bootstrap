@@ -62,17 +62,17 @@ cross() {
       --prefix=$prefix
       --target=$TRIPLE" \
     MK_DESTDIR=no \
-      ./mk install bootstrap-0-binutils
+      ./mk install bootstrap-binutils
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
-    build_gcc bootstrap-0-gcc-1 $prefix
+    build_gcc bootstrap-gcc-1 $prefix
   fi
 
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
     MK_DESTDIR=$prefix \
     MK_PREFIX=$TRIPLE \
-      ./mk install bootstrap-0-linux-headers
+      ./mk install bootstrap-linux-headers
   fi
 
   if ! [ -e $prefix/$TRIPLE/include/stdio.h ]; then
@@ -81,17 +81,17 @@ cross() {
     CC=$TRIPLE-gcc \
     MK_CONFIGURE="--prefix=$prefix/$TRIPLE" \
     MK_DESTDIR=no \
-      ./mk install bootstrap-0-musl
+      ./mk install bootstrap-musl
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-g++ ]; then
-    build_gcc bootstrap-0-gcc-2 $prefix
+    build_gcc bootstrap-gcc-2 $prefix
   fi
 
   if ! [ -x $prefix/bin/pkg-contain ]; then
     MK_PREFIX=$prefix \
     MK_DESTDIR=no \
-      ./mk install bootstrap-0-pkg
+      ./mk install bootstrap-pkg
   fi
 }
 
@@ -219,4 +219,4 @@ PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
 reqs
 cross
 rootfs
-contain
+#contain
