@@ -13,6 +13,7 @@ configure='
   --enable-languages=c,c++,lto
   --enable-lto
   --enable-shared
+  --libdir=/usr/lib
   '
 
 builddir=gcc-build
