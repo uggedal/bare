@@ -3,7 +3,7 @@ _xz_stat() {
 }
 
 step_pkg() {
-  local pkg=$_REPO/${fullname}.tar.xz
+  local pkg=$_REPO/${fullname}$PKG_EXT
   local stat
 
   progress pkg "'$name'"
