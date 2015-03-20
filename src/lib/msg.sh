@@ -26,7 +26,7 @@ msg() {
 }
 
 err() {
-  msg "$(color 31 mk:) $@"
+  msg "$(color 31 $0:) $@"
 }
 
 die() {
