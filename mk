@@ -11,9 +11,8 @@ export _FILE=$_ROOT/file
 export _PATCH=$_ROOT/patch
 
 . $_SRC/def.sh
-. $_SRC/conf.sh
 
-for _f in $_SRC/lib/*.sh; do
+for _f in $_SRC/common/*.sh $_SRC/mk/*.sh; do
   . $_f
 done
 unset _f
@@ -46,11 +45,6 @@ EOF
 }
 
 [ "$1" ] || _usage
-
-for _f in $_SRC/step/*.sh; do
-  . $_f
-done
-unset _f
 
 [ "$(command -v step_$1)" ] || _usage
 
