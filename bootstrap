@@ -206,6 +206,7 @@ while getopts "r:x:h" opt; do
       ;;
   esac
 done
+unset opt
 
 [ "$CROSS_PREFIX" ] || usage
 [ "$ROOTFS_PREFIX" ] || usage
