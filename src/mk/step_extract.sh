@@ -2,6 +2,11 @@ step_extract() {
   local pkgarchive=$(get_archive)
   local archive=${pkgarchive##*/}
 
+  if [ "$(command -v do_extract)" ]; then
+    do_extract
+    return 0
+  fi
+
   [ "$src" ] || return 0
 
   [ -d $_BUILD ] || die "no build directory in '$_BUILD'"
