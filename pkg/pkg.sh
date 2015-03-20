@@ -2,10 +2,14 @@ ver=0.0.1
 rev=1
 
 style=noop
-builddir=.
+
+do_extract() {
+  mkdir -p $MK_SRC
+  cp -a $_SRC/pkg $_SRC/common $MK_SRC
+}
 
 do_build() {
-  $CC $CFLAGS -Wall $MK_FILE/pkg-contain.c -o pkg-contain
+  $CC $CFLAGS -Wall pkg/pkg-contain.c -o pkg-contain
 }
 
 do_install() {
