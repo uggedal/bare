@@ -7,7 +7,7 @@ Philosophy
 ----------
 
 * Favor minimal applications and libraries.
-* Only one package for per use-case.
+* Only one package per use-case.
 * No translations.
 * Stable timed branches only containing security updates and bug fixes.
 * Vanilla kernel without initramfs and module support. Different kernel
