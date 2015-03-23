@@ -40,3 +40,23 @@ progress() {
 
   msg "$(color 33 "$step") $@"
 }
+
+usage() {
+  local progname=$(basename $0)
+  local prefix='usage: '
+  local indent_width=$((${#prefix} + ${#progname} + 1))
+  (
+    IFS='
+'
+    heading=yes
+    for l in $_USAGE; do
+      if [ "$heading" ]; then
+        printf -- 'usage: %s %s\n' $progname "$l"
+      else
+        printf -- '%-*s%s\n' $indent_width '' "$l"
+      fi
+      unset heading
+    done
+  ) >&2
+  exit 1
+}
