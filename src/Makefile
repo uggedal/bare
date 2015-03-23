@@ -10,17 +10,15 @@ SCRIPT = $(SCRIPT_SRC:.sh=)
 
 LIB = $(wildcard lib/*.sh)
 
-${BIN}: ${BIN_SRC}
+${BIN}: %: %.c
 	${CC} $< ${CFLAGS} -o $@ ${LDFLAGS}
 
-${SCRIPT}: ${SCRIPT_SRC}
-	sed -e "s|@@LIBDIR@@|${LIBDIR}|" $< > $@
+${SCRIPT}: %: %.sh
+	sed -e "s|@@LIBDIR@@|${LIBDIR}|" $^ > $@
 
-install-bin: ${BIN}
-	mkdir -p ${DESTDIR}${PREFIX}/bin
-	install -m755 $^ ${DESTDIR}${PREFIX}/bin
+.PHONY: install-bin install-lib
 
-install-script: ${SCRIPT}
+install-bin: ${BIN} ${SCRIPT}
 	mkdir -p ${DESTDIR}${PREFIX}/bin
 	install -m755 $^ ${DESTDIR}${PREFIX}/bin
 
@@ -28,4 +26,4 @@ install-lib: ${LIB}
 	mkdir -p ${DESTDIR}${LIBDIR}/pkg
 	install -m644 $^ ${DESTDIR}${LIBDIR}/pkg
 
-install: install-bin install-script install-lib
+install: install-bin install-lib
