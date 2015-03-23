@@ -1,3 +1,8 @@
+_validate_name() {
+  [ "${#name}" -le $PKG_NAME_MAX ] ||
+    die "name is longer than $PKG_NAME_MAX (${#name})"
+}
+
 _validate_conflicts() {
   local fl f prefix path
 
@@ -13,6 +18,8 @@ _validate_conflicts() {
 
 step_validate() {
   progress validate "'$name'"
+
+  _validate_name
 
   [ ! -f $_REPO/files.txt ] || _validate_conflicts
 }
