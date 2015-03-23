@@ -1,6 +1,8 @@
 #!/bin/sh
 
-. @@LIBDIR@@/pkg/*.sh
+. @@LIBDIR@@/pkg/def.sh
+. @@LIBDIR@@/pkg/pkg.sh
+. @@LIBDIR@@/pkg/msg.sh
 
 usage() {
   cat <<EOF
