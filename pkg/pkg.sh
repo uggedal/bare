@@ -5,5 +5,5 @@ style=make
 
 do_extract() {
   mkdir -p $MK_SRC
-  cp -a $_SRC/Makefile $_SRC/common $_SRC/pkg $MK_SRC
+  cp -a $_SRC/Makefile $_SRC/lib $_SRC/pkg $MK_SRC
 }

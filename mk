@@ -10,9 +10,7 @@ export _CKSUM=$_ROOT/cksum
 export _FILE=$_ROOT/file
 export _PATCH=$_ROOT/patch
 
-. $_SRC/def.sh
-
-for _f in $_SRC/common/*.sh $_SRC/mk/*.sh; do
+for _f in $_SRC/lib/*.sh $_SRC/mk/*.sh; do
   . $_f
 done
 unset _f

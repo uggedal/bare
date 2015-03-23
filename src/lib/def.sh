@@ -15,5 +15,3 @@ PKG_VARS='
   '
 
 PKG_EXT=.tar.xz
-
-URI_GNU=http://ftp.uninett.no/pub/gnu
