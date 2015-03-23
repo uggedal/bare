@@ -19,7 +19,7 @@ query_line() {
   local p=$1
 
   if [ "$VERBOSE" ]; then
-    printf -- '%-20s %s\n' $(pkg_to_name $p) $(pkg_to_version $p)
+    printf -- "%-${PKG_NAME_MAX}s %s\n" $(pkg_to_name $p) $(pkg_to_version $p)
   else
     printf -- '%s\n' $(pkg_to_name $p)
   fi
