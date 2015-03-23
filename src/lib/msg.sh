@@ -1,4 +1,4 @@
-if [ -t 2 ] && tput colors >/dev/null 2>&1; then
+if [ "$_FANCY_MSG" ] && [ -t 2 ] && tput colors >/dev/null 2>&1; then
   _USE_COLOR=yes
 fi
 
@@ -22,7 +22,11 @@ color() {
 }
 
 msg() {
-  printf -- '%s\n' "$(strong "$(color 37 '>>>') $@")" 1>&2
+  local prefix
+
+  [ -z "$_FANCY_MSG" ] || prefix='>>> '
+
+  printf -- '%s\n' "$(strong "$(color 37 "$prefix")$@")" 1>&2
 }
 
 err() {
