@@ -5,12 +5,13 @@
 . @@LIBDIR@@/pkg/msg.sh
 
 usage() {
+  local bin=$(basename $0)
   cat <<EOF
-$0 -r <repo> [-v]
+Usage: $bin -r <repo> [-v]
 
 Example:
 
-    $0 -r /tmp/repo
+    $bin -r /tmp/repo
 EOF
   exit 1
 }
