@@ -14,7 +14,7 @@ ${BIN}: %: %.c
 	${CC} $< ${CFLAGS} -o $@ ${LDFLAGS}
 
 ${SCRIPT}: %: %.sh
-	sed -e "s|@@LIBDIR@@|${LIBDIR}|" $^ > $@
+	sed -e "s|@@LIBDIR@@|${LIBDIR}|" $< > $@
 
 .PHONY: install-bin install-lib
 
