@@ -186,6 +186,11 @@ rootfs() {
   if ! [ -d $ROOTFS_PREFIX/dev ]; then
     rootfs_install hier
   fi
+
+  ./mk pkg pkg
+  if ! [ -d $ROOTFS_PREFIX/pkg-contain ]; then
+    rootfs_install pkg
+  fi
 }
 
 contain() {
