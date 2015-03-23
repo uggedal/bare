@@ -18,7 +18,6 @@ query_line() {
 }
 
 query() {
-  # TODO: tweak die to not print >>> (global var for mk)
   [ -d $REPO ] || die "unable to read repo: '$REPO'"
 
   local f
