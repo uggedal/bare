@@ -1,13 +1,14 @@
 PREFIX ?= /usr/local
 CFLAGS += -Wall
 
-C_SRC = $(wildcard pkg/*.c)
-BIN = $(C_SRC:.c=)
+BIN_SRC = $(wildcard pkg/*.c)
+BIN = $(BIN_SRC:.c=)
 
-${BIN}: ${C_SRC}
+${BIN}: ${BIN_SRC}
 	${CC} $< ${CFLAGS} -o $@ ${LDFLAGS}
 
 install-bin: ${BIN}
-	install -Dm755 $< ${DESTDIR}${PREFIX}/bin/$(<:pkg/%=%)
+	mkdir -p ${DESTDIR}${PREFIX}/bin
+	install -m755 $^ ${DESTDIR}${PREFIX}/bin
 
 install: install-bin
