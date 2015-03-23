@@ -26,7 +26,8 @@ msg() {
 }
 
 err() {
-  msg "$(color 31 $0:) $@"
+  local progname=$(basename $0)
+  msg "$(color 31 $progname:) $@"
 }
 
 die() {
