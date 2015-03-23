@@ -4,17 +4,8 @@
 . @@LIBDIR@@/pkg/pkg.sh
 . @@LIBDIR@@/pkg/msg.sh
 
-usage() {
-  local bin=$(basename $0)
-  cat <<EOF
-Usage: $bin -r <repo> [-v]
-
-Example:
-
-    $bin -r /tmp/repo
-EOF
-  exit 1
-}
+_USAGE='[-v]
+-r repo_path'
 
 query_line() {
   local p=$1
@@ -37,13 +28,10 @@ query() {
   done
 }
 
-while getopts "r:vh" opt; do
+while getopts "r:v" opt; do
   case $opt in
     r)
       REPO=$OPTARG
-      ;;
-    h)
-      usage
       ;;
     v)
       VERBOSE=yes
