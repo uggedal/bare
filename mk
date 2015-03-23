@@ -10,6 +10,8 @@ export _CKSUM=$_ROOT/cksum
 export _FILE=$_ROOT/file
 export _PATCH=$_ROOT/patch
 
+_FANCY_MSG=yes
+
 for _f in $_SRC/lib/*.sh $_SRC/mk/*.sh; do
   . $_f
 done
