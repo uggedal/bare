@@ -8,23 +8,14 @@ _USAGE='[-v]
 -r repo_path'
 
 query_line() {
-  local p=$1
+  local name=$1
+  local ver=$2
 
   if [ "$VERBOSE" ]; then
-    printf -- "%-${PKG_NAME_MAX}s %s\n" $(pkg_to_name $p) $(pkg_to_version $p)
+    printf -- "%-${PKG_NAME_MAX}s %s\n" $name $ver
   else
-    printf -- '%s\n' $(pkg_to_name $p)
+    printf -- '%s\n' $name
   fi
-}
-
-query() {
-  [ -d $REPO ] || die "unable to read repo: '$REPO'"
-
-  local f
-
-  for f in $REPO/*$PKG_EXT; do
-    query_line $(basename $f)
-  done
 }
 
 while getopts "r:v" opt; do
@@ -41,4 +32,4 @@ unset opt
 
 [ "$REPO" ] || usage
 
-query
+read_repo $REPO query_line
