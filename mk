@@ -25,10 +25,14 @@ unset _dir
 
 _usage() {
   cat <<EOF
-mk <command> [<args>]
+mk <command|step> [<args>]
 
 Commands:
   gencksum <pkg>
+  clean [pkg]
+  query <pkg> <field>
+
+Ordered steps:
   verify <pkg>
   extract <pkg>
   patch <pkg>
@@ -38,15 +42,11 @@ Commands:
   optimize <pkg>
   validate <pkg>
   pkg <pkg>
-  clean [pkg]
-  query <pkg> <field>
 EOF
   exit 64
 }
 
 [ "$1" ] || _usage
-
-[ "$(command -v step_$1)" ] || _usage
 
 case "$1" in
   clean)
@@ -60,4 +60,14 @@ case "$1" in
     ;;
 esac
 
-run_step "$@"
+if is_step $1; then
+  run_step "$@"
+  exit 0
+fi
+
+if is_cmd $1; then
+  run_cmd "$@"
+  exit 0
+fi
+
+usage

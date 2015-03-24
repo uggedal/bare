@@ -1,35 +1,23 @@
+is_step() {
+  [ "$(command -v step_$1)" ]
+}
+
 run_step() {
   local step=$1
   local deps=
-  local hasdeps=
   local s d
-  local steps='
-    verify
-    extract
-    patch
-    configure
-    build
-    install
-    optimize
-    validate
-    pkg
-    '
-  for s in $steps; do
+
+  for s in $MK_STEPS; do
     deps="$deps $s"
 
     if [ "$step" = "$s" ]; then
-      hasdeps=yes
       break
     fi
   done
 
-  if [ "$hasdeps" ]; then
-    if [ $step = pkg ] && [ -s $_REPO/${fullname}$PKG_EXT ]; then
-      progress pkg "'$name' $(color 34 complete)"
-      return
-    fi
-  else
-    deps=$step
+  if [ $step = pkg ] && [ -s $_REPO/${fullname}$PKG_EXT ]; then
+    progress pkg "'$name' $(color 34 complete)"
+    return
   fi
 
   for d in $deps; do
@@ -39,9 +27,7 @@ run_step() {
     fi
 
     step_$d "$@"
-    if [ "$hasdeps" ]; then
-      touch $MK_BUILD_ROOT/.${d}.done
-      progress $d "'$name' $(color 32 ok)"
-    fi
+    touch $MK_BUILD_ROOT/.${d}.done
+    progress $d "'$name' $(color 32 ok)"
   done
 }

@@ -1,4 +1,4 @@
-step_clean() {
+cmd_clean() {
   local dirs="$_BUILD $_DEST"
   local dir
 

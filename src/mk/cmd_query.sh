@@ -1,4 +1,4 @@
-step_query() {
+cmd_query() {
   local field=$3
   local v ok
 
