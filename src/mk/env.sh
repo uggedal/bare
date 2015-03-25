@@ -19,8 +19,8 @@ init_env() {
   MK_PATCH=$_PATCH/$parentname
 
   MK_BUILD_ROOT=$_BUILD/$fullname
-  MK_SRC=$MK_BUILD_ROOT/$parentname-$ver
-  MK_BUILD=$MK_SRC
+  MK_DIST=$MK_BUILD_ROOT/$parentname-$ver
+  MK_BUILD=$MK_DIST
 
   mkdir -p $MK_BUILD_ROOT
 

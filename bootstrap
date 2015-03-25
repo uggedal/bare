@@ -36,8 +36,8 @@ build_gcc() {
   local dep dest
   for dep in gmp mpfr mpc; do
     ./mk extract $dep
-    dest=$(./mk query $name MK_SRC)/$dep
-    [ -h $dest ] || ln -s $(./mk query $dep MK_SRC) $dest
+    dest=$(./mk query $name MK_DIST)/$dep
+    [ -h $dest ] || ln -s $(./mk query $dep MK_DIST) $dest
   done
 
   MK_PREFIX=$prefix \

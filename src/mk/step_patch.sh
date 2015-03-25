@@ -5,6 +5,6 @@ step_patch() {
 
   for p in $MK_PATCH/*.patch; do
     progress patch "'$name' using '${p##*/}'"
-    patch -d $MK_SRC -p1 < $p
+    patch -d $MK_DIST -p1 < $p
   done
 }
