@@ -1,4 +1,4 @@
-_distpatch() {
+_filter_patch() {
   case $1 in
     *.diff|*.patch)
       printf -- '%s\n' $1
@@ -6,13 +6,23 @@ _distpatch() {
   esac
 }
 
+_patch() {
+  local p=$1
+
+  progress patch "'$name' using '${p##*/}'"
+  patch -d $MK_DIST -p1 < $p
+}
+
 step_patch() {
   local p
 
-  [ -d $MK_PATCH ] || return 0
+  if [ -d $MK_PATCH ]; then
+    for p in $MK_PATCH/*.patch; do
+      _patch $p
+    done
+  fi
 
-  for p in $MK_PATCH/*.patch $(foreach _distpatch $(distpaths $dist)); do
-    progress patch "'$name' using '${p##*/}'"
-    patch -d $MK_DIST -p1 < $p
+  for p in $(foreach _filter_patch $(distpaths $dist)); do
+    _patch $p
   done
 }
