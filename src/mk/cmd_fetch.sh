@@ -1,7 +1,7 @@
 cmd_fetch() {
   [ "$src" ] || return 0
 
-  local pkgarchive=$(distfile)
+  local pkgarchive=$(distpath)
 
   if [ -r $pkgarchive ]; then
     progress fetch "'$name' cached in '$(relative $pkgarchive)'"

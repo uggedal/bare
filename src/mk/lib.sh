@@ -7,9 +7,11 @@ relative() {
 }
 
 distfile() {
-  local archive=${src##*/}
+  printf -- '%s' ${src##*/}
+}
 
-  printf -- '%s' $_DIST/$fullparentname/$archive
+distpath() {
+  printf -- '%s' $_DIST/$fullparentname/$(distfile)
 }
 
 read_pkg() {
