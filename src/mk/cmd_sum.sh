@@ -1,7 +1,7 @@
 cmd_sum() {
-  [ -r $(distpath) ] || die "unable to read '$(distfile)'"
+  assert_distfiles
 
-  progress sum "'$name' with '$(distfile)'"
+  progress sum "'$name' using '$(distfiles $dist)'"
 
-  sha512sum $(relative $(distpath)) > $_SUM/${name}.sum
+  sha512sum $(merge $(foreach relative $(distpaths $dist))) > $_SUM/${name}.sum
 }

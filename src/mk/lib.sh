@@ -3,15 +3,54 @@ uppercase() {
 }
 
 relative() {
-  printf -- '%s' ${1#$(pwd)/*}
+  printf -- '%s\n' ${1#$(pwd)/*}
+}
+
+merge() {
+  local part res
+
+  for part; do
+    res="$res $part"
+  done
+
+  printf -- '%s' "${res# *}"
+}
+
+foreach() {
+  local func=$1
+  local part
+  shift
+
+  for part; do
+    eval $func \$part
+  done
 }
 
 distfile() {
-  printf -- '%s' ${dist##*/}
+  printf -- '%s\n' ${1##*/}
 }
 
 distpath() {
-  printf -- '%s' $_DIST/$fullparentname/$(distfile)
+  local distfile=$(distfile $1)
+  printf -- '%s\n' $_DIST/$fullparentname/$distfile
+}
+
+distfiles() {
+  merge $(foreach distfile "$@")
+}
+
+distpaths() {
+  merge $(foreach distpath "$@")
+}
+
+has_distfile() {
+  local d=$1
+
+  [ -r $(distpath $d) ] || die "unable to read '$(distfile $d)'"
+}
+
+assert_distfiles() {
+  foreach has_distfile $dist
 }
 
 read_pkg() {

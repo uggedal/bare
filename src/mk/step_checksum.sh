@@ -1,13 +1,16 @@
+_checksum() {
+  sha512sum $(merge $(foreach relative $(distpaths $dist)))
+}
+
 step_checksum() {
   local f=$_SUM/${parentname}.sum
 
   [ "$dist" ] || return 0
 
-  progress checksum "'$name' using '$(distfile)'"
+  progress checksum "'$name' using '$(distfiles $dist)'"
 
-  [ -s "$(distpath)" ] ||
-    die "missing or empty archive for '$name' ($(distfile))"
+  assert_distfiles
 
-  [ "$(sha512sum $(relative $(distpath)))" = "$(cat $f)" ] ||
+  [ "$(_checksum)" = "$(cat $f)" ] ||
     die "invalid checksum for '$name' ($(distfile))"
 }
