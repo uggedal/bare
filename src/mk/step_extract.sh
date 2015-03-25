@@ -4,7 +4,7 @@ step_extract() {
     return 0
   fi
 
-  [ "$src" ] || return 0
+  [ "$dist" ] || return 0
 
   [ -d $_BUILD ] || die "no build directory in '$_BUILD'"
 

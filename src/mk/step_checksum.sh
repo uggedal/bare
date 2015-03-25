@@ -1,7 +1,7 @@
 step_checksum() {
   local f=$_SUM/${parentname}.sum
 
-  [ "$src" ] || return 0
+  [ "$dist" ] || return 0
 
   progress checksum "'$name' using '$(distfile)'"
 

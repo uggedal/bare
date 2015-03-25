@@ -1,6 +1,6 @@
 ver=1.23.1
 rev=1
-src=http://${name}.net/downloads/$name-${ver}.tar.bz2
+dist=http://${name}.net/downloads/$name-${ver}.tar.bz2
 
 style=make
 

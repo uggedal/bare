@@ -1,6 +1,6 @@
 ver=1.1.7
 rev=1
-src=http://www.$name-libc.org/releases/$name-${ver}.tar.gz
+dist=http://www.$name-libc.org/releases/$name-${ver}.tar.gz
 
 style=configure
 

@@ -1,6 +1,6 @@
 ver=4.9.2
 rev=1
-src=$URI_GNU/$name/$name-${ver}/$name-${ver}.tar.bz2
+dist=$URI_GNU/$name/$name-${ver}/$name-${ver}.tar.bz2
 bdep='mpc-dev'
 
 style=configure

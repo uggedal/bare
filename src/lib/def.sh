@@ -4,7 +4,7 @@ PKG_VARS='
   parentname
   ver
   rev
-  src
+  dist
   bdep
   rdep
   style

@@ -7,7 +7,7 @@ relative() {
 }
 
 distfile() {
-  printf -- '%s' ${src##*/}
+  printf -- '%s' ${dist##*/}
 }
 
 distpath() {
