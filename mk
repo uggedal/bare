@@ -28,7 +28,7 @@ _usage() {
 mk <command|step> [<args>]
 
 Commands:
-  gencksum <pkg>
+  sum <pkg>
   clean [pkg]
   query <pkg> <field>
 

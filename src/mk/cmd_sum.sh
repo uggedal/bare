@@ -1,7 +1,7 @@
-cmd_gencksum() {
+cmd_sum() {
   local pkgarchive=$(fetch)
 
-  progress gencksum "'$name' with '${pkgarchive##*/}'"
+  progress sum "'$name' with '${pkgarchive##*/}'"
 
   sha512sum $(relative $pkgarchive) > $_CKSUM/${name}.sum
 }
