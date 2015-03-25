@@ -1,5 +1,5 @@
 MK_STEPS='
-  verify
+  checksum
   extract
   patch
   configure

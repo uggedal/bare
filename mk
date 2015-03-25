@@ -33,7 +33,7 @@ Commands:
   query <pkg> <field>
 
 Ordered steps:
-  verify <pkg>
+  checksum <pkg>
   extract <pkg>
   patch <pkg>
   configure <pkg>

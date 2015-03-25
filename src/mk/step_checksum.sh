@@ -1,11 +1,11 @@
-step_verify() {
+step_checksum() {
   local f=$_CKSUM/${parentname}.sum
   local pkgarchive=$(fetch)
   local archive=${pkgarchive##*/}
 
   [ "$src" ] || return 0
 
-  progress verify "'$name' using '$archive'"
+  progress checksum "'$name' using '$archive'"
 
   [ -s "$pkgarchive" ] ||
     die "missing or empty archive for '$name' ($archive)"
