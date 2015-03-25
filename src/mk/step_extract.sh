@@ -1,7 +1,4 @@
 step_extract() {
-  local pkgarchive=$(distpath)
-  local archive=${pkgarchive##*/}
-
   if [ "$(command -v do_extract)" ]; then
     do_extract
     return 0
@@ -11,10 +8,10 @@ step_extract() {
 
   [ -d $_BUILD ] || die "no build directory in '$_BUILD'"
 
-  progress extract "'$name' using '$archive'"
+  progress extract "'$name' using '$(distfile)'"
 
   local fmt
-  case $pkgarchive in
+  case $(distpath) in
     *.tar.gz)
       fmt=z
       ;;
@@ -25,9 +22,9 @@ step_extract() {
       fmt=J
       ;;
     *)
-      die "unsupported archive '$archive'"
+      die "unsupported archive '$(distfile)'"
       ;;
   esac
 
-  tar -C $MK_BUILD_ROOT -x${fmt}f $pkgarchive
+  tar -C $MK_BUILD_ROOT -x${fmt}f $(distpath)
 }

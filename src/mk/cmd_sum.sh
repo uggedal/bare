@@ -1,10 +1,7 @@
 cmd_sum() {
-  local pkgarchive=$(distpath)
-  local archive=${pkgarchive##*/}
+  [ -r $(distpath) ] || die "unable to read '$(distfile)'"
 
-  [ -r $pkgarchive ] || die "unable to read '$archive'"
+  progress sum "'$name' with '$(distfile)'"
 
-  progress sum "'$name' with '$archive'"
-
-  sha512sum $(relative $pkgarchive) > $_SUM/${name}.sum
+  sha512sum $(relative $(distpath)) > $_SUM/${name}.sum
 }
