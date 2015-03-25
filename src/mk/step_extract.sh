@@ -1,5 +1,5 @@
 step_extract() {
-  local pkgarchive=$(get_archive)
+  local pkgarchive=$(distfile)
   local archive=${pkgarchive##*/}
 
   if [ "$(command -v do_extract)" ]; then

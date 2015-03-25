@@ -1,5 +1,5 @@
 cmd_sum() {
-  local pkgarchive=$(get_archive)
+  local pkgarchive=$(distfile)
   local archive=${pkgarchive##*/}
 
   [ -r $pkgarchive ] || die "unable to read '$archive'"

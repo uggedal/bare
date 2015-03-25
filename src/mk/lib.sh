@@ -6,7 +6,7 @@ relative() {
   printf -- '%s' ${1#$(pwd)/*}
 }
 
-get_archive() {
+distfile() {
   local archive=${src##*/}
 
   printf -- '%s' $_DIST/$fullparentname/$archive

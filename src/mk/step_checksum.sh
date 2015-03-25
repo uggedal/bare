@@ -1,6 +1,6 @@
 step_checksum() {
   local f=$_SUM/${parentname}.sum
-  local pkgarchive=$(get_archive)
+  local pkgarchive=$(distfile)
   local archive=${pkgarchive##*/}
 
   [ "$src" ] || return 0
