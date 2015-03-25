@@ -1,6 +1,9 @@
 ver=1.23.1
 rev=1
-dist=http://${name}.net/downloads/$name-${ver}.tar.bz2
+dist="
+  http://${name}.net/downloads/$name-${ver}.tar.bz2
+  http://git.alpinelinux.org/cgit/aports/plain/main/busybox/0001-linedit-deluser-use-POSIX-getpwent-instead-of-getpwe.patch
+  "
 
 style=make
 
