@@ -1,4 +1,4 @@
-ver=1.23.1
+ver=1.23.2
 rev=1
 dist="
   http://${name}.net/downloads/$name-${ver}.tar.bz2
