@@ -28,6 +28,7 @@ _usage() {
 mk <command|step> [<args>]
 
 Commands:
+  fetch <pkg>
   sum <pkg>
   clean [pkg]
   query <pkg> <field>

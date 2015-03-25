@@ -1,7 +1,10 @@
 cmd_sum() {
-  local pkgarchive=$(fetch)
+  local pkgarchive=$(get_archive)
+  local archive=${pkgarchive##*/}
 
-  progress sum "'$name' with '${pkgarchive##*/}'"
+  [ -r $pkgarchive ] || die "unable to read '$archive'"
+
+  progress sum "'$name' with '$archive'"
 
   sha512sum $(relative $pkgarchive) > $_SUM/${name}.sum
 }
