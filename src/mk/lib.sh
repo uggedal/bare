@@ -9,7 +9,7 @@ relative() {
 get_archive() {
   local archive=${src##*/}
 
-  printf -- '%s' $_CACHE/$fullparentname/$archive
+  printf -- '%s' $_DIST/$fullparentname/$archive
 }
 
 fetch() {

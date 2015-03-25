@@ -17,7 +17,7 @@ for _f in $_SRC/lib/*.sh $_SRC/mk/*.sh; do
 done
 unset _f
 
-for _dir in cache build dest repo; do
+for _dir in dist build dest repo; do
   eval export _$(uppercase $_dir)=$_ROOT/$_dir
   mkdir -p $_ROOT/$_dir
 done
