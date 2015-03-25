@@ -1,5 +1,5 @@
 step_checksum() {
-  local f=$_CKSUM/${parentname}.sum
+  local f=$_SUM/${parentname}.sum
   local pkgarchive=$(fetch)
   local archive=${pkgarchive##*/}
 

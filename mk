@@ -6,7 +6,7 @@ export _ROOT=$(realpath $(dirname $0))
 
 export _SRC=$_ROOT/src
 export _PKG=$_ROOT/pkg
-export _CKSUM=$_ROOT/cksum
+export _SUM=$_ROOT/sum
 export _FILE=$_ROOT/file
 export _PATCH=$_ROOT/patch
 

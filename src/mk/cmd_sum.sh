@@ -3,5 +3,5 @@ cmd_sum() {
 
   progress sum "'$name' with '${pkgarchive##*/}'"
 
-  sha512sum $(relative $pkgarchive) > $_CKSUM/${name}.sum
+  sha512sum $(relative $pkgarchive) > $_SUM/${name}.sum
 }
