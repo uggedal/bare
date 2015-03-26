@@ -1,7 +1,5 @@
 PKG_VARS='
   name
-  fullname
-  parentname
   ver
   rev
   dist
@@ -10,8 +8,13 @@ PKG_VARS='
   style
   configure
   builddir
-  conflict
   emptydirs
+  '
+
+PKG_COMPUTED_VARS='
+  fullname
+  parentname
+  fullparentname
   '
 
 PKG_EXT=.tar.xz

@@ -1,14 +1,13 @@
-ver=2.25
-rev=1
-dist=$URI_GNU/$name/$name-${ver}.tar.bz2
+ver 2.25
+rev 1
+dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.bz2
 
-style=configure
+style configure
 
-configure='
-  --disable-multilib
-  --disable-nls
+configure \
+  --disable-multilib \
+  --disable-nls \
   --disable-werror
-  '
 
 pre_configure() {
   sed -i -e 's#MAKEINFO="$MISSING makeinfo"#MAKEINFO=true#g' configure

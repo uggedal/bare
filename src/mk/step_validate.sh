@@ -1,15 +1,15 @@
 _validate_name() {
-  [ "${#name}" -le $PKG_NAME_MAX ] ||
-    die "name is longer than $PKG_NAME_MAX (${#name})"
+  [ "${#PKG_NAME}" -le $PKG_NAME_MAX ] ||
+    die "name is longer than $PKG_NAME_MAX (${#PKG_NAME})"
 }
 
 _validate_conflicts() {
   local fl f prefix path
 
-  fl="$(find $_DEST/$fullname -type f -o -type l |
-          sed "s|^$_DEST/$fullname/||")"
+  fl="$(find $_DEST/$PKG_FULLNAME -type f -o -type l |
+          sed "s|^$_DEST/$PKG_FULLNAME/||")"
 
-  < $_REPO/files.txt | sed "/^$fullname\t/d" | while read prefix path; do
+  < $_REPO/files.txt | sed "/^$PKG_FULLNAME\t/d" | while read prefix path; do
     for f in $fl; do
       [ "$f" != "$path" ] || die "conflicting file in '$prefix' ($f)"
     done
@@ -17,7 +17,7 @@ _validate_conflicts() {
 }
 
 step_validate() {
-  progress validate "'$name'"
+  progress validate "'$PKG_NAME'"
 
   _validate_name
 

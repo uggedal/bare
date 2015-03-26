@@ -1,9 +1,9 @@
-ver=0.0.1
-rev=1
+ver 0.0.1
+rev 1
 
-style=noop
-builddir=.
-emptydirs=keep
+style noop
+builddir .
+emptydirs keep
 
 do_install() {
   local d

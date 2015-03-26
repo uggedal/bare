@@ -9,7 +9,7 @@ _filter_patch() {
 _patch() {
   local p=$1
 
-  progress patch "'$name' using '${p##*/}'"
+  progress patch "'$PKG_NAME' using '${p##*/}'"
   patch -d $MK_DIST -p1 < $p
 }
 
@@ -22,7 +22,7 @@ step_patch() {
     done
   fi
 
-  for p in $(foreach _filter_patch $(distpaths $dist)); do
+  for p in $(foreach _filter_patch $(distpaths $PKG_DIST)); do
     _patch $p
   done
 }

@@ -1,7 +1,7 @@
-ver=0.0.1
-rev=1
+ver 0.0.1
+rev 1
 
-style=make
+style make
 
 do_extract() {
   mkdir -p $MK_DIST

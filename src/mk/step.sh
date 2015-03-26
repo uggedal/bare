@@ -15,19 +15,19 @@ run_step() {
     fi
   done
 
-  if [ $step = pkg ] && [ -s $_REPO/${fullname}$PKG_EXT ]; then
-    progress pkg "'$name' $(color 34 complete)"
+  if [ $step = pkg ] && [ -s $_REPO/${PKG_FULLNAME}$PKG_EXT ]; then
+    progress pkg "'$PKG_NAME' $(color 34 complete)"
     return
   fi
 
   for d in $deps; do
     if [ -f $MK_BUILD_ROOT/.${d}.done ]; then
-      progress $d "'$name' $(color 34 cached)"
+      progress $d "'$PKG_NAME' $(color 34 cached)"
       continue
     fi
 
     step_$d "$@"
     touch $MK_BUILD_ROOT/.${d}.done
-    progress $d "'$name' $(color 32 ok)"
+    progress $d "'$PKG_NAME' $(color 32 ok)"
   done
 }

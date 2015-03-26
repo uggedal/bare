@@ -1,8 +1,8 @@
 step_build() {
-  progress build "'$name' using $style"
+  progress build "'$PKG_NAME' using $PKG_STYLE"
 
   (
     cd $MK_BUILD
-    run_style $style build
+    run_style $PKG_STYLE build
   )
 }

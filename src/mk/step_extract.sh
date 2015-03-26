@@ -20,7 +20,7 @@ _extract() {
       ;;
   esac
 
-  progress extract "'$name' using '$(distfile $d)'"
+  progress extract "'$PKG_NAME' using '$(distfile $d)'"
 
   tar -C $MK_BUILD_ROOT -x${fmt}f $(distpath $d)
 }
@@ -31,9 +31,9 @@ step_extract() {
     return 0
   fi
 
-  [ "$dist" ] || return 0
+  [ "$PKG_DIST" ] || return 0
 
   [ -d $_BUILD ] || die "no build directory in '$_BUILD'"
 
-  foreach _extract $dist
+  foreach _extract $PKG_DIST
 }

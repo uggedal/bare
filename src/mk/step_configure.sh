@@ -1,8 +1,8 @@
 step_configure() {
-  progress configure "'$name' using $style"
+  progress configure "'$PKG_NAME' using $PKG_STYLE"
 
   (
     cd $MK_BUILD
-    run_style $style configure
+    run_style $PKG_STYLE configure
   )
 }

@@ -22,9 +22,9 @@ cmd_clean() {
   local dirs="$_BUILD $_DEST"
   local dir
 
-  if [ "$name" ]; then
-    dirs="$MK_BUILD_ROOT $_DEST/$fullname"
-    progress clean "'$name'"
+  if [ "$PKG_NAME" ]; then
+    dirs="$MK_BUILD_ROOT $_DEST/$PKG_FULLNAME"
+    progress clean "'$PKG_NAME'"
   else
     progress clean "all"
     _clean_obsolete_dist

@@ -32,7 +32,7 @@ distfile() {
 
 distpath() {
   local distfile=$(distfile $1)
-  printf -- '%s\n' $_DIST/$fullparentname/$distfile
+  printf -- '%s\n' $_DIST/$PKG_FULLPARENTNAME/$distfile
 }
 
 distfiles() {
@@ -50,32 +50,49 @@ has_distfile() {
 }
 
 assert_distfiles() {
-  foreach has_distfile $dist
+  [ "$PKG_DIST" ] && foreach has_distfile $PKG_DIST
+}
+
+pkg_var() {
+  uppercase PKG_$1
+}
+
+source_pkg() {
+  local name=$1
+  local f=$_PKG/${name}.sh
+
+  [ -r "$f" ] || die "no file for '$name' ($f)"
+  . $f
 }
 
 read_pkg() {
   local _v
-  for _v in $PKG_VARS; do
-    unset $v
+  for _v in $PKG_VARS $PKG_COMPUTED_VARS; do
+    unset -v $(pkg_var $v)
   done
 
-  name=$1
-  parentname=$name
-  pkgfile=$_PKG/${name}.sh
+  for _v in $PKG_VARS; do
+    eval "$_v() { PKG_$(uppercase $_v)=\"\$@\"; }"
+  done
 
-  [ -r "$pkgfile" ] || die "no file for '$name' ($pkgfile)"
-  . $pkgfile
+  PKG_NAME=$1
+  PKG_PARENTNAME=$PKG_NAME
+  source_pkg $PKG_NAME
 
-  fullname=$name-${ver}_$rev
-  fullparentname=$parentname-${ver}_$rev
+  for _v in $PKG_VARS; do
+    unset -f $_v
+  done
+
+  PKG_FULLNAME=$PKG_NAME-${PKG_VER}_$PKG_REV
+  PKG_FULLPARENTNAME=$PKG_PARENTNAME-${PKG_VER}_$PKG_REV
 
   init_env
 }
 
 inherit() {
-  parentname=$1
-  local oname=$name
-  name=$parentname
-  . $_PKG/${1}.sh
-  name=$oname
+  PKG_PARENTNAME=$1
+  local childname=$PKG_NAME
+  PKG_NAME=$PKG_PARENTNAME
+  source_pkg $PKG_PARENTNAME
+  PKG_NAME=$childname
 }

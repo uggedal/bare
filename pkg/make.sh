@@ -1,9 +1,8 @@
-ver=4.1
-rev=1
-dist=$URI_GNU/$name/$name-${ver}.tar.bz2
+ver 4.1
+rev 1
+dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.bz2
 
-style=configure
+style configure
 
-configure='
+configure \
   --disable-nls
-  '

@@ -3,20 +3,20 @@ _xz_stat() {
 }
 
 step_pkg() {
-  local pkg=$_REPO/${fullname}$PKG_EXT
+  local pkg=$_REPO/${PKG_FULLNAME}$PKG_EXT
   local stat
 
-  progress pkg "'$name'"
+  progress pkg "'$PKG_NAME'"
 
   (
-    cd $_DEST/$fullname
+    cd $_DEST/$PKG_FULLNAME
     set -- *
-    [ "$1" != \* ] || die "no files in '$_DEST/$fullname'"
+    [ "$1" != \* ] || die "no files in '$_DEST/$PKG_FULLNAME'"
     tar -cJvf $pkg "$@"
   )
 
-  [ ! -f $_REPO/files.txt ] || sed -i "/^$fullname\t/d" $_REPO/files.txt
-  tar -tJf $pkg | awk '$0="'$fullname'\t"$0' >> $_REPO/files.txt
+  [ ! -f $_REPO/files.txt ] || sed -i "/^$PKG_FULLNAME\t/d" $_REPO/files.txt
+  tar -tJf $pkg | awk '$0="'$PKG_FULLNAME'\t"$0' >> $_REPO/files.txt
 
   stat="$(xz -l $pkg | tail -n1)"
   msg "Uncompressed: $(_xz_stat "$stat" 5 6)"

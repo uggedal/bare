@@ -12,14 +12,14 @@ init_env() {
   if [ "$MK_DESTDIR" = no ]; then
     unset MK_DESTDIR
   else
-    : ${MK_DESTDIR:=$_DEST/$fullname}
+    : ${MK_DESTDIR:=$_DEST/$PKG_FULLNAME}
   fi
 
-  MK_FILE=$_FILE/$parentname
-  MK_PATCH=$_PATCH/$parentname
+  MK_FILE=$_FILE/$PKG_PARENTNAME
+  MK_PATCH=$_PATCH/$PKG_PARENTNAME
 
-  MK_BUILD_ROOT=$_BUILD/$fullname
-  MK_DIST=$MK_BUILD_ROOT/$parentname-$ver
+  MK_BUILD_ROOT=$_BUILD/$PKG_FULLNAME
+  MK_DIST=$MK_BUILD_ROOT/$PKG_PARENTNAME-$PKG_VER
   MK_BUILD=$MK_DIST
 
   mkdir -p $MK_BUILD_ROOT

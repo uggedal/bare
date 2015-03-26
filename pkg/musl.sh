@@ -1,14 +1,13 @@
-ver=1.1.7
-rev=1
-dist=http://www.$name-libc.org/releases/$name-${ver}.tar.gz
+ver 1.1.7
+rev 1
+dist http://www.$PKG_NAME-libc.org/releases/$PKG_NAME-${PKG_VER}.tar.gz
 
-style=configure
+style configure
 
-configure='
-  --disable-gcc-wrapper
-  --enable-debug
+configure \
+  --disable-gcc-wrapper \
+  --enable-debug \
   --enable-optimize
-  '
 
 post_install() {
   mkdir -p $MK_DESTDIR/lib $MK_DESTDIR$MK_PREFIX/bin
