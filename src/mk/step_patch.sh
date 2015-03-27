@@ -10,7 +10,10 @@ _patch() {
   local p=$1
 
   progress patch "'$PKG_NAME' using '${p##*/}'"
-  patch -d $MK_DIST -p1 < $p
+  (
+    cd $MK_DIST
+    patch -p1 < $p
+  )
 }
 
 step_patch() {
