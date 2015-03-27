@@ -72,5 +72,5 @@ step_optimize() {
   remove_below share/info 'info page'
   remove_below share/doc doc
   strip_binaries
-  [ "$emptydirs" = keep ] || remove_empty_dirs
+  [ "$PKG_EMPTYDIRS" = keep ] || remove_empty_dirs
 }
