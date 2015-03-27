@@ -27,9 +27,25 @@ reqs() {
   fi
 }
 
-fetch_and() {
-  ./mk fetch $2
-  ./mk $1 $2
+fetch() {
+  local deps='
+    binutils
+    gmp
+    mpfr
+    mpc
+    gcc
+    linux-headers
+    musl
+    busybox
+    make
+    xz
+    file
+  '
+  local d
+
+  for d in $deps; do
+    ./mk fetch $d
+  done
 }
 
 build_gcc() {
@@ -69,7 +85,7 @@ cross() {
       --prefix=$prefix
       --target=$TRIPLE" \
     MK_DESTDIR=no \
-      fetch_and install bootstrap-binutils
+      ./mk install bootstrap-binutils
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
@@ -79,7 +95,7 @@ cross() {
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
     MK_DESTDIR=$prefix \
     MK_PREFIX=$TRIPLE \
-      fetch_and install bootstrap-linux-headers
+      ./mk install bootstrap-linux-headers
   fi
 
   if ! [ -e $prefix/$TRIPLE/include/stdio.h ]; then
@@ -88,7 +104,7 @@ cross() {
     CC=$TRIPLE-gcc \
     MK_CONFIGURE="--prefix=$prefix/$TRIPLE" \
     MK_DESTDIR=no \
-      fetch_and install bootstrap-musl
+      ./mk install bootstrap-musl
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-g++ ]; then
@@ -98,7 +114,7 @@ cross() {
   if ! [ -x $prefix/bin/pkg-contain ]; then
     MK_PREFIX=$prefix \
     MK_DESTDIR=no \
-      fetch_and install bootstrap-pkg
+      ./mk install bootstrap-pkg
   fi
 }
 
@@ -120,13 +136,13 @@ rootfs() {
   export READELF=$TRIPLE-readelf
   export STRIP=$TRIPLE-strip
 
-  fetch_and pkg musl
+  ./mk pkg musl
   if ! [ -e $prefix/include/stdio.h ]; then
     rootfs_install musl
   fi
 
   CROSS_COMPILE=$TRIPLE- \
-    fetch_and pkg busybox
+    ./mk pkg busybox
   if ! [ -x $ROOTFS_PREFIX/bin/busybox ]; then
     rootfs_install busybox
   fi
@@ -134,7 +150,7 @@ rootfs() {
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr" \
-    fetch_and pkg binutils
+    ./mk pkg binutils
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ar ]; then
     rootfs_install binutils
   fi
@@ -142,7 +158,7 @@ rootfs() {
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr" \
-    fetch_and pkg gmp
+    ./mk pkg gmp
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
     rootfs_install gmp
   fi
@@ -151,7 +167,7 @@ rootfs() {
     --host=$TRIPLE
     --prefix=/usr
     --with-gmp=$prefix" \
-    fetch_and pkg mpfr
+    ./mk pkg mpfr
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
     rootfs_install mpfr
   fi
@@ -161,7 +177,7 @@ rootfs() {
     --prefix=/usr
     --with-gmp=$prefix
     --with-mpfr=$prefix" \
-    fetch_and pkg mpc
+    ./mk pkg mpc
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpc.so ]; then
     rootfs_install mpc
   fi
@@ -173,7 +189,7 @@ rootfs() {
     --with-gmp=$prefix
     --with-mpfr=$prefix
     --with-mpc=$prefix" \
-    fetch_and pkg gcc
+    ./mk pkg gcc
   if ! [ -x $ROOTFS_PREFIX/usr/bin/gcc ]; then
     rootfs_install gcc
   fi
@@ -183,18 +199,18 @@ rootfs() {
     MK_CONFIGURE="
       --host=$TRIPLE
       --prefix=/usr" \
-      fetch_and pkg $bin
+      ./mk pkg $bin
     if ! [ -x $ROOTFS_PREFIX/usr/bin/$bin ]; then
       rootfs_install $bin
     fi
   done
 
-  fetch_and pkg hier
+  ./mk pkg hier
   if ! [ -d $ROOTFS_PREFIX/dev ]; then
     rootfs_install hier
   fi
 
-  fetch_and pkg pkg
+  ./mk pkg pkg
   if ! [ -d $ROOTFS_PREFIX/pkg-contain ]; then
     rootfs_install pkg
   fi
@@ -233,6 +249,7 @@ TRIPLE=$(uname -m)-linux-musl
 PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
 
 reqs
+fetch
 cross
 rootfs
 
