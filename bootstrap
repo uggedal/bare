@@ -27,9 +27,9 @@ reqs() {
   fi
 }
 
-fetch_and_installl() {
-  ./mk fetch $1
-  ./mk install $1
+fetch_and() {
+  ./mk fetch $2
+  ./mk $1 $2
 }
 
 build_gcc() {
@@ -69,7 +69,7 @@ cross() {
       --prefix=$prefix
       --target=$TRIPLE" \
     MK_DESTDIR=no \
-      fetch_and_installl bootstrap-binutils
+      fetch_and installl bootstrap-binutils
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
@@ -79,7 +79,7 @@ cross() {
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
     MK_DESTDIR=$prefix \
     MK_PREFIX=$TRIPLE \
-      fetch_and_installl bootstrap-linux-headers
+      fetch_and installl bootstrap-linux-headers
   fi
 
   if ! [ -e $prefix/$TRIPLE/include/stdio.h ]; then
@@ -88,7 +88,7 @@ cross() {
     CC=$TRIPLE-gcc \
     MK_CONFIGURE="--prefix=$prefix/$TRIPLE" \
     MK_DESTDIR=no \
-      fetch_and_installl bootstrap-musl
+      fetch_and installl bootstrap-musl
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-g++ ]; then
@@ -98,7 +98,7 @@ cross() {
   if ! [ -x $prefix/bin/pkg-contain ]; then
     MK_PREFIX=$prefix \
     MK_DESTDIR=no \
-      fetch_and_installl bootstrap-pkg
+      fetch_and installl bootstrap-pkg
   fi
 }
 
@@ -106,11 +106,6 @@ rootfs_install() {
   local name=$1
 
   tar -C $ROOTFS_PREFIX -xJf repo/$(./mk query $name fullname).tar.xz
-}
-
-fetch_and_pkg() {
-  ./mk fetch $1
-  ./mk pkg $1
 }
 
 rootfs() {
@@ -125,13 +120,13 @@ rootfs() {
   export READELF=$TRIPLE-readelf
   export STRIP=$TRIPLE-strip
 
-  fetch_and_pkg musl
+  fetch_and pkg musl
   if ! [ -e $prefix/include/stdio.h ]; then
     rootfs_install musl
   fi
 
   CROSS_COMPILE=$TRIPLE- \
-    fetch_and_pkg busybox
+    fetch_and pkg busybox
   if ! [ -x $ROOTFS_PREFIX/bin/busybox ]; then
     rootfs_install busybox
   fi
@@ -139,7 +134,7 @@ rootfs() {
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr" \
-    fetch_and_pkg binutils
+    fetch_and pkg binutils
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ar ]; then
     rootfs_install binutils
   fi
@@ -147,7 +142,7 @@ rootfs() {
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr" \
-    fetch_and_pkg gmp
+    fetch_and pkg gmp
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
     rootfs_install gmp
   fi
@@ -156,7 +151,7 @@ rootfs() {
     --host=$TRIPLE
     --prefix=/usr
     --with-gmp=$prefix" \
-    fetch_and_pkg mpfr
+    fetch_and pkg mpfr
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
     rootfs_install mpfr
   fi
@@ -166,7 +161,7 @@ rootfs() {
     --prefix=/usr
     --with-gmp=$prefix
     --with-mpfr=$prefix" \
-    fetch_and_pkg mpc
+    fetch_and pkg mpc
   if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpc.so ]; then
     rootfs_install mpc
   fi
@@ -178,7 +173,7 @@ rootfs() {
     --with-gmp=$prefix
     --with-mpfr=$prefix
     --with-mpc=$prefix" \
-    fetch_and_pkg gcc
+    fetch_and pkg gcc
   if ! [ -x $ROOTFS_PREFIX/usr/bin/gcc ]; then
     rootfs_install gcc
   fi
@@ -188,18 +183,18 @@ rootfs() {
     MK_CONFIGURE="
       --host=$TRIPLE
       --prefix=/usr" \
-      fetch_and_pkg $bin
+      fetch_and pkg $bin
     if ! [ -x $ROOTFS_PREFIX/usr/bin/$bin ]; then
       rootfs_install $bin
     fi
   done
 
-  fetch_and_pkg hier
+  fetch_and pkg hier
   if ! [ -d $ROOTFS_PREFIX/dev ]; then
     rootfs_install hier
   fi
 
-  fetch_and_pkg pkg
+  fetch_and pkg pkg
   if ! [ -d $ROOTFS_PREFIX/pkg-contain ]; then
     rootfs_install pkg
   fi
