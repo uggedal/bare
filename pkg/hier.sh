@@ -8,7 +8,7 @@ emptydirs keep
 do_install() {
   local d
 
-  for d in dev proc sys; do
+  for d in dev proc sys tmp; do
     mkdir -p $MK_DESTDIR/$d
   done
 }
