@@ -24,8 +24,8 @@ init_env() {
 
   mkdir -p $MK_BUILD_ROOT
 
-  if [ "$builddir" ]; then
-    MK_BUILD=$MK_BUILD_ROOT/$builddir
+  if [ "$PKG_BUILDDIR" ]; then
+    MK_BUILD=$MK_BUILD_ROOT/$PKG_BUILDDIR
     mkdir -p $MK_BUILD
   fi
 
