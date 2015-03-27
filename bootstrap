@@ -4,7 +4,7 @@ set -e
 
 usage() {
   cat <<EOF
-$0 -x <cross prefix> -r <rootfs prefix>
+$0 -x <cross prefix> -r <rootfs prefix> [-c]
 
 Example:
 
@@ -205,13 +205,16 @@ contain() {
     $CROSS_PREFIX/$TRIPLE/bin/pkg-contain $ROOTFS_PREFIX /bin/sh
 }
 
-while getopts "r:x:h" opt; do
+while getopts "r:x:ch" opt; do
   case $opt in
     x)
       CROSS_PREFIX=$OPTARG
       ;;
     r)
       ROOTFS_PREFIX=$OPTARG
+      ;;
+    c)
+      CONTAIN=yes
       ;;
     h)
       usage
@@ -232,4 +235,5 @@ PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
 reqs
 cross
 rootfs
-contain
+
+[ -z "$CONTAIN" ] || contain
