@@ -69,7 +69,7 @@ cross() {
       --prefix=$prefix
       --target=$TRIPLE" \
     MK_DESTDIR=no \
-      fetch_and installl bootstrap-binutils
+      fetch_and install bootstrap-binutils
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
@@ -79,7 +79,7 @@ cross() {
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
     MK_DESTDIR=$prefix \
     MK_PREFIX=$TRIPLE \
-      fetch_and installl bootstrap-linux-headers
+      fetch_and install bootstrap-linux-headers
   fi
 
   if ! [ -e $prefix/$TRIPLE/include/stdio.h ]; then
@@ -88,7 +88,7 @@ cross() {
     CC=$TRIPLE-gcc \
     MK_CONFIGURE="--prefix=$prefix/$TRIPLE" \
     MK_DESTDIR=no \
-      fetch_and installl bootstrap-musl
+      fetch_and install bootstrap-musl
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-g++ ]; then
@@ -98,7 +98,7 @@ cross() {
   if ! [ -x $prefix/bin/pkg-contain ]; then
     MK_PREFIX=$prefix \
     MK_DESTDIR=no \
-      fetch_and installl bootstrap-pkg
+      fetch_and install bootstrap-pkg
   fi
 }
 
