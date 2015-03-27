@@ -65,10 +65,20 @@ source_pkg() {
   . $f
 }
 
+validate_pkg() {
+  local _v
+  local _val
+
+  for _v in $PKG_REQUIRED_VARS; do
+    eval _val=\$$(pkg_var $_v)
+    [ "$_val" ] || die "missing required var '$_v'"
+  done
+}
+
 read_pkg() {
   local _v
   for _v in $PKG_VARS $PKG_COMPUTED_VARS; do
-    unset -v $(pkg_var $v)
+    unset -v $(pkg_var $_v)
   done
 
   for _v in $PKG_VARS; do
@@ -85,6 +95,8 @@ read_pkg() {
 
   PKG_FULLNAME=$PKG_NAME-${PKG_VER}_$PKG_REV
   PKG_FULLPARENTNAME=$PKG_PARENTNAME-${PKG_VER}_$PKG_REV
+
+  validate_pkg
 
   init_env
 }

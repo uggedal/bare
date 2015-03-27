@@ -1,15 +1,23 @@
-PKG_VARS='
+PKG_REQUIRED_VARS='
   name
   ver
   rev
+  style
+  '
+
+PKG_OPTIONAL_VARS='
   dist
   bdep
   rdep
-  style
   configure
   builddir
   emptydirs
   '
+
+PKG_VARS="
+  $PKG_REQUIRED_VARS
+  $PKG_OPTIONAL_VARS
+  "
 
 PKG_COMPUTED_VARS='
   fullname
