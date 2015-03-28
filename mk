@@ -2,13 +2,13 @@
 
 set -e
 
-export _ROOT=$(realpath $(dirname $0))
+_ROOT=$(realpath $(dirname $0))
 
-export _SRC=$_ROOT/src
-export _PKG=$_ROOT/pkg
-export _SUM=$_ROOT/sum
-export _FILE=$_ROOT/file
-export _PATCH=$_ROOT/patch
+_SRC=$_ROOT/src
+_PKG=$_ROOT/pkg
+_SUM=$_ROOT/sum
+_FILE=$_ROOT/file
+_PATCH=$_ROOT/patch
 
 _FANCY_MSG=yes
 
@@ -18,7 +18,7 @@ done
 unset _f
 
 for _dir in dist build dest repo; do
-  eval export _$(uppercase $_dir)=$_ROOT/$_dir
+  eval _$(uppercase $_dir)=$_ROOT/$_dir
   mkdir -p $_ROOT/$_dir
 done
 unset _dir
