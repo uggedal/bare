@@ -242,15 +242,17 @@ unset opt
 [ "$CROSS_PREFIX" ] || usage
 [ "$ROOTFS_PREFIX" ] || usage
 
-mkdir -p $CROSS_PREFIX $ROOTFS_PREFIX
-
 TRIPLE=$(uname -m)-linux-musl
-
 PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
 
-reqs
-fetch
-cross
-rootfs
+if [ "$CONTAIN" ]; then
+  contain
+else
 
-[ -z "$CONTAIN" ] || contain
+  mkdir -p $CROSS_PREFIX $ROOTFS_PREFIX
+
+  reqs
+  fetch
+  cross
+  rootfs
+fi
