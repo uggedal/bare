@@ -15,7 +15,9 @@ run_step() {
     fi
   done
 
-  if [ $step = pkg ] && [ -s $_REPO/${PKG_FULLNAME}$PKG_EXT ]; then
+  if [ $step = pkg ] &&
+    [ "$MK_FORCE" != yes ] &&
+    [ -s $_REPO/${PKG_FULLNAME}$PKG_EXT ]; then
     progress pkg "'$PKG_NAME' $(color 34 complete)"
     return
   fi

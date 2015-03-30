@@ -42,7 +42,7 @@ Ordered steps:
   install <pkg>
   optimize <pkg>
   validate <pkg>
-  pkg <pkg>
+  pkg <pkg> [-f]
 EOF
   exit 64
 }
@@ -54,6 +54,12 @@ case "$1" in
     if [ "$2" ]; then
       read_pkg $2
     fi
+    ;;
+  pkg)
+    if [ "$3" = -f ]; then
+      MK_FORCE=yes
+    fi
+    read_pkg $2
     ;;
   *)
     [ "$2" ] || _usage
