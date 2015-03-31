@@ -2,7 +2,6 @@ PKG_REQUIRED_VARS='
   name
   ver
   rev
-  style
   '
 
 PKG_OPTIONAL_VARS='

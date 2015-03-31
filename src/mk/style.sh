@@ -1,6 +1,20 @@
+detect_style() {
+  local style=noop
+
+  if [ -x configure ]; then
+    style=configure
+  elif [ -r Makefile ]; then
+    style=make
+  fi
+    
+  printf -- '%s' $style
+}
+
 run_style() {
-  local style=$1
-  local func=$2
+  local func=$1
+  local style=$(detect_style)
+
+  progress $func "'$PKG_NAME' using $style"
 
   . $_SRC/mk/style_${style}.sh
 

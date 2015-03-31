@@ -6,8 +6,6 @@ dist \
 
 bdep mpc-dev
 
-style configure
-
 configure \
   --disable-libsanitizer \
   --disable-libstdcxx-pch \

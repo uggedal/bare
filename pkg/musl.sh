@@ -2,8 +2,6 @@ ver 1.1.8
 rev 1
 dist http://www.$PKG_NAME-libc.org/releases/$PKG_NAME-${PKG_VER}.tar.gz
 
-style configure
-
 configure \
   --disable-gcc-wrapper \
   --enable-debug \

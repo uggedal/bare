@@ -1,7 +1,6 @@
 ver 0.0.1
 rev 1
 
-style noop
 builddir .
 emptydirs keep
 

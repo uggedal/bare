@@ -3,8 +3,6 @@ rev 1
 dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.gz
 bdep gmp-dev mpfr-dev
 
-style configure
-
 configure \
   --with-pic
 
