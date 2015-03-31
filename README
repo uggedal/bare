@@ -31,7 +31,7 @@ Bootstrap
 ---------
 
 To bootstrap from a linux system with the necessary toolchain and
-a kernel with `user_namespaces(7)` support:
+a kernel with user_namespaces(7) support:
 
     ./bootstrap -x <cross-dir> -r <rootfs-dir>
 
@@ -39,9 +39,9 @@ Legal Information
 -----------------
 
 xunil consists of several packages, each with their own license. These
-can be inspected under `/usr/share/licenses` on a live system.
+can be inspected under /usr/share/licenses on a live system.
 
-Some patches under `patches/` are taken from other projects and thus
+Some patches under patches/ are taken from other projects and thus
 carry the license of their respective upstream.
 
 The following applies to the rest of xunil which is released into
