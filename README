@@ -45,9 +45,6 @@ Legal Information
 xunil consists of several packages, each with their own license. These
 can be inspected under /usr/share/licenses on a live system.
 
-Some patches under patches/ are taken from other projects and thus
-carry the license of their respective upstream.
-
 The following applies to the rest of xunil which is released into
 the Public Domain[1].
 
