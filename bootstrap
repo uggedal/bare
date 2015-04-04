@@ -8,7 +8,7 @@ $0 -x <cross prefix> -r <rootfs prefix> [-c]
 
 Example:
 
-    $0 -x /tmp/xunil-cross -r /tmp/xunil-rootfs
+    $0 -x ~/cross -r ~/rootfs
 EOF
   exit 1
 }
