@@ -5,15 +5,7 @@ is_step() {
 run_step() {
   local step=$1
   local deps=
-  local s d
-
-  for s in $MK_STEPS; do
-    deps="$deps $s"
-
-    if [ "$step" = "$s" ]; then
-      break
-    fi
-  done
+  local s
 
   if [ $step = pkg ] &&
     [ "$MK_FORCE" != yes ] &&
@@ -22,7 +14,7 @@ run_step() {
     return
   fi
 
-  for d in $deps; do
+  for s in $MK_STEPS; do
     if [ -f $MK_BUILD_ROOT/.${d}.done ]; then
       progress $d "'$PKG_NAME' $(color 34 cached)"
       continue
@@ -31,5 +23,9 @@ run_step() {
     step_$d "$@"
     touch $MK_BUILD_ROOT/.${d}.done
     progress $d "'$PKG_NAME' $(color 32 ok)"
+
+    if [ "$step" = "$s" ]; then
+      break
+    fi
   done
 }
