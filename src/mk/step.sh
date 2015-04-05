@@ -16,13 +16,13 @@ run_step() {
 
   for s in $MK_STEPS; do
     if [ -f $MK_BUILD_ROOT/.${d}.done ]; then
-      progress $d "'$PKG_NAME' $(color 34 cached)"
+      progress $s "'$PKG_NAME' $(color 34 cached)"
       continue
     fi
 
-    step_$d "$@"
+    step_$s "$@"
     touch $MK_BUILD_ROOT/.${d}.done
-    progress $d "'$PKG_NAME' $(color 32 ok)"
+    progress $s "'$PKG_NAME' $(color 32 ok)"
 
     if [ "$step" = "$s" ]; then
       break
