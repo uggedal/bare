@@ -1,7 +1,7 @@
-xunil
-=====
+Bare Linux
+==========
 
-Simple linux distro.
+Barely a Linux (http://bare.li)
 
 Philosophy
 ----------
@@ -16,11 +16,9 @@ Philosophy
 Usage
 -----
 
-To build packages in a native xunil system:
+To build packages in a native Bare system:
 
     ./mk <command>
-
-## Configuration
 
 The following environment variables can be overridden from the defaults:
 
@@ -42,14 +40,14 @@ support):
 Legal Information
 -----------------
 
-xunil consists of several packages, each with their own license. These
+Bare Linux consists of several packages, each with their own license. These
 can be inspected under /usr/share/licenses on a live system.
 
-The following applies to the rest of xunil which is released into
+The following applies to the rest of Bare Linux which is released into
 the Public Domain[1].
 
 To the extent possible under law, Eivind Uggedal has waived
-all copyright and related or neighboring rights to xunil.
+all copyright and related or neighboring rights to Bare Linux.
 This work is published from: Norway.
 
 [1] http://creativecommons.org/publicdomain/zero/1.0/
