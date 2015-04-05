@@ -85,6 +85,8 @@ read_pkg() {
     eval "$_v() { PKG_$(uppercase $_v)=\"\$@\"; }"
   done
 
+  pre_env
+
   PKG_NAME=$1
   PKG_PARENTNAME=$PKG_NAME
   source_pkg $PKG_NAME
@@ -98,7 +100,7 @@ read_pkg() {
 
   validate_pkg
 
-  init_env
+  post_env
 }
 
 inherit() {

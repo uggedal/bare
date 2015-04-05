@@ -1,4 +1,10 @@
-init_env() {
+pre_env() {
+  MK_ARCH=$(uname -m)
+  MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
+  MK_TRIPLE=$MK_ARCH-linux-musl
+}
+
+post_env() {
   umask 022
   export LC_ALL=C
 
@@ -28,10 +34,6 @@ init_env() {
     MK_BUILD=$MK_BUILD_ROOT/$PKG_BUILDDIR
     mkdir -p $MK_BUILD
   fi
-
-  MK_ARCH=$(uname -m)
-  MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
-
 
   : ${MK_CONFIGURE:="
     --prefix=$MK_PREFIX
