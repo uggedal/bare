@@ -94,7 +94,7 @@ cross() {
 
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
     MK_DESTDIR=$prefix \
-    MK_PREFIX=$TRIPLE \
+    MK_PREFIX=/$TRIPLE \
       ./mk install bootstrap-linux-headers
   fi
 
@@ -139,6 +139,12 @@ rootfs() {
   ./mk pkg musl
   if ! [ -e $prefix/include/stdio.h ]; then
     rootfs_install musl
+  fi
+
+  if ! [ -e $prefix/include/linux/inotify.h ]; then
+    MK_DESTDIR=$prefix \
+    MK_PREFIX=/ \
+      ./mk install bootstrap-linux-headers
   fi
 
   CROSS_COMPILE=$TRIPLE- \
