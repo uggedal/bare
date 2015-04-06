@@ -20,3 +20,7 @@ configure \
   --target=$MK_TARGET_TRIPLE
 
 builddir gcc-build
+
+# configure detects max_cmd_len=512 without getconf and the
+# libtool code to split long command lines is utterly broken.
+export lt_cv_sys_max_cmd_len=8192
