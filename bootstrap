@@ -64,7 +64,7 @@ build_gcc() {
   done
 
   MK_PREFIX=$prefix \
-  MK_CONFIGURE="--prefix=$prefix"
+  MK_CONFIGURE="--prefix=$prefix" \
   MK_DESTDIR=no \
     ./mk install $name
 }
