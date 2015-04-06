@@ -52,12 +52,10 @@ build_gcc() {
   local name=$1
   local prefix=$2
 
-  ./mk fetch $name
   ./mk extract $name
 
   local dep dest
   for dep in gmp mpfr mpc; do
-    ./mk fetch $dep
     ./mk extract $dep
     dest=$(./mk query $name MK_DIST)/$dep
     [ -h $dest ] || ln -s $(./mk query $dep MK_DIST) $dest
