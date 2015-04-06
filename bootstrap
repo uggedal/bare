@@ -65,8 +65,7 @@ build_gcc() {
 
   MK_PREFIX=$prefix \
   MK_CONFIGURE="
-    --prefix=$prefix
-    --target=$TRIPLE" \
+    --prefix=$prefix"
   MK_DESTDIR=no \
     ./mk install $name
 }
@@ -82,8 +81,7 @@ cross() {
   if ! [ -x $prefix/bin/$TRIPLE-ar ]; then
     MK_PREFIX=$prefix \
     MK_CONFIGURE="
-      --prefix=$prefix
-      --target=$TRIPLE" \
+      --prefix=$prefix"
     MK_DESTDIR=no \
       ./mk install bootstrap-binutils
   fi
@@ -154,7 +152,6 @@ rootfs() {
   fi
 
   MK_CONFIGURE="
-    --host=$TRIPLE
     --prefix=/usr" \
     ./mk pkg binutils
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ar ]; then
@@ -189,8 +186,6 @@ rootfs() {
   fi
 
   MK_CONFIGURE="
-    --host=$TRIPLE
-    --target=$TRIPLE
     --prefix=/usr
     --with-gmp=$prefix
     --with-mpfr=$prefix

@@ -15,4 +15,7 @@ configure \
   --disable-shared \
   --disable-threads \
   --enable-languages=c \
-  --with-newlib
+  --with-newlib \
+  --build=$MK_BUILD_TRIPLE \
+  --host=$MK_HOST_TRIPLE \
+  --target=$MK_TARGET_TRIPLE

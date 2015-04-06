@@ -14,6 +14,9 @@ configure \
   --enable-languages=c,c++,lto \
   --enable-lto \
   --enable-shared \
-  --libdir=/usr/lib
+  --libdir=/usr/lib \
+  --build=$MK_BUILD_TRIPLE \
+  --host=$MK_HOST_TRIPLE \
+  --target=$MK_TARGET_TRIPLE
 
 builddir gcc-build
