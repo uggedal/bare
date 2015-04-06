@@ -64,8 +64,7 @@ build_gcc() {
   done
 
   MK_PREFIX=$prefix \
-  MK_CONFIGURE="
-    --prefix=$prefix"
+  MK_CONFIGURE="--prefix=$prefix"
   MK_DESTDIR=no \
     ./mk install $name
 }
@@ -80,8 +79,7 @@ cross() {
 
   if ! [ -x $prefix/bin/$TRIPLE-ar ]; then
     MK_PREFIX=$prefix \
-    MK_CONFIGURE="
-      --prefix=$prefix"
+    MK_CONFIGURE="--prefix=$prefix" \
     MK_DESTDIR=no \
       ./mk install bootstrap-binutils
   fi
@@ -151,8 +149,7 @@ rootfs() {
     rootfs_install busybox
   fi
 
-  MK_CONFIGURE="
-    --prefix=/usr" \
+  MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ar ]; then
     rootfs_install binutils
