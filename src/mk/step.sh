@@ -17,12 +17,11 @@ run_step() {
   for s in $MK_STEPS; do
     if [ -f $MK_BUILD_ROOT/.${s}.done ]; then
       progress $s "'$PKG_NAME' $(color 34 cached)"
-      continue
+    else
+      step_$s "$@"
+      touch $MK_BUILD_ROOT/.${s}.done
+      progress $s "'$PKG_NAME' $(color 32 ok)"
     fi
-
-    step_$s "$@"
-    touch $MK_BUILD_ROOT/.${s}.done
-    progress $s "'$PKG_NAME' $(color 32 ok)"
 
     if [ "$step" = "$s" ]; then
       break
