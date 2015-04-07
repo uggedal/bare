@@ -65,3 +65,10 @@ usage() {
   ) >&2
   exit 1
 }
+
+dump() {
+  local w
+  for w; do
+    printf -- '%-4s%s\n' '' $w
+  done
+}

@@ -1,4 +1,5 @@
 configure_default_configure() {
+  dump $MK_CONFIGURE $PKG_CONFIGURE
   $MK_DIST/configure $MK_CONFIGURE $PKG_CONFIGURE
 }
 
