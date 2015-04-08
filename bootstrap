@@ -147,6 +147,7 @@ rootfs() {
     rootfs_install busybox
   fi
 
+  MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ar ]; then
@@ -180,6 +181,7 @@ rootfs() {
     rootfs_install mpc
   fi
 
+  MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="
     --prefix=/usr
     --with-gmp=$prefix
