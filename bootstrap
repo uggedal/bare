@@ -3,13 +3,7 @@
 set -e
 
 usage() {
-  cat <<EOF
-$0 -x <cross prefix> -r <rootfs prefix> [-c]
-
-Example:
-
-    $0 -x ~/cross -r ~/rootfs
-EOF
+  printf -- '%s [-x cross_prefix] [-r rootfs_prefix] [-c]\n' $0
   exit 1
 }
 
@@ -237,8 +231,8 @@ while getopts "r:x:ch" opt; do
 done
 unset opt
 
-[ "$CROSS_PREFIX" ] || usage
-[ "$ROOTFS_PREFIX" ] || usage
+: ${CROSS_PREFIX:=$HOME/bare-cross}
+: ${ROOTFS_PREFIX:=$HOME/bare-rootfs}
 
 TRIPLE=$(uname -m)-linux-musl
 PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
