@@ -42,6 +42,18 @@ fetch() {
   done
 }
 
+manual_install() {
+  local prefix=$1
+  local name=$2
+
+  tar -C $prefix -xJf repo/$(./mk query $name fullname).tar.xz
+}
+
+rootfs_install() {
+  local name=$1
+  manual_install $ROOTFS_PREFIX $name
+}
+
 build_gcc() {
   local name=$1
   local prefix=$2
@@ -69,6 +81,13 @@ cross() {
     ln -s . $prefix/$TRIPLE/usr
   fi
 
+  ./mk pkg linux-headers
+  if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
+    manual_install $prefix/$TRIPLE linux-headers
+    mv $prefix/$TRIPLE/usr/include $prefix/$TRIPLE
+    rmdir $prefix/$TRIPLE/usr
+  fi
+
   if ! [ -x $prefix/bin/$TRIPLE-ar ]; then
     MK_PREFIX=$prefix \
     MK_CONFIGURE="--prefix=$prefix" \
@@ -80,11 +99,6 @@ cross() {
     build_gcc bootstrap-gcc-1 $prefix
   fi
 
-  if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
-    MK_DESTDIR=$prefix \
-    MK_PREFIX=/$TRIPLE \
-      ./mk install bootstrap-linux-headers
-  fi
 
   if ! [ -e $prefix/$TRIPLE/include/stdio.h ]; then
     MK_PREFIX=$prefix/$TRIPLE \
@@ -106,12 +120,6 @@ cross() {
   fi
 }
 
-rootfs_install() {
-  local name=$1
-
-  tar -C $ROOTFS_PREFIX -xJf repo/$(./mk query $name fullname).tar.xz
-}
-
 rootfs() {
   local prefix=$ROOTFS_PREFIX/usr
 
@@ -129,10 +137,9 @@ rootfs() {
     rootfs_install musl
   fi
 
+  ./mk pkg linux-headers
   if ! [ -e $prefix/include/linux/inotify.h ]; then
-    MK_DESTDIR=$prefix \
-    MK_PREFIX=/ \
-      ./mk install bootstrap-linux-headers
+    rootfs_install linux-headers
   fi
 
   CROSS_COMPILE=$TRIPLE- \
