@@ -3,23 +3,37 @@ _validate_name() {
     die "name is longer than $PKG_NAME_MAX (${#PKG_NAME})"
 }
 
+_validate_confict() {
+  local name=$1
+  local ver=$2
+  local fullname=$3
+  local pkg=$4
+
+  [ $name != $PKG_NAME ] || return 0
+
+  local line
+
+  tar -xOJf $_REPO/$pkg | while read line; do
+    for f in $_VALIDATE_FL; do
+      [ "$f" != "${line%|*}" ] || die "conflicting file in '$name' ($f)"
+    done
+  done
+}
+
 _validate_conflicts() {
   local fl f prefix path
 
-  fl="$(find $_DEST/$PKG_FULLNAME -type f -o -type l |
-          sed "s|^$_DEST/$PKG_FULLNAME/||")"
+  _VALIDATE_FL="$(find $_DEST/$PKG_FULLNAME -type f -o -type l |
+                  sed "s|^$_DEST/$PKG_FULLNAME/||")"
 
-  < $_REPO/files.txt | sed "/^$PKG_FULLNAME\t/d" | while read prefix path; do
-    for f in $fl; do
-      [ "$f" != "$path" ] || die "conflicting file in '$prefix' ($f)"
-    done
-  done
+  read_repo $_REPO _validate_confict
+
+  unset _VALIDATE_FL
 }
 
 step_validate() {
   progress validate "'$PKG_NAME'"
 
   _validate_name
-
-  [ ! -f $_REPO/files.txt ] || _validate_conflicts
+  _validate_conflicts
 }
