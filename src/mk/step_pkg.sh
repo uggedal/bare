@@ -8,12 +8,7 @@ step_pkg() {
 
   progress pkg "'$PKG_NAME'"
 
-  (
-    cd $_DEST/$PKG_FULLNAME
-    set -- *
-    [ "$1" != \* ] || die "no files in '$_DEST/$PKG_FULLNAME'"
-    tar -cJvf $pkg "$@"
-  )
+  pkg-create $PKG_NAME $_DEST/$PKG_FULLNAME $pkg
 
   [ ! -f $_REPO/files.txt ] || sed -i "/^$PKG_FULLNAME\t/d" $_REPO/files.txt
   tar -tJf $pkg | awk '$0="'$PKG_FULLNAME'\t"$0' >> $_REPO/files.txt
