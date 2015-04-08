@@ -13,7 +13,7 @@ _validate_confict() {
 
   local line
 
-  tar -xOJf $_REPO/$pkg | while read line; do
+  tar -xOJf $_REPO/$pkg var/db/pkg/$name | while read line; do
     for f in $_VALIDATE_FL; do
       [ "$f" != "${line%|*}" ] || die "conflicting file in '$name' ($f)"
     done
