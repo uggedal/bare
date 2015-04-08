@@ -11,7 +11,7 @@ _validate_confict() {
 
   [ $name != $PKG_NAME ] || return 0
 
-  local line
+  local line f
 
   tar -xOJf $_REPO/$pkg var/db/pkg/$name | while read line; do
     for f in $_VALIDATE_FL; do
@@ -21,8 +21,6 @@ _validate_confict() {
 }
 
 _validate_conflicts() {
-  local fl f prefix path
-
   _VALIDATE_FL="$(find $_DEST/$PKG_FULLNAME -type f -o -type l |
                   sed "s|^$_DEST/$PKG_FULLNAME/||")"
 
