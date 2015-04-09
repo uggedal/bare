@@ -74,7 +74,7 @@ build_gcc() {
 }
 
 cross() {
-  local prefix=$CROSS_PREFIX/$TRIPLE
+  local prefix=$CROSS_PREFIX
 
   if ! [ -e $prefix/$TRIPLE/usr ]; then
     mkdir -p $prefix/$TRIPLE
@@ -217,7 +217,7 @@ rootfs() {
 
 contain() {
   env -i PATH="/usr/bin:/usr/sbin:/bin:/sbin" HOSTDIR=$(pwd) \
-    $CROSS_PREFIX/$TRIPLE/bin/pkg-contain $ROOTFS_PREFIX /bin/sh
+    $CROSS_PREFIX/bin/pkg-contain $ROOTFS_PREFIX /bin/sh
 }
 
 while getopts "r:x:ch" opt; do
@@ -242,7 +242,7 @@ unset opt
 : ${ROOTFS_PREFIX:=$HOME/bare-rootfs}
 
 TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
-PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
+PATH=$CROSS_PREFIX/bin:$PATH
 
 if [ "$CONTAIN" ]; then
   contain
