@@ -8,7 +8,7 @@
 _USAGE='[-v] [-f] [-p root_prefix]
 name ...'
 
-while getopts "r:p:vf" opt; do
+while getopts "p:vf" opt; do
   case $opt in
     p)
       PREFIX=$OPTARG

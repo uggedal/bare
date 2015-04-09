@@ -18,7 +18,7 @@ query_line() {
   fi
 }
 
-while getopts "r:v" opt; do
+while getopts "v" opt; do
   case $opt in
     v)
       VERBOSE=yes
