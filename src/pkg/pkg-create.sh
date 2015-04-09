@@ -27,8 +27,8 @@ trap "rm -f $TMP" INT TERM EXIT
     printf -- '%s|%s\n' $f $(sha512sum $f | cut -d' ' -f1)
   done > $TMP
 
-  mkdir -p var/db/pkg
-  mv $TMP var/db/pkg/$NAME
+  mkdir -p $PKG_DB
+  mv $TMP $PKG_DB/$NAME
 
   set -- *
   tar -cJvf $PKG "$@"

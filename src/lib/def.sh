@@ -27,3 +27,5 @@ PKG_COMPUTED_VARS='
 PKG_EXT=.tar.xz
 
 PKG_NAME_MAX=20
+
+PKG_DB=var/db/pkg
