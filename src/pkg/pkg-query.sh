@@ -1,5 +1,6 @@
 #!/bin/sh
 
+[ -r @@SYSCONFDIR@@/pkg.conf ] && . @@SYSCONFDIR@@/pkg.conf
 . @@LIBDIR@@/pkg/def.sh
 . @@LIBDIR@@/pkg/pkg.sh
 . @@LIBDIR@@/pkg/msg.sh

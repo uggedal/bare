@@ -1,5 +1,6 @@
 PREFIX ?= /usr/local
 LIBDIR ?= ${PREFIX}/lib
+SYSCONFDIR ?= /etc
 CFLAGS += -Wall
 
 BIN_SRC = $(wildcard pkg/*.c)
@@ -14,7 +15,10 @@ ${BIN}: %: %.c
 	${CC} $< ${CFLAGS} -o $@ ${LDFLAGS}
 
 ${SCRIPT}: %: %.sh
-	sed -e "s|@@LIBDIR@@|${LIBDIR}|" $< > $@
+	sed \
+		-e "s|@@SYSCONFDIR@@|${SYSCONFDIR}|" \
+		-e "s|@@LIBDIR@@|${LIBDIR}|" \
+		$< > $@
 
 .PHONY: install-bin install-lib
 
