@@ -4,8 +4,7 @@
 . @@LIBDIR@@/pkg/pkg.sh
 . @@LIBDIR@@/pkg/msg.sh
 
-_USAGE='[-v]
--r repo_path'
+_USAGE='[-v]'
 
 query_line() {
   local name=$1
@@ -20,9 +19,6 @@ query_line() {
 
 while getopts "r:v" opt; do
   case $opt in
-    r)
-      REPO=$OPTARG
-      ;;
     v)
       VERBOSE=yes
       ;;

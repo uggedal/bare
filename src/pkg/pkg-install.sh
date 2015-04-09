@@ -4,14 +4,11 @@
 . @@LIBDIR@@/pkg/pkg.sh
 . @@LIBDIR@@/pkg/msg.sh
 
-_USAGE='[-v] [-p root_prefix] -r repo_path
+_USAGE='[-v] [-p root_prefix]
 name ...'
 
 while getopts "r:p:v" opt; do
   case $opt in
-    r)
-      REPO=$OPTARG
-      ;;
     p)
       PREFIX=$OPTARG
       ;;
