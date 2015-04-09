@@ -17,6 +17,13 @@ pkg_to_version() {
   printf -- '%s' ${fullname##*-}
 }
 
+pkg_installed() {
+  local prefix=$1
+  local name=$2
+
+  [ -f $prefix/$PKG_DB/$name ]
+}
+
 read_repo() {
   local repo=$1
   local cb=$2

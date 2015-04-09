@@ -29,6 +29,10 @@ handle_pkg() {
 
   [ "$PKG" = "$name" ] || return 0
 
+  if pkg_installed $PREFIX $PKG; then
+    die "'$PKG' already installed"
+  fi
+
   [ -z "$VERBOSE" ] || msg "installing '$PKG'"
   tar -C $PREFIX -xJf $REPO/$f
   INSTALLED=yes
