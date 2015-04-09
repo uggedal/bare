@@ -241,7 +241,7 @@ unset opt
 : ${CROSS_PREFIX:=$HOME/bare-cross}
 : ${ROOTFS_PREFIX:=$HOME/bare-rootfs}
 
-TRIPLE=$(uname -m)-linux-musl
+TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
 PATH=$CROSS_PREFIX/$TRIPLE/bin:$PATH
 
 if [ "$CONTAIN" ]; then
