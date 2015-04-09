@@ -81,6 +81,12 @@ cross() {
     ln -s . $prefix/$TRIPLE/usr
   fi
 
+  if ! [ -x $prefix/bin/pkg-contain ]; then
+    MK_PREFIX=$prefix \
+    MK_DESTDIR=no \
+      ./mk install bootstrap-pkg
+  fi
+
   ./mk pkg linux-headers
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
     manual_install $prefix/$TRIPLE linux-headers
@@ -111,12 +117,6 @@ cross() {
 
   if ! [ -x $prefix/bin/$TRIPLE-g++ ]; then
     build_gcc bootstrap-gcc-2 $prefix
-  fi
-
-  if ! [ -x $prefix/bin/pkg-contain ]; then
-    MK_PREFIX=$prefix \
-    MK_DESTDIR=no \
-      ./mk install bootstrap-pkg
   fi
 }
 
