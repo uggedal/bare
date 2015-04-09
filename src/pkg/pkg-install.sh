@@ -5,16 +5,19 @@
 . @@LIBDIR@@/pkg/pkg.sh
 . @@LIBDIR@@/pkg/msg.sh
 
-_USAGE='[-v] [-p root_prefix]
+_USAGE='[-v] [-f] [-p root_prefix]
 name ...'
 
-while getopts "r:p:v" opt; do
+while getopts "r:p:vf" opt; do
   case $opt in
     p)
       PREFIX=$OPTARG
       ;;
     v)
       VERBOSE=yes
+      ;;
+    f)
+      FORCE=yes
       ;;
   esac
 done
@@ -29,7 +32,7 @@ handle_pkg() {
 
   [ "$PKG" = "$name" ] || return 0
 
-  if pkg_installed $PREFIX $PKG; then
+  if [ -z "$FORCE" ] && pkg_installed $PREFIX $PKG; then
     die "'$PKG' already installed"
   fi
 
