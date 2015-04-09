@@ -16,8 +16,8 @@ ${BIN}: %: %.c
 
 ${SCRIPT}: %: %.sh
 	sed \
-		-e "s|@@SYSCONFDIR@@|${SYSCONFDIR}|" \
-		-e "s|@@LIBDIR@@|${LIBDIR}|" \
+		-e "s|@@SYSCONFDIR@@|${SYSCONFDIR}|g" \
+		-e "s|@@LIBDIR@@|${LIBDIR}|g" \
 		$< > $@
 
 .PHONY: install-bin install-lib
