@@ -11,7 +11,7 @@ reqs() {
   local b
   local missing
 
-  for b in cc c++ make patch tar xz curl perl file m4; do
+  for b in cc c++ make patch tar xz curl file m4; do
     which $b >/dev/null 2>&1 || missing="$missing $b"
   done
 
