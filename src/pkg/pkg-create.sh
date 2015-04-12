@@ -24,7 +24,7 @@ trap "rm -f $TMP" INT TERM EXIT
   [ "$1" != \* ] || die "no files in '$ROOT'"
 
   find * -type f | while read f; do
-    printf -- '%s|f|%s\n' $f $(sha512sum $f | cut -d' ' -f1)
+    printf -- '%s|f|%s\n' $f $(file_sum $f)
   done > $TMP
 
   find * -type l | while read f; do
