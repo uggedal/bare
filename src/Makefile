@@ -20,7 +20,7 @@ ${SCRIPT}: %: %.sh
 		-e "s|@@LIBDIR@@|${LIBDIR}|g" \
 		$< > $@
 
-.PHONY: install-bin install-lib
+.PHONY: install install-bin install-lib
 
 install-bin: ${BIN} ${SCRIPT}
 	mkdir -p ${DESTDIR}${PREFIX}/bin
