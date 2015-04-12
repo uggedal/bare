@@ -5,8 +5,10 @@
 . @@LIBDIR@@/pkg/pkg.sh
 . @@LIBDIR@@/pkg/msg.sh
 
-_USAGE='[-v] [-f] [-p root_prefix]
+_USAGE='[-v[v]] [-f] [-p root_prefix]
 name ...'
+
+VERBOSE=0
 
 while getopts "p:vf" opt; do
   case $opt in
@@ -14,7 +16,7 @@ while getopts "p:vf" opt; do
       PREFIX=$OPTARG
       ;;
     v)
-      VERBOSE=yes
+      VERBOSE=$(($VERBOSE + 1))
       ;;
     f)
       FORCE=yes
@@ -36,8 +38,12 @@ handle_pkg() {
     die "'$PKG' already installed"
   fi
 
-  [ -z "$VERBOSE" ] || msg "installing '$PKG'"
-  tar -C $PREFIX -xJf $REPO/$f
+  [ "$VERBOSE" -le 0 ] || msg "installing '$PKG'"
+
+  local args=xJf
+  [ "$VERBOSE" -le 1 ] || args=v${args}
+
+  tar -C $PREFIX -$args $REPO/$f
   INSTALLED=yes
 }
 
