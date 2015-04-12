@@ -23,12 +23,16 @@ trap "rm -f $TMP" INT TERM EXIT
   set -- *
   [ "$1" != \* ] || die "no files in '$ROOT'"
 
-  find * -type f -o -type l | while read f; do
-    printf -- '%s|%s\n' $f $(sha512sum $f | cut -d' ' -f1)
+  find * -type f | while read f; do
+    printf -- '%s|f|%s\n' $f $(sha512sum $f | cut -d' ' -f1)
   done > $TMP
 
+  find * -type l | while read f; do
+    printf -- '%s|l|%s\n' $f $(readlink $f)
+  done >> $TMP
+
   mkdir -p $PKG_DB
-  mv $TMP $PKG_DB/$NAME
+  sort $TMP > $PKG_DB/$NAME
 
   set -- *
   tar -cJvf $PKG "$@"
