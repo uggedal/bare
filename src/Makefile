@@ -11,6 +11,8 @@ SCRIPT = $(SCRIPT_SRC:.sh=)
 
 LIB = $(wildcard lib/*.sh)
 
+all: ${BIN} ${SCRIPT}
+
 ${BIN}: %: %.c
 	${CC} $< ${CFLAGS} -o $@ ${LDFLAGS}
 
