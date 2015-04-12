@@ -1,7 +1,9 @@
 inherit linux
 
+bdep ''
+
 do_build() {
-  make ARCH=$MK_KERNEL_ARCH headers_check
+  :
 }
 
 do_install() {
