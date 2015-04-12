@@ -51,7 +51,7 @@ handle_pkg() {
 
 : ${PREFIX:=/}
 
-for PKG in $@; do
+for PKG; do
   unset INSTALLED
   read_repo $REPO handle_pkg
   [ "$INSTALLED" ] || die "no package named '$PKG'"
