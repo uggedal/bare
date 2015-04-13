@@ -4,11 +4,22 @@
 . @@LIBDIR@@/pkg/pkg.sh
 . @@LIBDIR@@/pkg/msg.sh
 
-_USAGE='name root pkg'
+_USAGE='-n name -r root -p pkg'
 
-NAME=$1
-ROOT=$2
-PKG=$3
+while getopts "n:r:p" opt; do
+  case $opt in
+    n)
+      NAME=$OPTARG
+      ;;
+    r)
+      ROOT=$OPTARG
+      ;;
+    p)
+      PKG=$OPTARG
+      ;;
+  esac
+done
+unset opt
 
 [ "$NAME" ] || usage
 [ "$ROOT" ] || usage

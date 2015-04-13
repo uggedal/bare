@@ -8,7 +8,10 @@ step_pkg() {
 
   progress pkg "'$PKG_NAME'"
 
-  pkg-create $PKG_NAME $_DEST/$PKG_FULLNAME $pkg
+  pkg-create \
+    -n $PKG_NAME \
+    -r $_DEST/$PKG_FULLNAME \
+    -p $pkg
 
   stat="$(xz -l $pkg | tail -n1)"
   msg "Uncompressed: $(_xz_stat "$stat" 5 6)"
