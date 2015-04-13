@@ -55,7 +55,7 @@ handle_pkg() {
 
   [ -f $db ] || die "'$name' not installed"
 
-  local f p t m d
+  local f p t m
   while IFS='|' read -r f t m; do
     p=$PREFIX$f
     case $t in
