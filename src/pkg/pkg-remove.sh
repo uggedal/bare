@@ -44,9 +44,18 @@ _rm_empty_dirs() {
 
   d=${f%/*}
   while [ "$d" ]; do
-    rmdir $d 2>/dev/null
+    if rmdir $d 2>/dev/null; then
+      [ "$VERBOSE" -le 1 ] || printf -- '%s\n' $d
+    fi
     d=${d%/*}
   done
+}
+
+_rm() {
+  local f=$1
+
+  [ "$VERBOSE" -le 1 ] || printf -- '%s\n' $f
+  rm $f
 }
 
 handle_pkg() {
@@ -55,20 +64,22 @@ handle_pkg() {
 
   [ -f $db ] || die "'$name' not installed"
 
+  [ "$VERBOSE" -le 0 ] || msg "removing '$name'"
+
   local f p t m
   while IFS='|' read -r f t m; do
     p=$PREFIX$f
     case $t in
       f)
         if check_sum $p $m; then
-          rm $p
+          _rm $p
         else
           _changed_err $p
         fi
         ;;
       l)
         if [ "$(readlink $p)" = $m ]; then
-          rm $p
+          _rm $p
         else
           _changed_err $p
         fi
