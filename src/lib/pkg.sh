@@ -39,6 +39,12 @@ read_repo() {
 
   local f p
   for f in $repo/*$PKG_EXT; do
+    case f in
+      $repo/\*$PKG_EXT)
+        return 0
+        ;;
+    esac
+
     p=$(basename $f)
     $cb $(pkg_to_name $p) $(pkg_to_version $p) $(pkg_to_fullname $p) $p
   done
