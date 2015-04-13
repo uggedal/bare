@@ -42,6 +42,10 @@ trap "rm -f $TMP" INT TERM EXIT
     printf -- '@|%s|%s\n' $l $(readlink $l)
   done >> $TMP
 
+  find * -type d | sort | while read d; do
+    printf -- '/|%s\n' $d
+  done >> $TMP
+
   mkdir -p $PKG_DB
   mv $TMP $PKG_DB/$NAME
 

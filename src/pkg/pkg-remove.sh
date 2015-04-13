@@ -38,19 +38,6 @@ _changed_err() {
   err "'$f' local changes, skipping removal"
 }
 
-_rm_empty_dirs() {
-  local f=$1
-  local d
-
-  d=${f%/*}
-  while [ "$d" ]; do
-    if rmdir $d 2>/dev/null; then
-      [ "$VERBOSE" -le 1 ] || printf -- '%s\n' $d
-    fi
-    d=${d%/*}
-  done
-}
-
 _rm() {
   local f=$1
 
@@ -71,16 +58,23 @@ handle_db_line() {
         _changed_err $path
       fi
       ;;
-    l)
+    @)
       if [ "$(readlink $path)" = $meta ]; then
         _rm $path
       else
         _changed_err $path
       fi
       ;;
+    /)
+      if [ -d $path ]; then
+        if rmdir $d 2>/dev/null; then
+          [ "$VERBOSE" -le 1 ] || printf -- '%s\n' $d
+        fi
+      else
+        _changed_err $path
+      fi
+      ;;
   esac
-
-  _rm empty_dirs $path
 }
 
 for p; do
