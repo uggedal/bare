@@ -58,41 +58,34 @@ _rm() {
   rm $f
 }
 
-handle_pkg() {
-  local name=$1
-  local db=$(pkg_db $PREFIX $name)
+handle_db_line() {
+  local p=$1
+  local t=$2
+  local m=$3
 
-  [ -f $db ] || die "'$name' not installed"
+  case $t in
+    f)
+      if check_sum $p $m; then
+        _rm $p
+      else
+        _changed_err $p
+      fi
+      ;;
+    l)
+      if [ "$(readlink $p)" = $m ]; then
+        _rm $p
+      else
+        _changed_err $p
+      fi
+      ;;
+  esac
 
-  [ "$VERBOSE" -le 0 ] || msg "removing '$name'"
-
-  local f p t m
-  while IFS='|' read -r f t m; do
-    p=$PREFIX$f
-    case $t in
-      f)
-        if check_sum $p $m; then
-          _rm $p
-        else
-          _changed_err $p
-        fi
-        ;;
-      l)
-        if [ "$(readlink $p)" = $m ]; then
-          _rm $p
-        else
-          _changed_err $p
-        fi
-        ;;
-    esac
-
-    _rm_empty_dirs $p
-  done < $db
-
-  rm $db
+  _rm_empty_dirs $p
 }
 
 for p; do
-  handle_pkg $p
+  [ "$VERBOSE" -le 0 ] || msg "removing '$p'"
+  read_db $PREFIX $p handle_db_line
+  rm $(pkg_db $PREFIX $p)
 done
 unset p

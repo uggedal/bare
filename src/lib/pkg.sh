@@ -44,6 +44,21 @@ read_repo() {
   done
 }
 
+read_db() {
+  local prefix=$1
+  local name=$2
+  local cb=$3
+  local db=$(pkg_db $prefix $name)
+
+  [ -f $db ] || die "unable to read '$name' ($db)"
+
+  local f p t m
+  while IFS='|' read -r f t m; do
+    p=$prefix$f
+    $cb $p $t $m
+  done < $db
+}
+
 file_sum() {
   local f=$1
 
