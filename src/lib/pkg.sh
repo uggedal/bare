@@ -21,7 +21,7 @@ pkg_db() {
   local prefix=$1
   local name=$2
 
-  printf -- '%s' $prefix/$PKG_DB/$name
+  printf -- '%s' ${prefix%/}/$PKG_DB/$name
 }
 
 pkg_installed() {
