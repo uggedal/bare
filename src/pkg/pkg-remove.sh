@@ -59,28 +59,28 @@ _rm() {
 }
 
 handle_db_line() {
-  local p=$1
-  local t=$2
-  local m=$3
+  local t=$1
+  local path=$PREFIX$2
+  local meta=$3
 
   case $t in
     f)
-      if check_sum $p $m; then
-        _rm $p
+      if check_sum $path $meta; then
+        _rm $path
       else
-        _changed_err $p
+        _changed_err $path
       fi
       ;;
     l)
-      if [ "$(readlink $p)" = $m ]; then
-        _rm $p
+      if [ "$(readlink $path)" = $meta ]; then
+        _rm $path
       else
-        _changed_err $p
+        _changed_err $path
       fi
       ;;
   esac
 
-  _rm_empty_dirs $p
+  _rm empty_dirs $path
 }
 
 for p; do

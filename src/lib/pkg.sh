@@ -58,10 +58,9 @@ read_db() {
 
   [ -f $db ] || die "unable to read '$name' ($db)"
 
-  local f p t m
-  while IFS='|' read -r f t m; do
-    p=$prefix$f
-    $cb $p $t $m
+  local t f1 f2
+  while IFS='|' read -r t f1 f2; do
+    $cb $t $f1 $f2
   done < $db
 }
 
