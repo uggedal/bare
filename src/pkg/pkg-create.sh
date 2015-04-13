@@ -9,7 +9,7 @@ _USAGE='-n name -r root -p pkg'
 while getopts "n:r:p" opt; do
   case $opt in
     n)
-      NAME=$OPTARG
+      FULLNAME=$OPTARG
       ;;
     r)
       ROOT=$OPTARG
@@ -21,9 +21,12 @@ while getopts "n:r:p" opt; do
 done
 unset opt
 
-[ "$NAME" ] || usage
+[ "$FULLNAME" ] || usage
 [ "$ROOT" ] || usage
 [ "$PKG" ] || usage
+
+NAME=$(pkg_to_name $FULLNAME)
+VERSION=$(pkg_to_version $FULLNAME)
 
 TMP=$(mktemp)
 trap "rm -f $TMP" INT TERM EXIT
@@ -33,6 +36,8 @@ trap "rm -f $TMP" INT TERM EXIT
 
   set -- *
   [ "$1" != \* ] || die "no files in '$ROOT'"
+
+  printf -- 'v|%s\n' $VERSION > $TMP
 
   find * -type f | sort | while read f; do
     printf -- 'f|%s|%s\n' $f $(file_sum $f)

@@ -9,7 +9,7 @@ step_pkg() {
   progress pkg "'$PKG_NAME'"
 
   pkg-create \
-    -n $PKG_NAME \
+    -n $PKG_FULLNAME \
     -r $_DEST/$PKG_FULLNAME \
     -p $pkg
 
