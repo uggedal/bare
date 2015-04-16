@@ -5,7 +5,7 @@ _xz_stat() {
 _provided_libs() {
   local f mime
 
-  find $_DEST/$PKG_FULLNAME -type f | while read f; do
+  find $_DEST/$PKG_FULLNAME$MK_PREFIX/lib -type f | while read f; do
     mime="$(file -bi "$f")"
     case "$mime" in
       application/x-sharedlib*)
