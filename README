@@ -33,12 +33,12 @@ Bootstrap
 
 First bootstrap from a linux system with the necessary toolchain:
 
-    ./bootstrap -x <cross-dir> -r <rootfs-dir>
+    ./bootstrap
 
 Then enter the new rootfs (requires a kernel with user_namespaces(7)
 support):
 
-    ./bootstrap -x <cross-dir> -r <rootfs-dir> -c
+    ./bootstrap -c
 
 Legal Information
 -----------------
