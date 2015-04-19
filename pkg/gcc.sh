@@ -11,6 +11,7 @@ configure \
   --disable-libstdcxx-pch \
   --disable-multilib \
   --disable-nls \
+  --enable-checking=release \
   --enable-languages=c,c++,lto \
   --enable-lto \
   --enable-shared \

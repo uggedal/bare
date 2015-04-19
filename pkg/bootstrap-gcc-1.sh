@@ -14,6 +14,7 @@ configure \
   --disable-nls \
   --disable-shared \
   --disable-threads \
+  --enable-checking=release \
   --enable-languages=c \
   --with-newlib \
   --target=$MK_TARGET_TRIPLE
