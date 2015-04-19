@@ -1,6 +1,6 @@
-ver 0.0.001.e2edbdcb87c89d69ab8cbf1a753ead75ccea5949
+ver 0.0.002.34a3ab8cdaee7ca671f42799cc5e499f8351f9b7
 rev 1
-dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
+dist http://git.2f30.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
 distdir $PKG_NAME-${PKG_VER##*.}
 
