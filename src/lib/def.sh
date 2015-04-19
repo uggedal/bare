@@ -9,6 +9,7 @@ PKG_OPTIONAL_VARS='
   bdep
   rdep
   configure
+  distdir
   builddir
   emptydirs
   '
