@@ -3,9 +3,12 @@ _xz_stat() {
 }
 
 _provided_libs() {
+  local libdir=$_DEST/$PKG_FULLNAME$MK_PREFIX/lib
   local f mime
 
-  find $_DEST/$PKG_FULLNAME$MK_PREFIX/lib -type f | while read f; do
+  [ -d $libdir ] || return 0
+
+  find $libdir -type f | while read f; do
     mime="$(file -bi "$f")"
     case "$mime" in
       application/x-sharedlib*)
