@@ -11,12 +11,16 @@ _validate_confict() {
 
   [ $name != $PKG_NAME ] || return 0
 
-  local line f
+  local t f1 f2 f
 
-  tar -xOJf $_REPO/$pkg $PKG_DB/$name | while read line; do
-    for f in $_VALIDATE_FL; do
-      [ "$f" != "${line%|*}" ] || die "conflicting file in '$name' ($f)"
-    done
+  tar -xOJf $_REPO/$pkg $PKG_DB/$name | while IFS='|' read -r t f1 f2; do
+    case $t in
+      @|f)
+        for f in $_VALIDATE_FL; do
+          [ "$f" != "$f1" ] || die "conflicting file in '$name' ($f)"
+        done
+        ;;
+    esac
   done
 }
 
