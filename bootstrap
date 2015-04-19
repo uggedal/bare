@@ -148,6 +148,11 @@ rootfs() {
     rootfs_install busybox
   fi
 
+  ./mk pkg sbase
+  if ! [ -x $ROOTFS_PREFIX/bin/cp ]; then
+    rootfs_install sbase
+  fi
+
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
