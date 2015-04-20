@@ -149,7 +149,7 @@ rootfs() {
   fi
 
   ./mk pkg sbase
-  if ! [ -x $ROOTFS_PREFIX/bin/cp ]; then
+  if ! [ -x $ROOTFS_PREFIX/usr/bin/cp ]; then
     rootfs_install sbase
   fi
 
