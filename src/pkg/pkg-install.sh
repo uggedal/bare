@@ -43,7 +43,7 @@ handle_pkg() {
   local args=xJf
   [ "$VERBOSE" -le 1 ] || args=v${args}
 
-  tar -C $PREFIX -$args $REPO/$f
+  xzdec -c $REPO/$f | tar -C $PREFIX -x
   INSTALLED=yes
 }
 
