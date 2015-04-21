@@ -1,16 +1,16 @@
 _extract() {
   local d=$1
-  local fmt
+  local cmd
 
   case $(distfile $d) in
     *.tar.gz)
-      fmt=z
+      cmd=gunzip
       ;;
     *.tar.bz2)
-      fmt=j
+      cmd=bunzip2
       ;;
     *.tar.xz)
-      fmt=J
+      cmd=xzdec
       ;;
     *.diff|*.patch)
       return 0
@@ -22,7 +22,7 @@ _extract() {
 
   progress extract "'$PKG_NAME' using '$(distfile $d)'"
 
-  tar -C $MK_BUILD_ROOT -x${fmt}f $(distpath $d)
+  $cmd -c $(distpath $d) | tar -C $MK_BUILD_ROOT -x
 }
 
 step_extract() {
