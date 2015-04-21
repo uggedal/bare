@@ -16,7 +16,6 @@ post_install() {
     strings
   '
   local broken='
-    expr
     sed
   '
 
