@@ -5,10 +5,13 @@ dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 distdir $PKG_NAME-${PKG_VER##*.}
 
 pre_configure() {
-  sed -i \
-    -e "s|^\(CC = \).*|\1$CC|" \
-    -e "s|^\(PREFIX = \).*|\1$MK_PREFIX|" \
-    config.mk
+  ed config.mk <<EOF
+,s|^\(CC = \).*\$|\1$CC
+,s|^\(PREFIX = \).*\$|\1$MK_PREFIX
+/^CFLAGS/s|=|+=
+w
+q
+EOF
 }
 
 post_install() {
