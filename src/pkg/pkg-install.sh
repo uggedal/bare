@@ -40,8 +40,7 @@ handle_pkg() {
 
   [ "$VERBOSE" -le 0 ] || msg "installing '$PKG'"
 
-  local args=xJf
-  [ "$VERBOSE" -le 1 ] || args=v${args}
+  [ "$VERBOSE" -le 1 ] || xzdec -c $REPO/$f | tar -t
 
   xzdec -c $REPO/$f | tar -C $PREFIX -x
   INSTALLED=yes
