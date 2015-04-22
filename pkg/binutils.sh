@@ -11,5 +11,9 @@ configure \
   --target=$MK_TARGET_TRIPLE
 
 pre_configure() {
-  sed -i -e 's#MAKEINFO="$MISSING makeinfo"#MAKEINFO=true#g' configure
+  ed configure <<EOF
+,s|MAKEINFO="\$MISSING makeinfo"|MAKEINFO=true|g
+w
+q
+EOF
 }
