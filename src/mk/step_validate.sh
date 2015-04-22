@@ -3,6 +3,17 @@ _validate_name() {
     die "name is longer than $PKG_NAME_MAX (${#PKG_NAME})"
 }
 
+_extract_db_file() {
+  local name=$1
+  local ver=$2
+  local fullname=$3
+  local pkg=$4
+
+  [ $name != $PKG_NAME ] || return 0
+
+  xzdec -c $_REPO/$pkg | tar -C $_TMP_DB_DIR -x $PKG_DB/$name
+}
+
 _validate_confict() {
   local name=$1
   local ver=$2
@@ -13,7 +24,7 @@ _validate_confict() {
 
   local t f1 f2 f
 
-  tar -xOJf $_REPO/$pkg $PKG_DB/$name | while IFS='|' read -r t f1 f2; do
+  while IFS='|' read -r t f1 f2; do
     case $t in
       @|f)
         for f in $_VALIDATE_FL; do
@@ -21,15 +32,19 @@ _validate_confict() {
         done
         ;;
     esac
-  done
+  done < $_TMP_DB_DIR/$PKG_DB/$name
 }
 
 _validate_conflicts() {
+  _TMP_DB_DIR=$(mktemp -d)
   _VALIDATE_FL="$(find $_DEST/$PKG_FULLNAME -type f -o -type l |
                   sed "s|^$_DEST/$PKG_FULLNAME/||")"
 
+  read_repo $_REPO _extract_db_file
   read_repo $_REPO _validate_confict
 
+  rm -rf $_TMP_DB_DIR
+  unset _TMP_DB_DIR
   unset _VALIDATE_FL
 }
 
