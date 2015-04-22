@@ -18,12 +18,9 @@ post_install() {
   local conflicts='
     strings
   '
-  local broken='
-    sed
-  '
 
   local f
-  for f in $conflicts $broken; do
+  for f in $conflicts; do
     rm $MK_DESTDIR$MK_PREFIX/bin/$f
     rm -f $MK_DESTDIR$MK_PREFIX/share/man/man1/${f}.1
   done
