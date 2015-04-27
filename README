@@ -46,11 +46,4 @@ Legal Information
 Bare Linux consists of several packages, each with their own license. These
 can be inspected under /usr/share/licenses on a live system.
 
-The following applies to the rest of Bare Linux which is released into
-the Public Domain[1].
-
-To the extent possible under law, Eivind Uggedal has waived
-all copyright and related or neighboring rights to Bare Linux.
-This work is published from: Norway.
-
-[1] http://creativecommons.org/publicdomain/zero/1.0/
+The rest of Bare Linux is released under the ISC License.
