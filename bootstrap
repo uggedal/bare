@@ -153,6 +153,11 @@ rootfs() {
     rootfs_install sbase
   fi
 
+  ./mk pkg ubase
+  if ! [ -x $ROOTFS_PREFIX/usr/bin/passwd ]; then
+    rootfs_install ubase
+  fi
+
   ./mk pkg oed
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ed ]; then
     rootfs_install oed
