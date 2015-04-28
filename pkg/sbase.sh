@@ -22,6 +22,6 @@ post_install() {
   local f
   for f in $conflicts; do
     rm $MK_DESTDIR$MK_PREFIX/bin/$f
-    rm -f $MK_DESTDIR$MK_PREFIX/share/man/man1/${f}.1
+    rm -f $MK_DESTDIR$MK_MANDIR/man1/${f}.1
   done
 }

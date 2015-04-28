@@ -23,6 +23,6 @@ post_install() {
   local f
   for f in $unneeded; do
     rm $MK_DESTDIR$MK_PREFIX/bin/$f
-    rm -f $MK_DESTDIR$MK_PREFIX/share/man/man[18]/${f}.[18]
+    rm -f $MK_DESTDIR$MK_MANDIR/man[18]/${f}.[18]
   done
 }
