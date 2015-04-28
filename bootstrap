@@ -163,6 +163,11 @@ rootfs() {
     rootfs_install oed
   fi
 
+  ./mk pkg awk
+  if ! [ -x $ROOTFS_PREFIX/usr/bin/awk ]; then
+    rootfs_install awk
+  fi
+
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
