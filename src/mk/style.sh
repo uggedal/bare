@@ -3,7 +3,7 @@ detect_style() {
 
   if [ -x $MK_DIST/configure ]; then
     style=configure
-  elif [ -r $MK_DIST/Makefile ]; then
+  elif [ -r $MK_DIST/Makefile ] || [ -r $MK_DIST/makefile ]; then
     style=make
   fi
     
