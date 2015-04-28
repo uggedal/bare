@@ -45,10 +45,12 @@ post_env() {
     mkdir -p $MK_BUILD
   fi
 
+  MK_MANDIR=$MK_PREFIX/share/man
+
   : ${MK_CONFIGURE:="
     --prefix=$MK_PREFIX
     --sysconfdir=/etc
     --localstatedir=/var
-    --mandir=/usr/share/man
+    --mandir=$MK_MANDIR
     "}
 }
