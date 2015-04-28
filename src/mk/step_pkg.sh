@@ -1,5 +1,5 @@
 _xz_stat() {
-  printf -- '%s' "$1" | awk "{ print \$$2 \" \" \$$3 }"
+  printf '%s' "$1" | awk "{ print \$$2 \" \" \$$3 }"
 }
 
 _provided_libs() {

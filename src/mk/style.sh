@@ -7,7 +7,7 @@ detect_style() {
     style=make
   fi
     
-  printf -- '%s' $style
+  printf '%s' $style
 }
 
 run_style() {

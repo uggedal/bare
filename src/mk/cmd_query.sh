@@ -2,7 +2,7 @@ cmd_query() {
   local field=$3
   local v ok
 
-  if printf -- '%s' $field | grep -q ^MK_; then
+  if printf '%s' $field | grep -q ^MK_; then
     eval v="\$$field"
   else
     for v in $PKG_VARS $PKG_COMPUTED_VARS; do
@@ -16,5 +16,5 @@ cmd_query() {
 
   [ "$v" ] || die "undefined pkg field '$field'"
 
-  printf -- '%s\n' "$v"
+  printf '%s\n' "$v"
 }

@@ -2,7 +2,7 @@ pre_env() {
   : ${CC:=gcc}
 
   MK_ARCH=$(uname -m)
-  MK_KERNEL_ARCH=$(printf -- '%s' $MK_ARCH | sed 's/-.*//')
+  MK_KERNEL_ARCH=$(printf '%s' $MK_ARCH | sed 's/-.*//')
 
   : ${MK_BUILD_TRIPLE:=$($CC -dumpmachine)}
   : ${MK_HOST_TRIPLE:=$($CC -dumpmachine)}

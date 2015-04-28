@@ -1,27 +1,27 @@
 pkg_to_fullname() {
   local pkg=$1
 
-  printf -- '%s' ${pkg%$PKG_EXT*}
+  printf '%s' ${pkg%$PKG_EXT*}
 }
 
 pkg_to_name() {
   local pkg=$1
 
-  printf -- '%s' ${pkg%-*}
+  printf '%s' ${pkg%-*}
 }
 
 pkg_to_version() {
   local pkg=$1
   local fullname=$(pkg_to_fullname $pkg)
 
-  printf -- '%s' ${fullname##*-}
+  printf '%s' ${fullname##*-}
 }
 
 pkg_db() {
   local prefix=$1
   local name=$2
 
-  printf -- '%s' ${prefix%/}/$PKG_DB/$name
+  printf '%s' ${prefix%/}/$PKG_DB/$name
 }
 
 pkg_installed() {

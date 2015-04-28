@@ -41,7 +41,7 @@ _changed_err() {
 _rm() {
   local f=$1
 
-  [ "$VERBOSE" -le 1 ] || printf -- '%s\n' $f
+  [ "$VERBOSE" -le 1 ] || printf '%s\n' $f
   rm $f
 }
 
@@ -68,7 +68,7 @@ handle_db_line() {
     /)
       if [ -d $path ]; then
         if rmdir $d 2>/dev/null; then
-          [ "$VERBOSE" -le 1 ] || printf -- '%s\n' $d
+          [ "$VERBOSE" -le 1 ] || printf '%s\n' $d
         fi
       else
         _changed_err $path

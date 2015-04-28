@@ -4,9 +4,9 @@ fi
 
 strong() {
   if [ "$_USE_COLOR" ]; then
-    printf -- '\033[1m%s\033[0m\n' "$@"
+    printf '\033[1m%s\033[0m\n' "$@"
   else
-    printf -- '%s' "$@"
+    printf '%s' "$@"
   fi
 }
 
@@ -15,9 +15,9 @@ color() {
   shift
 
   if [ "$_USE_COLOR" ]; then
-    printf -- '\033[%dm%s\033[39;49m' $n "$@"
+    printf '\033[%dm%s\033[39;49m' $n "$@"
   else
-    printf -- '%s' "$@"
+    printf '%s' "$@"
   fi
 }
 
@@ -26,7 +26,7 @@ msg() {
 
   [ -z "$_FANCY_MSG" ] || prefix='>>> '
 
-  printf -- '%s\n' "$(strong "$(color 37 "$prefix")$@")" 1>&2
+  printf '%s\n' "$(strong "$(color 37 "$prefix")$@")" 1>&2
 }
 
 err() {
@@ -56,9 +56,9 @@ usage() {
     heading=yes
     for l in $_USAGE; do
       if [ "$heading" ]; then
-        printf -- 'usage: %s %s\n' $progname "$l"
+        printf 'usage: %s %s\n' $progname "$l"
       else
-        printf -- '%-*s%s\n' $indent_width '' "$l"
+        printf '%-*s%s\n' $indent_width '' "$l"
       fi
       unset heading
     done
@@ -69,6 +69,6 @@ usage() {
 dump() {
   local w
   for w; do
-    printf -- '%-4s%s\n' '' $w
+    printf '%-4s%s\n' '' $w
   done
 }

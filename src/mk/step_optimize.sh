@@ -1,5 +1,5 @@
 _rootify() {
-  printf -- '%s' ${1#$_DEST/$PKG_FULLNAME}
+  printf '%s' ${1#$_DEST/$PKG_FULLNAME}
 }
 
 remove_libtool_archives() {

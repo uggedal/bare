@@ -3,7 +3,7 @@
 set -e
 
 usage() {
-  printf -- '%s [-x cross_prefix] [-r rootfs_prefix] [-c]\n' $0
+  printf '%s [-x cross_prefix] [-r rootfs_prefix] [-c]\n' $0
   exit 1
 }
 
@@ -233,7 +233,7 @@ rootfs() {
 contain() {
   local conf=$ROOTFS_PREFIX/etc/pkg.conf
 
-  printf -- 'REPO=%s\n' /host/repo > $conf
+  printf 'REPO=%s\n' /host/repo > $conf
 
   env -i \
     PATH="/usr/bin:/usr/sbin:/bin:/sbin" \

@@ -1,9 +1,9 @@
 uppercase() {
-  printf -- '%s' "$@" | tr 'a-z' 'A-Z'
+  printf '%s' "$@" | tr 'a-z' 'A-Z'
 }
 
 relative() {
-  printf -- '%s\n' ${1#$(pwd)/*}
+  printf '%s\n' ${1#$(pwd)/*}
 }
 
 merge() {
@@ -13,7 +13,7 @@ merge() {
     res="$res $part"
   done
 
-  printf -- '%s' "${res# *}"
+  printf '%s' "${res# *}"
 }
 
 foreach() {
@@ -27,12 +27,12 @@ foreach() {
 }
 
 distfile() {
-  printf -- '%s\n' ${1##*/}
+  printf '%s\n' ${1##*/}
 }
 
 distpath() {
   local distfile=$(distfile $1)
-  printf -- '%s\n' $_DIST/$PKG_FULLPARENTNAME/$distfile
+  printf '%s\n' $_DIST/$PKG_FULLPARENTNAME/$distfile
 }
 
 distfiles() {

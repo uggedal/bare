@@ -12,9 +12,9 @@ query_line() {
   local ver=$2
 
   if [ "$VERBOSE" ]; then
-    printf -- "%-${PKG_NAME_MAX}s %s\n" $name $ver
+    printf "%-${PKG_NAME_MAX}s %s\n" $name $ver
   else
-    printf -- '%s\n' $name
+    printf '%s\n' $name
   fi
 }
 

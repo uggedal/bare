@@ -44,26 +44,26 @@ trap "rm -f $TMP" INT TERM EXIT
   set -- *
   [ "$1" != \* ] || die "no files in '$ROOT'"
 
-  printf -- 'v|%s\n' $VERSION > $TMP
+  printf 'v|%s\n' $VERSION > $TMP
 
   for lib in $LIBS; do
-    printf -- 'l|%s\n' $lib
+    printf 'l|%s\n' $lib
   done >> $TMP
 
   for dep in $DEPS; do
-    printf -- 'd|%s\n' $dep
+    printf 'd|%s\n' $dep
   done >> $TMP
 
   find * -type f | sort | while read f; do
-    printf -- 'f|%s|%s\n' $f $(file_sum $f)
+    printf 'f|%s|%s\n' $f $(file_sum $f)
   done >> $TMP
 
   find * -type l | sort | while read l; do
-    printf -- '@|%s|%s\n' $l $(readlink $l)
+    printf '@|%s|%s\n' $l $(readlink $l)
   done >> $TMP
 
   find * -type d | sort | while read d; do
-    printf -- '/|%s\n' $d
+    printf '/|%s\n' $d
   done >> $TMP
 
   mkdir -p $PKG_DB
