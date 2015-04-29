@@ -13,7 +13,7 @@ EOF
 }
 
 do_build() {
-	make \
+  make -j $MK_NPROC \
     YACC=: \
     CC=$CC \
     CFLAGS="$CFLAGS" \
