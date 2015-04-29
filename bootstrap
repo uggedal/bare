@@ -173,6 +173,11 @@ rootfs() {
     rootfs_install awk
   fi
 
+  ./mk pkg bzip2
+  if ! [ -x $ROOTFS_PREFIX/usr/bin/bzip2 ]; then
+    rootfs_install bzip2
+  fi
+
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
