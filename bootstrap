@@ -158,9 +158,9 @@ rootfs() {
     rootfs_install ubase
   fi
 
-  ./mk pkg oed
+  ./mk pkg ed
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ed ]; then
-    rootfs_install oed
+    rootfs_install ed
   fi
 
   ./mk pkg awk
