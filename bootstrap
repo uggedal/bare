@@ -158,6 +158,11 @@ rootfs() {
     rootfs_install ubase
   fi
 
+  ./mk pkg ksh
+  if ! [ -x $ROOTFS_PREFIX/bin/sh ]; then
+    rootfs_install ksh
+  fi
+
   ./mk pkg ed
   if ! [ -x $ROOTFS_PREFIX/usr/bin/ed ]; then
     rootfs_install ed
