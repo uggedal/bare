@@ -7,7 +7,9 @@ emptydirs keep
 do_install() {
   local d
 
-  for d in dev etc proc sys tmp; do
+  for d in dev etc proc root sys tmp; do
     mkdir -p $MK_DESTDIR/$d
   done
+
+  cp -r $MK_FILE/etc $MK_DESTDIR
 }
