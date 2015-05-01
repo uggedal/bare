@@ -254,7 +254,7 @@ contain() {
     PATH="/usr/bin:/usr/sbin:/bin:/sbin" \
     PS1='[bootstrap] \w \$ ' \
     HOSTDIR=$(pwd) \
-    $CROSS_PREFIX/bin/pkg-contain $ROOTFS_PREFIX /bin/sh
+    $CROSS_PREFIX/bin/pkg-contain $ROOTFS_PREFIX /bin/ksh
 
   rm -f $conf
 }
