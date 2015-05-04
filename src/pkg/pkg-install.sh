@@ -42,7 +42,17 @@ handle_pkg() {
 
   [ "$VERBOSE" -le 1 ] || xzdec -c $REPO/$f | tar -t
 
-  xzdec -c $REPO/$f | tar -C $PREFIX -x
+  local tmp=$PREFIX$PKG_TMP/$fullname
+
+  rm -rf $tmp
+  mkdir -p $tmp
+
+  xzdec -c $REPO/$f | tar -C $tmp -x
+
+  dir_merge $tmp $PREFIX
+
+  rm -rf $tmp
+
   INSTALLED=yes
 }
 

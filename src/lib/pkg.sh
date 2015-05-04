@@ -76,3 +76,29 @@ check_sum() {
 
   [ $(file_sum $f) = $sum ]
 }
+
+dir_merge() {
+  local src=$1
+  local dst=$2
+
+  (
+    cd $src
+
+    set -- *
+    [ "$1" != \* ] || die "no files in '$src'"
+
+    for f; do
+      if ! [ -e $dst/$f ]; then
+        mv $src/$f $dst/$f
+        continue
+      fi
+
+      if [ -d $src/$f ]; then
+        dir_merge $src/$f $dst/$f
+        continue
+      fi
+
+      die "file already exist: '$dst/$f'"
+    done
+  )
+}
