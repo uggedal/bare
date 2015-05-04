@@ -1,20 +1,20 @@
-_current_fullname() {
-  local fullname=$1
+_current_qualified_name() {
+  local qualified_name=$1
 
-  $_ROOT/mk query $(pkg_to_name $fullname) fullname
+  $_ROOT/mk query $(pkg_to_name $qualified_name) qualified_name
 }
 
 _clean_obsolete_dist() {
   [ -d $_DIST ] || return 0
 
-  local fullname
+  local qualified_name
 
   for dir in $_DIST/*; do
     [ -d "$dir" ] || continue
 
-    fullname=$(basename $dir)
+    qualified_name=$(basename $dir)
 
-    [ "$fullname" = "$(_current_fullname $fullname)" ] || rm -r $dir
+    [ "$qualified_name" = "$(_current_qualified_name $qualified_name)" ] || rm -r $dir
   done
 }
 
@@ -23,7 +23,7 @@ cmd_clean() {
   local dir
 
   if [ "$PKG_NAME" ]; then
-    dirs="$MK_BUILD_ROOT $_DEST/$PKG_FULLNAME"
+    dirs="$MK_BUILD_ROOT $_DEST/$PKG_QUALIFIED_NAME"
     progress clean "'$PKG_NAME'"
   else
     progress clean "all"

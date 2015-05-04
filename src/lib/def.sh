@@ -20,9 +20,9 @@ PKG_VARS="
   "
 
 PKG_COMPUTED_VARS='
-  fullname
-  parentname
-  fullparentname
+  qualified_name
+  parent_name
+  qualified_parent_name
   '
 
 PKG_EXT=.tar.xz

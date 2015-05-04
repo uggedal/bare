@@ -3,7 +3,7 @@ _checksum() {
 }
 
 step_checksum() {
-  local f=$_SUM/${PKG_PARENTNAME}.sum
+  local f=$_SUM/${PKG_PARENT_NAME}.sum
 
   [ "$PKG_DIST" ] || return 0
 

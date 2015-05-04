@@ -3,7 +3,7 @@ _xz_stat() {
 }
 
 _provided_libs() {
-  local libdir=$_DEST/$PKG_FULLNAME$MK_PREFIX/lib
+  local libdir=$_DEST/$PKG_QUALIFIED_NAME$MK_PREFIX/lib
   local f mime
 
   [ -d $libdir ] || return 0
@@ -19,16 +19,16 @@ _provided_libs() {
 }
 
 step_pkg() {
-  local pkg=$_REPO/${PKG_FULLNAME}$PKG_EXT
+  local pkg=$_REPO/${PKG_QUALIFIED_NAME}$PKG_EXT
   local stat
 
   progress pkg "'$PKG_NAME'"
 
   pkg-create \
-    -n $PKG_FULLNAME \
-    -r $_DEST/$PKG_FULLNAME \
-    -p $pkg \
-    -l "$(_provided_libs)"
+    -p $_DEST/$PKG_QUALIFIED_NAME \
+    -o $pkg \
+    -l "$(_provided_libs)" \
+    $PKG_QUALIFIED_NAME
 
   stat="$(xz -l $pkg | tail -n1)"
   msg "Uncompressed: $(_xz_stat "$stat" 5 6)"

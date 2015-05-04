@@ -46,7 +46,7 @@ manual_install() {
   local prefix=$1
   local name=$2
 
-  tar -C $prefix -xJf repo/$(./mk query $name fullname).tar.xz
+  tar -C $prefix -xJf repo/$(./mk query $name qualified_name).tar.xz
 }
 
 rootfs_install() {

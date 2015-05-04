@@ -4,19 +4,16 @@
 . @@LIBDIR@@/pkg/pkg.sh
 . @@LIBDIR@@/pkg/msg.sh
 
-_USAGE='-n name -r root -p pkg
-[-l libs] [-d deps]'
+_USAGE='-p prefix -o output
+[-l libs] [-d deps] qualified-name'
 
-while getopts "n:r:p:l:d:" opt; do
+while getopts "p:o:l:d:" opt; do
   case $opt in
-    n)
-      FULLNAME=$OPTARG
-      ;;
-    r)
-      ROOT=$OPTARG
-      ;;
     p)
-      PKG=$OPTARG
+      PREFIX=$OPTARG
+      ;;
+    o)
+      OUTPUT=$OPTARG
       ;;
     l)
       LIBS="$OPTARG"
@@ -27,22 +24,25 @@ while getopts "n:r:p:l:d:" opt; do
   esac
 done
 unset opt
+shift $(( $OPTIND - 1 ))
 
-[ "$FULLNAME" ] || usage
-[ "$ROOT" ] || usage
-[ "$PKG" ] || usage
+QUALIFIED_NAME=$1
 
-NAME=$(pkg_to_name $FULLNAME)
-VERSION=$(pkg_to_version $FULLNAME)
+[ "$QUALIFIED_NAME" ] || usage
+[ "$PREFIX" ] || usage
+[ "$OUTPUT" ] || usage
+
+NAME=$(pkg_to_name $QUALIFIED_NAME)
+VERSION=$(pkg_to_version $QUALIFIED_NAME)
 
 TMP=$(mktemp)
 trap "rm -f $TMP" INT TERM EXIT
 
 (
-  cd $ROOT
+  cd $PREFIX
 
   set -- *
-  [ "$1" != \* ] || die "no files in '$ROOT'"
+  [ "$1" != \* ] || die "no files in '$PREFIX'"
 
   printf 'v|%s\n' $VERSION > $TMP
 
@@ -70,7 +70,7 @@ trap "rm -f $TMP" INT TERM EXIT
   mv $TMP $PKG_DB/$NAME
 
   set -- *
-  tar -c "$@" | xz > $PKG
+  tar -c "$@" | xz > $OUTPUT
 
   cat $PKG_DB/$NAME
 )

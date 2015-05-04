@@ -32,7 +32,7 @@ distfile() {
 
 distpath() {
   local distfile=$(distfile $1)
-  printf '%s\n' $_DIST/$PKG_FULLPARENTNAME/$distfile
+  printf '%s\n' $_DIST/$PKG_QUALIFIED_PARENT_NAME/$distfile
 }
 
 distfiles() {
@@ -88,15 +88,15 @@ read_pkg() {
   pre_env
 
   PKG_NAME=$1
-  PKG_PARENTNAME=$PKG_NAME
+  PKG_PARENT_NAME=$PKG_NAME
   source_pkg $PKG_NAME
 
   for _v in $PKG_VARS; do
     unset -f $_v
   done
 
-  PKG_FULLNAME=$PKG_NAME-${PKG_VER}_$PKG_REV
-  PKG_FULLPARENTNAME=$PKG_PARENTNAME-${PKG_VER}_$PKG_REV
+  PKG_QUALIFIED_NAME=$PKG_NAME-${PKG_VER}_$PKG_REV
+  PKG_QUALIFIED_PARENT_NAME=$PKG_PARENT_NAME-${PKG_VER}_$PKG_REV
 
   validate_pkg
 
@@ -104,9 +104,9 @@ read_pkg() {
 }
 
 inherit() {
-  PKG_PARENTNAME=$1
+  PKG_PARENT_NAME=$1
   local childname=$PKG_NAME
-  PKG_NAME=$PKG_PARENTNAME
-  source_pkg $PKG_PARENTNAME
+  PKG_NAME=$PKG_PARENT_NAME
+  source_pkg $PKG_PARENT_NAME
   PKG_NAME=$childname
 }

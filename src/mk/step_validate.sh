@@ -6,7 +6,7 @@ _validate_name() {
 _extract_db_file() {
   local name=$1
   local ver=$2
-  local fullname=$3
+  local qualified_name=$3
   local pkg=$4
 
   [ $name != $PKG_NAME ] || return 0
@@ -17,7 +17,7 @@ _extract_db_file() {
 _validate_confict() {
   local name=$1
   local ver=$2
-  local fullname=$3
+  local qualified_name=$3
   local pkg=$4
 
   [ $name != $PKG_NAME ] || return 0
@@ -37,8 +37,8 @@ _validate_confict() {
 
 _validate_conflicts() {
   _TMP_DB_DIR=$(mktemp -d)
-  _VALIDATE_FL="$(find $_DEST/$PKG_FULLNAME -type f -o -type l |
-                  sed "s|^$_DEST/$PKG_FULLNAME/||")"
+  _VALIDATE_FL="$(find $_DEST/$PKG_QUALIFIED_NAME -type f -o -type l |
+                  sed "s|^$_DEST/$PKG_QUALIFIED_NAME/||")"
 
   read_repo $_REPO _extract_db_file
   read_repo $_REPO _validate_confict

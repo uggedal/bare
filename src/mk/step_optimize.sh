@@ -1,11 +1,11 @@
 _rootify() {
-  printf '%s' ${1#$_DEST/$PKG_FULLNAME}
+  printf '%s' ${1#$_DEST/$PKG_QUALIFIED_NAME}
 }
 
 remove_libtool_archives() {
   local f
 
-  find $_DEST/$PKG_FULLNAME -type f -name \*.la | while read f; do
+  find $_DEST/$PKG_QUALIFIED_NAME -type f -name \*.la | while read f; do
     msg "remove libtool archive: $(_rootify $f)"
     rm $f
   done
@@ -17,9 +17,9 @@ remove_below() {
 
   local f
 
-  [ -d $_DEST/$PKG_FULLNAME$MK_PREFIX/$dir ] || return 0
+  [ -d $_DEST/$PKG_QUALIFIED_NAME$MK_PREFIX/$dir ] || return 0
 
-  find $_DEST/$PKG_FULLNAME$MK_PREFIX/$dir -type f | while read f; do
+  find $_DEST/$PKG_QUALIFIED_NAME$MK_PREFIX/$dir -type f | while read f; do
     msg "remove $desc: $(_rootify $f)"
     rm $f
   done
@@ -28,7 +28,7 @@ remove_below() {
 remove_empty_dirs() {
   local d
 
-  find $_DEST/$PKG_FULLNAME -depth -type d | while read d; do
+  find $_DEST/$PKG_QUALIFIED_NAME -depth -type d | while read d; do
     if rmdir $d 2>/dev/null; then
       msg "remove empty dir: $(_rootify $d)"
     fi
@@ -38,7 +38,7 @@ remove_empty_dirs() {
 strip_binaries() {
   local f mime type args
 
-  find $_DEST/$PKG_FULLNAME -type f | while read f; do
+  find $_DEST/$PKG_QUALIFIED_NAME -type f | while read f; do
     mime="$(file -bi "$f")"
     type=
     args=

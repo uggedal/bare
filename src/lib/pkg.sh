@@ -1,4 +1,4 @@
-pkg_to_fullname() {
+pkg_to_qualified_name() {
   local pkg=$1
 
   printf '%s' ${pkg%$PKG_EXT*}
@@ -12,9 +12,9 @@ pkg_to_name() {
 
 pkg_to_version() {
   local pkg=$1
-  local fullname=$(pkg_to_fullname $pkg)
+  local qualified_name=$(pkg_to_qualified_name $pkg)
 
-  printf '%s' ${fullname##*-}
+  printf '%s' ${qualified_name##*-}
 }
 
 pkg_db() {
@@ -46,7 +46,7 @@ read_repo() {
     esac
 
     p=$(basename $f)
-    $cb $(pkg_to_name $p) $(pkg_to_version $p) $(pkg_to_fullname $p) $p
+    $cb $(pkg_to_name $p) $(pkg_to_version $p) $(pkg_to_qualified_name $p) $p
   done
 }
 

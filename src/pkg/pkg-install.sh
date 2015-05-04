@@ -29,7 +29,7 @@ shift $(( $OPTIND - 1 ))
 handle_pkg() {
   local name=$1
   local ver=$2
-  local fullname=$3
+  local qualified_name=$3
   local f=$4
 
   [ "$PKG" = "$name" ] || return 0
@@ -42,7 +42,7 @@ handle_pkg() {
 
   [ "$VERBOSE" -le 1 ] || xzdec -c $REPO/$f | tar -t
 
-  local tmp=$PREFIX$PKG_TMP/$fullname
+  local tmp=$PREFIX$PKG_TMP/$qualified_name
 
   rm -rf $tmp
   mkdir -p $tmp
