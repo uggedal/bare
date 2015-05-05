@@ -40,14 +40,14 @@ handle_pkg() {
 
   [ "$VERBOSE" -le 0 ] || msg "installing '$PKG'"
 
-  [ "$VERBOSE" -le 1 ] || xzdec -c $REPO/$f | tar -t
+  [ "$VERBOSE" -le 1 ] || xzdec -c $REPO/$f | tar -tf-
 
   local tmp=$PREFIX$PKG_TMP/$qualified_name
 
   rm -rf $tmp
   mkdir -p $tmp
 
-  xzdec -c $REPO/$f | tar -C $tmp -x
+  xzdec -c $REPO/$f | tar -C $tmp -xf-
 
   dir_merge $tmp $PREFIX
 

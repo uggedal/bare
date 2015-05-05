@@ -11,7 +11,7 @@ _extract_db_file() {
 
   [ $name != $PKG_NAME ] || return 0
 
-  xzdec -c $_REPO/$pkg | tar -C $_TMP_DB_DIR -x $PKG_DB/$name
+  xzdec -c $_REPO/$pkg | tar -C $_TMP_DB_DIR -xf- $PKG_DB/$name
 }
 
 _validate_confict() {
