@@ -120,6 +120,16 @@ cross() {
   fi
 }
 
+rootfs_pkg() {
+  local name=$1
+  local file=$2
+
+  ./mk pkg $name
+  if ! [ -e $file ]; then
+    rootfs_install $name
+  fi
+}
+
 rootfs() {
   local prefix=$ROOTFS_PREFIX/usr
 
@@ -132,15 +142,8 @@ rootfs() {
   export READELF=$TRIPLE-readelf
   export STRIP=$TRIPLE-strip
 
-  ./mk pkg musl
-  if ! [ -e $prefix/include/stdio.h ]; then
-    rootfs_install musl
-  fi
-
-  ./mk pkg linux-headers
-  if ! [ -e $prefix/include/linux/inotify.h ]; then
-    rootfs_install linux-headers
-  fi
+  rootfs_pkg musl $prefix/include/stdio.h
+  rootfs_pkg linux-headers $prefix/include/linux/inotify.h
 
   CROSS_COMPILE=$TRIPLE- \
     ./mk pkg busybox
@@ -148,40 +151,17 @@ rootfs() {
     rootfs_install busybox
   fi
 
-  ./mk pkg sbase
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/cp ]; then
-    rootfs_install sbase
-  fi
-
-  ./mk pkg ubase
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/passwd ]; then
-    rootfs_install ubase
-  fi
-
-  ./mk pkg ksh
-  if ! [ -x $ROOTFS_PREFIX/bin/sh ]; then
-    rootfs_install ksh
-  fi
-
-  ./mk pkg ed
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/ed ]; then
-    rootfs_install ed
-  fi
-
-  ./mk pkg awk
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/awk ]; then
-    rootfs_install awk
-  fi
-
-  ./mk pkg bzip2
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/bzip2 ]; then
-    rootfs_install bzip2
-  fi
+  rootfs_pkg sbase $prefix/bin/cp
+  rootfs_pkg ubase $prefix/bin/passwd
+  rootfs_pkg ksh $ROOTFS_PREFIX/bin/sh
+  rootfs_pkg ed $prefix/bin/ed
+  rootfs_pkg awk $prefix/bin/awk
+  rootfs_pkg bzip2 $prefix/bin/bzip2
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/ar ]; then
+  if ! [ -x $prefix/bin/ar ]; then
     rootfs_install binutils
   fi
 
@@ -189,7 +169,7 @@ rootfs() {
     --host=$TRIPLE
     --prefix=/usr" \
     ./mk pkg gmp
-  if ! [ -e $ROOTFS_PREFIX/usr/lib/libgmp.so ]; then
+  if ! [ -e $prefix/lib/libgmp.so ]; then
     rootfs_install gmp
   fi
 
@@ -198,7 +178,7 @@ rootfs() {
     --prefix=/usr
     --with-gmp=$prefix" \
     ./mk pkg mpfr
-  if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpfr.so ]; then
+  if ! [ -e $prefix/lib/libmpfr.so ]; then
     rootfs_install mpfr
   fi
 
@@ -208,7 +188,7 @@ rootfs() {
     --with-gmp=$prefix
     --with-mpfr=$prefix" \
     ./mk pkg mpc
-  if ! [ -e $ROOTFS_PREFIX/usr/lib/libmpc.so ]; then
+  if ! [ -e $prefix/lib/libmpc.so ]; then
     rootfs_install mpc
   fi
 
@@ -219,7 +199,7 @@ rootfs() {
     --with-mpfr=$prefix
     --with-mpc=$prefix" \
     ./mk pkg gcc
-  if ! [ -x $ROOTFS_PREFIX/usr/bin/gcc ]; then
+  if ! [ -x $prefix/bin/gcc ]; then
     rootfs_install gcc
   fi
 
@@ -229,20 +209,13 @@ rootfs() {
       --host=$TRIPLE
       --prefix=/usr" \
       ./mk pkg $bin
-    if ! [ -x $ROOTFS_PREFIX/usr/bin/$bin ]; then
+    if ! [ -x $prefix/bin/$bin ]; then
       rootfs_install $bin
     fi
   done
 
-  ./mk pkg hier
-  if ! [ -d $ROOTFS_PREFIX/dev ]; then
-    rootfs_install hier
-  fi
-
-  ./mk pkg pkg
-  if ! [ -d $ROOTFS_PREFIX/pkg-contain ]; then
-    rootfs_install pkg
-  fi
+  rootfs_pkg hier $ROOTFS_PREFIX/dev
+  rootfs_pkg pkg $prefix/usr/pkg-contain
 }
 
 contain() {
