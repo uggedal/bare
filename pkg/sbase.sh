@@ -17,6 +17,7 @@ EOF
 post_install() {
   local conflicts='
     strings
+    tar
   '
 
   local f
