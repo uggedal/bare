@@ -20,17 +20,23 @@ _provided_libs() {
 
 step_pkg() {
   local pkg=$_REPO/${PKG_QUALIFIED_NAME}$PKG_EXT
-  local stat
 
   progress pkg "'$PKG_NAME'"
+
+  local libs="$(_provided_libs)"
+
+  local lib
+  for lib in $libs; do
+    msg "Provided lib: '$lib'"
+  done
 
   pkg-create \
     -p $_DEST/$PKG_QUALIFIED_NAME \
     -o $pkg \
-    -l "$(_provided_libs)" \
+    -l "$libs" \
     $PKG_QUALIFIED_NAME
 
-  stat="$(xz -l $pkg | tail -n1)"
+  local stat="$(xz -l $pkg | tail -n1)"
   msg "Uncompressed: $(_xz_stat "$stat" 5 6)"
   msg "Compressed:   $(_xz_stat "$stat" 3 4)"
 }
