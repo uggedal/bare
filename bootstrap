@@ -3,7 +3,7 @@
 set -e
 
 usage() {
-  printf '%s [-x cross_prefix] [-r rootfs_prefix] [-c]\n' $0
+  printf '%s [-c]\n' $0
   exit 1
 }
 
@@ -234,14 +234,8 @@ contain() {
   rm -f $conf
 }
 
-while getopts "r:x:ch" opt; do
+while getopts "ch" opt; do
   case $opt in
-    x)
-      CROSS_PREFIX=$OPTARG
-      ;;
-    r)
-      ROOTFS_PREFIX=$OPTARG
-      ;;
     c)
       CONTAIN=yes
       ;;
@@ -252,8 +246,9 @@ while getopts "r:x:ch" opt; do
 done
 unset opt
 
-: ${CROSS_PREFIX:=$HOME/bare-cross}
-: ${ROOTFS_PREFIX:=$HOME/bare-rootfs}
+_ROOT=$(realpath $(dirname $0))
+CROSS_PREFIX=$_ROOT/cross
+ROOTFS_PREFIX=$_ROOT/rootfs
 
 TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
 PATH=$CROSS_PREFIX/bin:$PATH

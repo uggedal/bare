@@ -1,4 +1,6 @@
-/dist/
 /build/
+/cross/
 /dest/
+/dist/
 /repo/
+/rootfs/
