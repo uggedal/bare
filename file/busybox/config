@@ -281,7 +281,7 @@ CONFIG_REALPATH=y
 # CONFIG_FEATURE_SPLIT_FANCY is not set
 # CONFIG_STAT is not set
 # CONFIG_FEATURE_STAT_FORMAT is not set
-CONFIG_STTY=y
+# CONFIG_STTY is not set
 # CONFIG_SUM is not set
 # CONFIG_SYNC is not set
 # CONFIG_TAC is not set
