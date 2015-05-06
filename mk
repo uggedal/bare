@@ -4,11 +4,11 @@ set -e
 
 _ROOT=$(realpath $(dirname $0))
 
-_SRC=$_ROOT/src
-_PKG=$_ROOT/pkg
-_SUM=$_ROOT/sum
 _FILE=$_ROOT/file
 _PATCH=$_ROOT/patch
+_PKG=$_ROOT/pkg
+_SRC=$_ROOT/src
+_SUM=$_ROOT/sum
 
 _FANCY_MSG=yes
 
@@ -17,7 +17,7 @@ for _f in $_SRC/lib/*.sh $_SRC/mk/*.sh; do
 done
 unset _f
 
-for _dir in dist build dest repo; do
+for _dir in build chroot cross dest dist repo; do
   eval _$(uppercase $_dir)=$_ROOT/$_dir
   mkdir -p $_ROOT/$_dir
 done
@@ -32,6 +32,8 @@ Commands:
   sum <pkg>
   clean [pkg]
   query <pkg> <field>
+  bootstrap
+  contain
 
 Ordered steps:
   checksum <pkg>
@@ -60,6 +62,9 @@ case "$1" in
       MK_FORCE=yes
     fi
     read_pkg $2
+    ;;
+  bootstrap|contain)
+    [ -z "$2" ] || _usage
     ;;
   *)
     [ "$2" ] || _usage

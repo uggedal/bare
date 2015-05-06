@@ -33,12 +33,12 @@ Bootstrap
 
 First bootstrap from a linux system with the necessary toolchain:
 
-    ./bootstrap
+    ./mk bootstrap
 
 Then enter the new rootfs (requires a kernel with user_namespaces(7)
 support):
 
-    ./bootstrap -c
+    ./mk contain
 
 Legal Information
 -----------------

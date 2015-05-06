@@ -1,13 +1,4 @@
-#!/bin/sh
-
-set -e
-
-usage() {
-  printf '%s [-c]\n' $0
-  exit 1
-}
-
-reqs() {
+_bootstrap_reqs() {
   local b
   local missing
 
@@ -21,7 +12,7 @@ reqs() {
   fi
 }
 
-fetch() {
+_bootstrap_fetch() {
   local deps='
     binutils
     gmp
@@ -42,19 +33,19 @@ fetch() {
   done
 }
 
-manual_install() {
+_manual_install() {
   local prefix=$1
   local name=$2
 
   tar -C $prefix -xJf repo/$(./mk query $name qualified_name).tar.xz
 }
 
-rootfs_install() {
+_chroot_install() {
   local name=$1
-  manual_install $ROOTFS_PREFIX $name
+  _manual_install $_CHROOT $name
 }
 
-build_gcc() {
+_build_gcc() {
   local name=$1
   local prefix=$2
 
@@ -73,8 +64,8 @@ build_gcc() {
     ./mk install $name
 }
 
-cross() {
-  local prefix=$CROSS_PREFIX
+_bootstrap_cross() {
+  local prefix=$_CROSS
 
   if ! [ -e $prefix/$TRIPLE/usr ]; then
     mkdir -p $prefix/$TRIPLE
@@ -89,7 +80,7 @@ cross() {
 
   ./mk pkg linux-headers
   if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
-    manual_install $prefix/$TRIPLE linux-headers
+    _manual_install $prefix/$TRIPLE linux-headers
     mv $prefix/$TRIPLE/usr/include $prefix/$TRIPLE
     rmdir $prefix/$TRIPLE/usr
   fi
@@ -102,7 +93,7 @@ cross() {
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-gcc ]; then
-    build_gcc bootstrap-gcc-1 $prefix
+    _build_gcc bootstrap-gcc-1 $prefix
   fi
 
 
@@ -116,22 +107,22 @@ cross() {
   fi
 
   if ! [ -x $prefix/bin/$TRIPLE-g++ ]; then
-    build_gcc bootstrap-gcc-2 $prefix
+    _build_gcc bootstrap-gcc-2 $prefix
   fi
 }
 
-rootfs_pkg() {
+_chroot_pkg() {
   local name=$1
   local file=$2
 
   ./mk pkg $name
   if ! [ -e $file ]; then
-    rootfs_install $name
+    _chroot_install $name
   fi
 }
 
-rootfs() {
-  local prefix=$ROOTFS_PREFIX/usr
+_bootstrap_chroot() {
+  local prefix=$_CHROOT/usr
 
   export CC=$TRIPLE-gcc
   export CXX=$TRIPLE-g++
@@ -142,28 +133,28 @@ rootfs() {
   export READELF=$TRIPLE-readelf
   export STRIP=$TRIPLE-strip
 
-  rootfs_pkg musl $prefix/include/stdio.h
-  rootfs_pkg linux-headers $prefix/include/linux/inotify.h
+  _chroot_pkg musl $prefix/include/stdio.h
+  _chroot_pkg linux-headers $prefix/include/linux/inotify.h
 
   CROSS_COMPILE=$TRIPLE- \
     ./mk pkg busybox
-  if ! [ -x $ROOTFS_PREFIX/bin/busybox ]; then
-    rootfs_install busybox
+  if ! [ -x $_CHROOT/bin/busybox ]; then
+    _chroot_install busybox
   fi
 
-  rootfs_pkg sbase $prefix/bin/cp
-  rootfs_pkg ubase $prefix/bin/passwd
-  rootfs_pkg ksh $ROOTFS_PREFIX/bin/sh
-  rootfs_pkg ed $prefix/bin/ed
-  rootfs_pkg awk $prefix/bin/awk
-  rootfs_pkg pax $ROOTFS_PREFIX/bin/tar
-  rootfs_pkg bzip2 $prefix/bin/bzip2
+  _chroot_pkg sbase $prefix/bin/cp
+  _chroot_pkg ubase $prefix/bin/passwd
+  _chroot_pkg ksh $_CHROOT/bin/sh
+  _chroot_pkg ed $prefix/bin/ed
+  _chroot_pkg awk $prefix/bin/awk
+  _chroot_pkg pax $_CHROOT/bin/tar
+  _chroot_pkg bzip2 $prefix/bin/bzip2
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
   if ! [ -x $prefix/bin/ar ]; then
-    rootfs_install binutils
+    _chroot_install binutils
   fi
 
   MK_CONFIGURE="
@@ -171,7 +162,7 @@ rootfs() {
     --prefix=/usr" \
     ./mk pkg gmp
   if ! [ -e $prefix/lib/libgmp.so ]; then
-    rootfs_install gmp
+    _chroot_install gmp
   fi
 
   MK_CONFIGURE="
@@ -180,7 +171,7 @@ rootfs() {
     --with-gmp=$prefix" \
     ./mk pkg mpfr
   if ! [ -e $prefix/lib/libmpfr.so ]; then
-    rootfs_install mpfr
+    _chroot_install mpfr
   fi
 
   MK_CONFIGURE="
@@ -190,7 +181,7 @@ rootfs() {
     --with-mpfr=$prefix" \
     ./mk pkg mpc
   if ! [ -e $prefix/lib/libmpc.so ]; then
-    rootfs_install mpc
+    _chroot_install mpc
   fi
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
@@ -201,7 +192,7 @@ rootfs() {
     --with-mpc=$prefix" \
     ./mk pkg gcc
   if ! [ -x $prefix/bin/gcc ]; then
-    rootfs_install gcc
+    _chroot_install gcc
   fi
 
   local bin
@@ -211,57 +202,20 @@ rootfs() {
       --prefix=/usr" \
       ./mk pkg $bin
     if ! [ -x $prefix/bin/$bin ]; then
-      rootfs_install $bin
+      _chroot_install $bin
     fi
   done
 
-  rootfs_pkg hier $ROOTFS_PREFIX/dev
-  rootfs_pkg pkg $prefix/usr/pkg-contain
+  _chroot_pkg hier $_CHROOT/dev
+  _chroot_pkg pkg $prefix/usr/pkg-contain
 }
 
-contain() {
-  local conf=$ROOTFS_PREFIX/etc/pkg.conf
+cmd_bootstrap() {
+  TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
+  PATH=$_CROSS/bin:$PATH
 
-  printf 'REPO=%s\n' /host/repo > $conf
-
-  env -i \
-    PATH="/usr/bin:/usr/sbin:/bin:/sbin" \
-    PS1='[bootstrap] \w \$ ' \
-    VISUAL=vi \
-    HOME=/root \
-    HOSTDIR=$(pwd) \
-    $CROSS_PREFIX/bin/pkg-contain $ROOTFS_PREFIX /bin/ksh
-
-  rm -f $conf
+  _bootstrap_reqs
+  _bootstrap_fetch
+  _bootstrap_cross
+  _bootstrap_chroot
 }
-
-while getopts "ch" opt; do
-  case $opt in
-    c)
-      CONTAIN=yes
-      ;;
-    h)
-      usage
-      ;;
-  esac
-done
-unset opt
-
-_ROOT=$(realpath $(dirname $0))
-CROSS_PREFIX=$_ROOT/cross
-ROOTFS_PREFIX=$_ROOT/rootfs
-
-TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
-PATH=$CROSS_PREFIX/bin:$PATH
-
-if [ "$CONTAIN" ]; then
-  contain
-else
-
-  mkdir -p $CROSS_PREFIX $ROOTFS_PREFIX
-
-  reqs
-  fetch
-  cross
-  rootfs
-fi
