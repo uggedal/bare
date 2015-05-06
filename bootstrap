@@ -156,6 +156,7 @@ rootfs() {
   rootfs_pkg ksh $ROOTFS_PREFIX/bin/sh
   rootfs_pkg ed $prefix/bin/ed
   rootfs_pkg awk $prefix/bin/awk
+  rootfs_pkg pax $ROOTFS_PREFIX/bin/tar
   rootfs_pkg bzip2 $prefix/bin/bzip2
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
