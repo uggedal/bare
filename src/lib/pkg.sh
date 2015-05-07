@@ -39,7 +39,7 @@ read_repo() {
 
   local f p
   for f in $repo/*$PKG_EXT; do
-    case f in
+    case $f in
       $repo/\*$PKG_EXT)
         return 0
         ;;
