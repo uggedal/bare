@@ -8,6 +8,7 @@ PKG_OPTIONAL_VARS='
   dist
   bdep
   rdep
+  lib
   configure
   distdir
   builddir

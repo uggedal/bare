@@ -23,7 +23,8 @@ step_pkg() {
 
   progress pkg "'$PKG_NAME'"
 
-  local libs="$(_provided_libs)"
+  local libs="$PKG_LIB"
+  [ "$libs" ] || libs="$(_provided_libs)"
 
   local lib
   for lib in $libs; do
