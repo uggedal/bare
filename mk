@@ -17,7 +17,7 @@ for _f in $_SRC/lib/*.sh $_SRC/mk/*.sh; do
 done
 unset _f
 
-for _dir in build chroot cross dest dist repo; do
+for _dir in build chroot cross db dest dist repo; do
   eval _$(uppercase $_dir)=$_ROOT/$_dir
   mkdir -p $_ROOT/$_dir
 done
@@ -36,6 +36,7 @@ Commands:
   contain
 
 Ordered steps:
+  prepdb
   checksum <pkg>
   extract <pkg>
   patch <pkg>

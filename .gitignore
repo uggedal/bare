@@ -1,6 +1,7 @@
 /build/
 /chroot/
 /cross/
+/db/
 /dest/
 /dist/
 /repo/
