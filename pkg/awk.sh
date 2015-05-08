@@ -7,6 +7,8 @@ distdir .
 pre_configure() {
   ed makefile <<EOF
 g/mv y\.tab\./d
+/^proctab.c/d
+d
 w
 q
 EOF
