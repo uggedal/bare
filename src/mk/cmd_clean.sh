@@ -18,6 +18,10 @@ _clean_obsolete_dist() {
   done
 }
 
+_clean_db() {
+  rm -rf $_DB
+}
+
 cmd_clean() {
   local dirs="$_BUILD $_DEST"
   local dir
@@ -28,6 +32,7 @@ cmd_clean() {
   else
     progress clean "all"
     _clean_obsolete_dist
+    _clean_db
   fi
 
   for dir in $dirs; do
