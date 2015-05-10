@@ -31,6 +31,18 @@ _needed_libs() {
   done
 }
 
+_find_lib_in_db() {
+  local t=$1
+  local f1=$2
+  local l
+
+  [ "$t" = l ] || return 0
+
+  for l in $_NEEDED_LIBS; do
+    [ "$l" != "$f1" ] || printf '%s:%s\n' $_PKG_NAME $l
+  done
+}
+
 _find_pkg_with_lib() {
   local name=$1
   local ver=$2
@@ -39,17 +51,9 @@ _find_pkg_with_lib() {
 
   [ $name != $PKG_NAME ] || return 0
 
-  local t f1 f2 l
-
-  while IFS='|' read -r t f1 f2; do
-    case $t in
-      l)
-        for l in $_NEEDED_LIBS; do
-          [ "$l" != "$f1" ] || printf '%s:%s\n' $name $l
-        done
-        ;;
-    esac
-  done < $_DB/$PKG_DB/$name
+  _PKG_NAME=$name
+  read_db $_DB $pkg _find_lib_in_db
+  unset _PKG_NAME
 }
 
 _lib_deps() {
