@@ -27,4 +27,8 @@ run_step() {
       break
     fi
   done
+
+  if [ $step = pkg ] && [ "$MK_KEEP" != yes ]; then
+    run_cmd clean "$@"
+  fi
 }
