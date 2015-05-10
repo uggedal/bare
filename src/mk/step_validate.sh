@@ -26,7 +26,7 @@ _validate_confict() {
   [ $name != $PKG_NAME ] || return 0
 
   _PKG_NAME=$name
-  read_db $_DB $pkg _find_conflict_in_db
+  read_db $_DB $name _find_conflict_in_db
   unset _PKG_NAME
 }
 

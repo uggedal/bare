@@ -52,7 +52,7 @@ _find_pkg_with_lib() {
   [ $name != $PKG_NAME ] || return 0
 
   _PKG_NAME=$name
-  read_db $_DB $pkg _find_lib_in_db
+  read_db $_DB $name _find_lib_in_db
   unset _PKG_NAME
 }
 
