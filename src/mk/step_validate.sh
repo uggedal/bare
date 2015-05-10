@@ -3,6 +3,20 @@ _validate_name() {
     die "name is longer than $PKG_NAME_MAX (${#PKG_NAME})"
 }
 
+_find_conflict_in_db() {
+  local t=$1
+  local f1=$2
+  local f
+
+  case $t in
+    @|f)
+      for f in $_VALIDATE_FL; do
+        [ "$f" != "$f1" ] || die "conflicting file in '$_PKG_NAME' ($f)"
+      done
+      ;;
+  esac
+}
+
 _validate_confict() {
   local name=$1
   local ver=$2
@@ -11,17 +25,9 @@ _validate_confict() {
 
   [ $name != $PKG_NAME ] || return 0
 
-  local t f1 f2 f
-
-  while IFS='|' read -r t f1 f2; do
-    case $t in
-      @|f)
-        for f in $_VALIDATE_FL; do
-          [ "$f" != "$f1" ] || die "conflicting file in '$name' ($f)"
-        done
-        ;;
-    esac
-  done < $_DB/$PKG_DB/$name
+  _PKG_NAME=$name
+  read_db $_DB $pkg _find_conflict_in_db
+  unset _PKG_NAME
 }
 
 _validate_conflicts() {
