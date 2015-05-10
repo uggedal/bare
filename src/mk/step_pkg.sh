@@ -58,7 +58,7 @@ _find_pkg_with_lib() {
 
 _lib_deps() {
   _NEEDED_LIBS=$(_needed_libs)
-  read_repo $_REPO _find_pkg_with_lib | sort | uniq
+  [ -z "$_NEEDED_LIBS" ] || read_repo $_REPO _find_pkg_with_lib | sort | uniq
   unset _NEEDED_LIBS
 }
 
