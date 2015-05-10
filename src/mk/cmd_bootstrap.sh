@@ -40,9 +40,9 @@ _manual_install() {
   tar -C $prefix -xJf repo/$(./mk query $name qualified_name).tar.xz
 }
 
-_chroot_install() {
+_contain_install() {
   local name=$1
-  _manual_install $_CHROOT $name
+  _manual_install $_CONTAIN $name
 }
 
 _build_gcc() {
@@ -111,18 +111,18 @@ _bootstrap_cross() {
   fi
 }
 
-_chroot_pkg() {
+_contain_pkg() {
   local name=$1
   local file=$2
 
   ./mk pkg $name
   if ! [ -e $file ]; then
-    _chroot_install $name
+    _contain_install $name
   fi
 }
 
-_bootstrap_chroot() {
-  local prefix=$_CHROOT/usr
+_bootstrap_contain() {
+  local prefix=$_CONTAIN/usr
 
   export CC=$TRIPLE-gcc
   export CXX=$TRIPLE-g++
@@ -133,28 +133,28 @@ _bootstrap_chroot() {
   export READELF=$TRIPLE-readelf
   export STRIP=$TRIPLE-strip
 
-  _chroot_pkg musl $prefix/include/stdio.h
-  _chroot_pkg linux-headers $prefix/include/linux/inotify.h
+  _contain_pkg musl $prefix/include/stdio.h
+  _contain_pkg linux-headers $prefix/include/linux/inotify.h
 
   CROSS_COMPILE=$TRIPLE- \
     ./mk pkg busybox
-  if ! [ -x $_CHROOT/bin/busybox ]; then
-    _chroot_install busybox
+  if ! [ -x $_CONTAIN/bin/busybox ]; then
+    _contain_install busybox
   fi
 
-  _chroot_pkg sbase $prefix/bin/cp
-  _chroot_pkg ubase $prefix/bin/passwd
-  _chroot_pkg ksh $_CHROOT/bin/sh
-  _chroot_pkg ed $prefix/bin/ed
-  _chroot_pkg awk $prefix/bin/awk
-  _chroot_pkg pax $_CHROOT/bin/tar
-  _chroot_pkg bzip2 $prefix/bin/bzip2
+  _contain_pkg sbase $prefix/bin/cp
+  _contain_pkg ubase $prefix/bin/passwd
+  _contain_pkg ksh $_CONTAIN/bin/sh
+  _contain_pkg ed $prefix/bin/ed
+  _contain_pkg awk $prefix/bin/awk
+  _contain_pkg pax $_CONTAIN/bin/tar
+  _contain_pkg bzip2 $prefix/bin/bzip2
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
   if ! [ -x $prefix/bin/ar ]; then
-    _chroot_install binutils
+    _contain_install binutils
   fi
 
   MK_CONFIGURE="
@@ -162,7 +162,7 @@ _bootstrap_chroot() {
     --prefix=/usr" \
     ./mk pkg gmp
   if ! [ -e $prefix/lib/libgmp.so ]; then
-    _chroot_install gmp
+    _contain_install gmp
   fi
 
   MK_CONFIGURE="
@@ -171,7 +171,7 @@ _bootstrap_chroot() {
     --with-gmp=$prefix" \
     ./mk pkg mpfr
   if ! [ -e $prefix/lib/libmpfr.so ]; then
-    _chroot_install mpfr
+    _contain_install mpfr
   fi
 
   MK_CONFIGURE="
@@ -181,7 +181,7 @@ _bootstrap_chroot() {
     --with-mpfr=$prefix" \
     ./mk pkg mpc
   if ! [ -e $prefix/lib/libmpc.so ]; then
-    _chroot_install mpc
+    _contain_install mpc
   fi
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
@@ -192,7 +192,7 @@ _bootstrap_chroot() {
     --with-mpc=$prefix" \
     ./mk pkg gcc
   if ! [ -x $prefix/bin/gcc ]; then
-    _chroot_install gcc
+    _contain_install gcc
   fi
 
   local bin
@@ -202,12 +202,12 @@ _bootstrap_chroot() {
       --prefix=/usr" \
       ./mk pkg $bin
     if ! [ -x $prefix/bin/$bin ]; then
-      _chroot_install $bin
+      _contain_install $bin
     fi
   done
 
-  _chroot_pkg hier $_CHROOT/dev
-  _chroot_pkg pkg $prefix/usr/pkg-contain
+  _contain_pkg hier $_CONTAIN/dev
+  _contain_pkg pkg $prefix/usr/pkg-contain
 }
 
 cmd_bootstrap() {
@@ -217,5 +217,5 @@ cmd_bootstrap() {
   _bootstrap_reqs
   _bootstrap_fetch
   _bootstrap_cross
-  _bootstrap_chroot
+  _bootstrap_contain
 }
