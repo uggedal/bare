@@ -20,8 +20,11 @@ pkg_to_version() {
 pkg_db() {
   local prefix=$1
   local name=$2
+  local type=$3
 
-  printf '%s' ${prefix%/}/$PKG_DB/$name
+  [ -z "$type" ] || type=$type/
+
+  printf '%s' ${prefix%/}/$PKG_DB/$type$name
 }
 
 pkg_installed() {
