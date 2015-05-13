@@ -70,7 +70,7 @@ trap "rm -f $TMP" INT TERM EXIT
   mv $TMP $PKG_DB/$NAME
 
   set -- *
-  tar -cf- "$@" | xz > $OUTPUT
+  tar -cJf $OUTPUT "$@"
 
   cat $PKG_DB/$NAME
 )

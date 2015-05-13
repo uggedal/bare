@@ -6,7 +6,7 @@ _extract_db_file() {
 
   [ $name != $PKG_NAME ] || return 0
 
-  xzdec -c $_REPO/$pkg | tar -C $_DB -xf- $PKG_DB/$name
+  tar -C $_DB -xJf $_REPO/$pkg $PKG_DB/$name
 }
 
 step_prepdb() {

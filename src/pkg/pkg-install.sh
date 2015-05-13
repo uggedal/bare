@@ -78,14 +78,14 @@ handle_pkg() {
 
   [ "$VERBOSE" -le 0 ] || msg "$installmsg"
 
-  [ "$VERBOSE" -le 1 ] || xzdec -c $REPO/$f | tar -tf-
+  [ "$VERBOSE" -le 1 ] || tar -tJf $REPO/$f
 
   local tmp=$PREFIX$PKG_TMP/$qualified_name
 
   rm -rf $tmp
   mkdir -p $tmp
 
-  xzdec -c $REPO/$f | tar -C $tmp -xf-
+  tar -C $tmp -xJf $REPO/$f
 
   read_db $tmp $name handle_deps
 
