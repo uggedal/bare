@@ -11,5 +11,5 @@ MK_STEPS='
   pkg
 '
 
-URI_GNU=http://ftp.uninett.no/pub/gnu
+URI_GNU=http://www.mirrorservice.org/sites/ftp.gnu.org/gnu
 URI_BB=https://bitbucket.org
