@@ -17,7 +17,7 @@ run_step() {
     if [ -f $MK_BUILD_ROOT/.${s}.done ]; then
       progress $s "'$PKG_NAME' $(color 34 cached)"
     else
-      step_$s "$@"
+      step_$s
       touch $MK_BUILD_ROOT/.${s}.done
       progress $s "'$PKG_NAME' $(color 32 ok)"
     fi
@@ -28,6 +28,6 @@ run_step() {
   done
 
   if [ $step = pkg ] && [ "$MK_KEEP" != yes ]; then
-    run_cmd clean "$@"
+    run_cmd clean
   fi
 }

@@ -50,40 +50,44 @@ EOF
   exit 64
 }
 
-[ "$1" ] || _usage
+action=$1
+shift
+[ "$action" ] || _usage
 
-case "$1" in
-  clean)
-    if [ "$2" ]; then
-      read_pkg $2
-    fi
-    ;;
-  pkg)
-    if [ "$3" = -f ]; then
-      MK_FORCE=yes
-    fi
-    if [ "$3" = -k ]; then
-      MK_KEEP=yes
-    fi
-    read_pkg $2
-    ;;
+pkg=$1
+[ -z "$pkg" ] || shift
+
+case "$action" in
   bootstrap|contain)
-    [ -z "$2" ] || _usage
+    [ -z "$pkg" ] || _usage
+    ;;
+  clean)
+    [ -z "$pkg" ] || read_pkg $pkg
     ;;
   *)
-    [ "$2" ] || _usage
-    read_pkg $2
+    [ "$pkg" ] || _usage
+    read_pkg $pkg
     ;;
 esac
 
-if is_step $1; then
-  run_step "$@"
-  exit 0
+if [ "$action" = pkg ]; then
+  while getopts "fk" opt; do
+    case $opt in
+      f)
+        MK_FORCE=yes
+        ;;
+      k)
+        MK_KEEP=yes
+        ;;
+    esac
+  done
+  unset opt
 fi
 
-if is_cmd $1; then
-  run_cmd "$@"
-  exit 0
+if is_step $action; then
+  run_step $action "$@"
+elif is_cmd $action; then
+  run_cmd $action "$@"
+else
+  _usage
 fi
-
-usage

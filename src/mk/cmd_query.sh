@@ -1,5 +1,5 @@
 cmd_query() {
-  local field=$3
+  local field=$1
   local v ok
 
   if printf '%s' $field | grep -q ^MK_; then

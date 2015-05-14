@@ -3,5 +3,8 @@ is_cmd() {
 }
 
 run_cmd() {
-  cmd_$1 "$@"
+  local cmd=$1
+  shift
+
+  cmd_$cmd "$@"
 }
