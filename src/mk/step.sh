@@ -4,7 +4,6 @@ is_step() {
 
 run_step() {
   local step=$1
-  local deps=
   local s
 
   if [ $step = pkg ] &&
