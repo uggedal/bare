@@ -38,11 +38,8 @@ post_env() {
 
   MK_BUILD=$MK_DIST
 
-  mkdir -p $MK_BUILD_ROOT
-
   if [ "$PKG_BUILDDIR" ]; then
     MK_BUILD=$MK_BUILD_ROOT/$PKG_BUILDDIR
-    mkdir -p $MK_BUILD
   fi
 
   MK_MANDIR=$MK_PREFIX/share/man

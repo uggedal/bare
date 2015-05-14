@@ -11,4 +11,10 @@ _extract_db_file() {
 
 step_prep() {
   read_repo $_REPO _extract_db_file
+
+  mkdir -p $MK_BUILD_ROOT
+
+  if [ "$PKG_BUILDDIR" ]; then
+    mkdir -p $MK_BUILD
+  fi
 }
