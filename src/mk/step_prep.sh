@@ -9,6 +9,6 @@ _extract_db_file() {
   tar -C $_DB -xJf $_REPO/$pkg $PKG_DB/$name
 }
 
-step_prepdb() {
+step_prep() {
   read_repo $_REPO _extract_db_file
 }

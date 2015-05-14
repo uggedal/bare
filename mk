@@ -36,7 +36,7 @@ Commands:
   contain
 
 Ordered steps:
-  prepdb
+  prep
   checksum <pkg>
   extract <pkg>
   patch <pkg>

@@ -1,5 +1,5 @@
 MK_STEPS='
-  prepdb
+  prep
   checksum
   extract
   patch
