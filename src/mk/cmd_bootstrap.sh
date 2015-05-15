@@ -41,8 +41,8 @@ _manual_install() {
 }
 
 _contain_install() {
-  local name=$1
-  REPO=repo pkg-install -p $_CONTAIN $name
+  local name="$1"
+  REPO=repo pkg-install -p $_CONTAIN "$name"
 }
 
 _build_gcc() {
@@ -112,13 +112,12 @@ _bootstrap_cross() {
 }
 
 _contain_pkg() {
-  local name=$1
-  local file=$2
+  local name
 
-  ./mk pkg $name
-  if ! [ -e $file ]; then
+  for name; do
+    ./mk pkg $name
     _contain_install $name
-  fi
+  done
 }
 
 _bootstrap_contain() {
@@ -133,46 +132,26 @@ _bootstrap_contain() {
   export READELF=$TRIPLE-readelf
   export STRIP=$TRIPLE-strip
 
-  _contain_pkg musl $prefix/include/stdio.h
-  _contain_pkg linux-headers $prefix/include/linux/inotify.h
-
-  CROSS_COMPILE=$TRIPLE- \
-    ./mk pkg busybox
-  if ! [ -x $_CONTAIN/bin/busybox ]; then
-    _contain_install busybox
-  fi
-
-  _contain_pkg sbase $prefix/bin/cp
-  _contain_pkg ubase $prefix/bin/passwd
-  _contain_pkg ksh $_CONTAIN/bin/sh
-  _contain_pkg ed $prefix/bin/ed
-  _contain_pkg awk $prefix/bin/awk
-  _contain_pkg pax $_CONTAIN/bin/tar
-  _contain_pkg bzip2 $prefix/bin/bzip2
+  _contain_pkg musl
+  _contain_pkg linux-headers
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
-  if ! [ -x $prefix/bin/ar ]; then
-    _contain_install binutils
-  fi
+  _contain_install binutils
 
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr" \
     ./mk pkg gmp
-  if ! [ -e $prefix/lib/libgmp.so ]; then
-    _contain_install gmp
-  fi
+  _contain_install gmp
 
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr
     --with-gmp=$prefix" \
     ./mk pkg mpfr
-  if ! [ -e $prefix/lib/libmpfr.so ]; then
-    _contain_install mpfr
-  fi
+  _contain_install mpfr
 
   MK_CONFIGURE="
     --host=$TRIPLE
@@ -180,9 +159,7 @@ _bootstrap_contain() {
     --with-gmp=$prefix
     --with-mpfr=$prefix" \
     ./mk pkg mpc
-  if ! [ -e $prefix/lib/libmpc.so ]; then
-    _contain_install mpc
-  fi
+  _contain_install mpc
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="
@@ -191,9 +168,7 @@ _bootstrap_contain() {
     --with-mpfr=$prefix
     --with-mpc=$prefix" \
     ./mk pkg gcc
-  if ! [ -x $prefix/bin/gcc ]; then
-    _contain_install gcc
-  fi
+  _contain_install gcc
 
   local bin
   for bin in make xz file; do
@@ -201,13 +176,14 @@ _bootstrap_contain() {
       --host=$TRIPLE
       --prefix=/usr" \
       ./mk pkg $bin
-    if ! [ -x $prefix/bin/$bin ]; then
-      _contain_install $bin
-    fi
+    _contain_install $bin
   done
 
-  _contain_pkg hier $_CONTAIN/dev
-  _contain_pkg pkg $prefix/usr/pkg-contain
+  CROSS_COMPILE=$TRIPLE- \
+    ./mk pkg busybox
+  _contain_install busybox
+
+  _contain_pkg sbase ubase ksh ed awk pax bzip2 hier pkg
 }
 
 cmd_bootstrap() {
