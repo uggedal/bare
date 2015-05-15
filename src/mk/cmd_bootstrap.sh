@@ -42,7 +42,7 @@ _manual_install() {
 
 _contain_install() {
   local name=$1
-  _manual_install $_CONTAIN $name
+  REPO=repo pkg-install -p $_CONTAIN $name
 }
 
 _build_gcc() {
