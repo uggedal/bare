@@ -69,13 +69,11 @@ handle_pkg() {
   [ -z "$DEPENDENCY" ] || installmsg="$installmsg (dependency)"
 
   if pkg_installed $PREFIX $PKG; then
-    if [ "$DEPENDENCY" ]; then
+    if [ "$DEPENDENCY" ] || [ -z "$FORCE" ]; then
       [ "$VERBOSE" -le 0 ] || msg "$installedmsg"
       INSTALLED=yes
       return 0
     fi
-
-    [ "$FORCE" ] || die "$installedmsg"
   fi
 
   [ "$VERBOSE" -le 0 ] || msg "$installmsg"
