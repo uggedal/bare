@@ -70,7 +70,7 @@ handle_pkg() {
 
   if pkg_installed $PREFIX $PKG; then
     if [ "$DEPENDENCY" ]; then
-      msg "$installedmsg"
+      [ "$VERBOSE" -le 0 ] || msg "$installedmsg"
       INSTALLED=yes
       return 0
     fi
