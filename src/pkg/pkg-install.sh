@@ -52,7 +52,7 @@ handle_deps() {
   # TODO: pass same flags as calle (except pkg(s) and don't add second
   # -d on recursion
   # TODO: collect all deps and fork off once?
-  PREFIX=$PREFIX $0 -d $name || exit $?
+  REPO=$REPO PREFIX=$PREFIX $0 -d $name || exit $?
 }
 
 handle_pkg() {
