@@ -49,8 +49,10 @@ handle_deps() {
       ;;
   esac
 
-  # TODO: pass same flags as calle:
-  $0 -d $name || exit $?
+  # TODO: pass same flags as calle (except pkg(s) and don't add second
+  # -d on recursion
+  # TODO: collect all deps and fork off once?
+  PREFIX=$PREFIX $0 -d $name || exit $?
 }
 
 handle_pkg() {
