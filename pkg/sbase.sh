@@ -1,4 +1,4 @@
-ver 0.0.013.296497
+ver 0.0.014.86f9ce
 rev 1
 dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
