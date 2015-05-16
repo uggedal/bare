@@ -25,6 +25,13 @@ _bootstrap_fetch() {
     make
     xz
     file
+    sbase
+    ubase
+    ksh
+    ed
+    awk
+    pax
+    bzip2
   '
   local d
 
