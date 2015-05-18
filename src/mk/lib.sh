@@ -27,7 +27,14 @@ foreach() {
 }
 
 distfile() {
-  printf '%s\n' ${1##*/}
+  case $1 in
+    *\|*)
+      printf '%s\n' ${1##*|}
+      ;;
+    *)
+      printf '%s\n' ${1##*/}
+      ;;
+  esac
 }
 
 distpath() {
@@ -41,6 +48,10 @@ distfiles() {
 
 distpaths() {
   merge $(foreach distpath "$@")
+}
+
+disturl() {
+  printf '%s\n' ${1%%|*}
 }
 
 has_distfile() {
