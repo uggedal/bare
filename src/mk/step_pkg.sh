@@ -19,9 +19,12 @@ _provided_libs() {
 }
 
 _needed_libs() {
+  local dest=$_DEST/$PKG_QUALIFIED_NAME
   local f mime
 
-  find $_DEST/$PKG_QUALIFIED_NAME -type f | while read f; do
+  [ -d $dest ] || return 0
+
+  find $dest -type f | while read f; do
     mime="$(file -bi "$f")"
     case "$mime" in
       application/x-executable*|application/x-sharedlib*)
