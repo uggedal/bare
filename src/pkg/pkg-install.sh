@@ -80,7 +80,7 @@ handle_pkg() {
 
   [ "$VERBOSE" -le 1 ] || tar -tJf $REPO/$f
 
-  local tmp=$PREFIX$PKG_TMP/$qualified_name
+  local tmp=$PREFIX/$PKG_TMP/$qualified_name
 
   rm -rf $tmp
   mkdir -p $tmp
