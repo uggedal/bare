@@ -123,7 +123,6 @@ _contain_pkg() {
 
   for name; do
     ./mk pkg $name
-    _contain_install $name
   done
 }
 
@@ -140,12 +139,14 @@ _bootstrap_contain() {
   export STRIP=$TRIPLE-strip
 
   _contain_pkg musl
+  _contain_install musl
+
   _contain_pkg linux-headers
+  _contain_install linux-headers
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
     ./mk pkg binutils
-  _contain_install binutils
 
   MK_CONFIGURE="
     --host=$TRIPLE
@@ -175,7 +176,6 @@ _bootstrap_contain() {
     --with-mpfr=$prefix
     --with-mpc=$prefix" \
     ./mk pkg gcc
-  _contain_install gcc
 
   local bin
   for bin in make xz file; do
@@ -183,14 +183,17 @@ _bootstrap_contain() {
       --host=$TRIPLE
       --prefix=/usr" \
       ./mk pkg $bin
-    _contain_install $bin
   done
 
   CROSS_COMPILE=$TRIPLE- \
     ./mk pkg busybox
-  _contain_install busybox
 
-  _contain_pkg sbase ubase ksh ed awk pax bzip2 hier pkg
+  _contain_pkg sbase ubase ksh ed awk pax bzip2 hier pkg build-env
+
+  rm -r $_CONTAIN
+  mkdir -p $_CONTAIN
+
+  _contain_install build-env
 }
 
 cmd_bootstrap() {
