@@ -1,7 +1,17 @@
-ver 3.1.2
+_ver=3.1.2
+_patchver=11
+ver ${_ver}.p$_patchver
 rev 1
-dist http://www.${PKG_NAME}.org/$PKG_NAME-current/$PKG_NAME-${PKG_VER}.tar.xz
+
+_dist=http://www.${PKG_NAME}.org/$PKG_NAME-$_ver
+for _patch in $(seq -w $_patchver); do
+  _patches="$_patches $_dist/patch$_patch|${_patch}.patch"
+done
+dist $_dist/$PKG_NAME-${_ver}.tar.xz $_patches
+
 bdep gmp-dev
+
+distdir $PKG_NAME-$_ver
 
 configure \
   --with-pic
