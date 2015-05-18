@@ -31,7 +31,10 @@ _validate_confict() {
 }
 
 _validate_conflicts() {
-  _VALIDATE_FL="$(find $_DEST/$PKG_QUALIFIED_NAME -type f -o -type l |
+  local dest=$_DEST/$PKG_QUALIFIED_NAME
+  [ -d "$dest" ] || return 0
+
+  _VALIDATE_FL="$(find $dest -type f -o -type l |
                   sed "s|^$_DEST/$PKG_QUALIFIED_NAME/||")"
 
   read_repo $_REPO _validate_confict
