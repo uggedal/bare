@@ -29,6 +29,9 @@ remove_empty_dirs() {
   local d
 
   find $_DEST/$PKG_QUALIFIED_NAME -depth -type d | while read d; do
+    if [ -z "$(_rootify $d)" ]; then
+      continue
+    fi
     if rmdir $d 2>/dev/null; then
       msg "remove empty dir: $(_rootify $d)"
     fi
