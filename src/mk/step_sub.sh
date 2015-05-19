@@ -35,6 +35,7 @@ _split_bld() {
   _mvp $dest 'usr/lib/*.a'
   _mvp $dest 'usr/lib/*.so'
   _mvp $dest usr/include
+  _mvp $dest $(relative .$MK_MANDIR .)'/man[23]'
   _mvp $dest usr/lib/pkgconfig
 }
 
