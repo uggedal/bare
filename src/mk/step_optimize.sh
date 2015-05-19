@@ -1,47 +1,47 @@
-_rootify() {
-  printf '%s' ${1#$_DEST/$PKG_QUALIFIED_NAME}
-}
-
 remove_libtool_archives() {
+  local dest=$1
   local f
 
-  find $_DEST/$PKG_QUALIFIED_NAME -type f -name \*.la | while read f; do
-    msg "remove libtool archive: $(_rootify $f)"
+  find $dest -type f -name \*.la | while read f; do
+    msg "remove libtool archive: $(relative $f $dest)"
     rm $f
   done
 }
 
 remove_below() {
-  local dir=$1
-  local desc="$2"
+  local dest=$1
+  local dir=$2
+  local desc="$3"
 
   local f
 
-  [ -d $_DEST/$PKG_QUALIFIED_NAME$MK_PREFIX/$dir ] || return 0
+  [ -d $dest$MK_PREFIX/$dir ] || return 0
 
-  find $_DEST/$PKG_QUALIFIED_NAME$MK_PREFIX/$dir -type f | while read f; do
-    msg "remove $desc: $(_rootify $f)"
+  find $dest$MK_PREFIX/$dir -type f | while read f; do
+    msg "remove $desc: $(relative $f $dest)"
     rm $f
   done
 }
 
 remove_empty_dirs() {
+  local dest=$1
   local d
 
-  find $_DEST/$PKG_QUALIFIED_NAME -depth -type d | while read d; do
-    if [ -z "$(_rootify $d)" ]; then
+  find $dest -depth -type d | while read d; do
+    if [ -z "$(relative $d $dest)" ]; then
       continue
     fi
     if rmdir $d 2>/dev/null; then
-      msg "remove empty dir: $(_rootify $d)"
+      msg "remove empty dir: $(relative $d $dest)"
     fi
   done
 }
 
 strip_binaries() {
+  local dest=$1
   local f mime type args
 
-  find $_DEST/$PKG_QUALIFIED_NAME -type f | while read f; do
+  find $dest -type f | while read f; do
     mime="$(file -bi "$f")"
     type=
     args=
@@ -60,20 +60,35 @@ strip_binaries() {
     esac
 
     if [ "$type" ]; then
-      msg "strip $type: $(_rootify $f)"
+      msg "strip $type: $(relative $f $dest)"
       ${STRIP:-strip} $args $f
     fi
   done
 }
 
+_optimize() {
+  local name=$1
+  local dest=$2
+
+  progress optmimize "'$name'"
+
+  remove_libtool_archives $dest
+  remove_below $dest share/info 'info page'
+  remove_below $dest share/doc doc
+  strip_binaries $dest
+  [ "$PKG_EMPTYDIRS" = keep ] || remove_empty_dirs $dest
+}
+
+_optimize_sub() {
+  local name=$1
+  local qualified_name=$name-${PKG_VER}_$PKG_REV
+  local dest=$_DEST/$qualified_name
+
+  _optimize $name $dest
+}
+
 step_optimize() {
-  local f
+  foreach _optimize_sub $PKG_SUB
 
-  progress optmimize "'$PKG_NAME'"
-
-  remove_libtool_archives
-  remove_below share/info 'info page'
-  remove_below share/doc doc
-  strip_binaries
-  [ "$PKG_EMPTYDIRS" = keep ] || remove_empty_dirs
+  _optimize $PKG_NAME $_DEST/$PKG_QUALIFIED_NAME
 }
