@@ -30,6 +30,12 @@ while getopts "p:vfd" opt; do
   esac
 done
 unset opt
+
+for i in $(seq $(($OPTIND - 1))); do
+  eval FLAGS=\"\$FLAGS \$$i\"
+done
+unset i
+
 shift $(( $OPTIND - 1 ))
 
 handle_deps() {
@@ -49,10 +55,8 @@ handle_deps() {
       ;;
   esac
 
-  # TODO: pass same flags as calle (except pkg(s) and don't add second
-  # -d on recursion
   # TODO: collect all deps and fork off once?
-  REPO=$REPO PREFIX=$PREFIX $0 -d $name || exit $?
+  REPO=$REPO $0 $FLAGS -d $name || exit $?
 }
 
 handle_pkg() {
