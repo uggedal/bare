@@ -5,3 +5,6 @@ bdep gmp-bld mpfr-bld
 
 configure \
   --with-pic
+
+sub mpc-bld type bld
+sub mpc-bld rdep mpc
