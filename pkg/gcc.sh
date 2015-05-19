@@ -4,7 +4,7 @@ dist \
   $URI_GNU/$PKG_NAME/$PKG_NAME-$PKG_VER/$PKG_NAME-${PKG_VER}.tar.bz2 \
   $URI_BB/GregorR/musl-cross/raw/a945614feb1e213411728cf52d8813c966691e14/patches/$PKG_NAME-$PKG_VER-musl.diff
 
-bdep mpc-dev
+bdep mpc-bld
 
 configure \
   --disable-libsanitizer \

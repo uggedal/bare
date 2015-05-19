@@ -9,7 +9,7 @@ for _patch in $(seq -w $_patchver); do
 done
 dist $_dist/$PKG_NAME-${_ver}.tar.xz $_patches
 
-bdep gmp-dev
+bdep gmp-bld
 
 distdir $PKG_NAME-$_ver
 
