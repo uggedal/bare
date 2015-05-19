@@ -43,8 +43,7 @@ _validate_conflicts() {
   [ -d "$dest" ] || return 0
 
   _PKG_NAME=$name
-  _VALIDATE_FL="$(find $dest -type f -o -type l |
-                  sed "s|^$_DEST/$PKG_QUALIFIED_NAME/||")"
+  _VALIDATE_FL="$(find $dest -type f -o -type l | sed "s|^$MK_DESTDIR/||")"
 
   read_repo $_REPO _validate_confict
 
@@ -73,5 +72,5 @@ _validate_sub() {
 step_validate() {
   foreach _validate_sub $PKG_SUB
 
-  _validate $PKG_NAME $_DEST/$PKG_QUALIFIED_NAME
+  _validate $PKG_NAME $MK_DESTDIR
 }

@@ -34,7 +34,7 @@ cmd_clean() {
   local dir
 
   if [ "$PKG_NAME" ]; then
-    dirs="$MK_BUILD_ROOT $_DEST/$PKG_QUALIFIED_NAME $(_sub_dest_dirs)"
+    dirs="$MK_BUILD_ROOT $MK_DESTDIR $(_sub_dest_dirs)"
     progress clean "'$PKG_NAME'"
   else
     progress clean "all"

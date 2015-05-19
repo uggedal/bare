@@ -1,7 +1,7 @@
 _mvp() {
   local dest=$1
   local files="$2"
-  local maindest=$_DEST/$PKG_QUALIFIED_NAME
+  local maindest=$MK_DESTDIR
 
   (
     cd $maindest

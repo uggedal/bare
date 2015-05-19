@@ -124,7 +124,7 @@ step_pkg() {
   _pkg \
     $PKG_NAME \
     $PKG_QUALIFIED_NAME \
-    $_DEST/$PKG_QUALIFIED_NAME \
+    $MK_DESTDIR \
     "$PKG_LIB" \
     "$PKG_RDEP"
 }

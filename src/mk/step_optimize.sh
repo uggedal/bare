@@ -90,5 +90,5 @@ _optimize_sub() {
 step_optimize() {
   foreach _optimize_sub $PKG_SUB
 
-  _optimize $PKG_NAME $_DEST/$PKG_QUALIFIED_NAME
+  _optimize $PKG_NAME $MK_DESTDIR
 }
