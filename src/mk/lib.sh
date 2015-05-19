@@ -76,7 +76,7 @@ source_pkg() {
   local name=$1
   local f=$_PKG/${name}.sh
 
-  [ ! -L "$f" ] || die "subpackage '$name' ($(readlink -f $f))"
+  [ ! -h "$f" ] || die "subpackage '$name' ($(readlink -f $f))"
   [ -r "$f" ] || die "no file for '$name' ($f)"
   . $f
 }
