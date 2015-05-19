@@ -29,6 +29,16 @@ msg() {
   printf '%s\n' "$(strong "$(color 37 "$prefix")$@")" 1>&2
 }
 
+msglist() {
+  local prefix="$1"
+  shift
+
+  local part
+  for part; do
+    msg "$prefix '$part'"
+  done
+}
+
 err() {
   local progname=$(basename $0)
   msg "$(color 31 $progname:) $@"

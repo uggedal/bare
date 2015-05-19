@@ -65,16 +65,6 @@ _lib_deps() {
   unset _NEEDED_LIBS
 }
 
-_msg_list() {
-  local prefix="$1"
-  shift
-
-  local part
-  for part; do
-    msg "$prefix '$part'"
-  done
-}
-
 step_pkg() {
   local pkg=$_REPO/${PKG_QUALIFIED_NAME}$PKG_EXT
 
@@ -82,10 +72,10 @@ step_pkg() {
 
   local libs="$PKG_LIB"
   [ "$libs" ] || libs="$(_provided_libs)"
-  _msg_list 'Provided lib:' $libs
+  msglist 'Provided lib:' $libs
 
   local deps="$PKG_RDEP $(_lib_deps)"
-  _msg_list 'Run-time dep:' $deps
+  msglist 'Run-time dep:' $deps
 
   pkg-create \
     -p $_DEST/$PKG_QUALIFIED_NAME \
