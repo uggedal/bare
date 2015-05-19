@@ -7,7 +7,11 @@ undercase() {
 }
 
 relative() {
-  printf '%s\n' ${1#$(pwd)/*}
+  local f=$1
+  local from=$2
+  : ${from:=$(pwd)}
+
+  printf '%s\n' ${f#$from/*}
 }
 
 merge() {
