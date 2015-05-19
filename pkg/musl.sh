@@ -14,3 +14,6 @@ post_install() {
   ln -sf ..$MK_PREFIX/lib/libc.so $MK_DESTDIR/lib/ld-musl-${MK_ARCH}.so.1
   ln -s ../lib/libc.so $MK_DESTDIR$MK_PREFIX/bin/ldd
 }
+
+sub musl-bld type bld
+sub musl-bld rdep musl

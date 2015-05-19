@@ -3,6 +3,7 @@ rev 1
 
 rdep \
   hier \
+  musl-bld \
   sbase \
   ubase \
   busybox \
