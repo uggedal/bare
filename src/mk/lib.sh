@@ -99,6 +99,10 @@ sub_var() {
   printf 'PKG_SUB_%s_%s' $(uppercase $(undercase $1)) $(uppercase $2)
 }
 
+get_sub_var() {
+  eval printf '%s' \"\$$(sub_var $1 $2)\"
+}
+
 validate_sub() {
   local name=$1
   local f=$_PKG/${name}.sh
