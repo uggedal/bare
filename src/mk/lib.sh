@@ -107,6 +107,7 @@ validate_sub() {
   local name=$1
   local f=$_PKG/${name}.sh
 
+  [ "$MK_NO_SUB_VALIDATION" ] || return 0
   [ -h $f ] || die "missing sub link '$name'"
 
   local target=$(readlink $f)

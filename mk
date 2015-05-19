@@ -31,6 +31,7 @@ Commands:
   fetch <pkg>
   sum <pkg>
   clean [pkg]
+  link <pkg>
   query <pkg> <field>
   bootstrap
   contain
@@ -69,6 +70,8 @@ case "$action" in
     read_pkg $pkg
     ;;
 esac
+
+[ "$action" != link ] || MK_NO_SUB_VALIDATION=yes
 
 if [ "$action" = pkg ]; then
   while getopts "fk" opt; do
