@@ -5,3 +5,6 @@ bdep m4
 
 configure \
   --with-pic
+
+sub gmp-bld type bld
+sub gmp-bld rdep gmp
