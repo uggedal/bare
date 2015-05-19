@@ -28,9 +28,8 @@ remove_empty_dirs() {
   local d
 
   find $dest -depth -type d | while read d; do
-    if [ -z "$(relative $d $dest)" ]; then
-      continue
-    fi
+    [ "$dest" != "$d" ] || continue
+
     if rmdir $d 2>/dev/null; then
       msg "remove empty dir: $(relative $d $dest)"
     fi
