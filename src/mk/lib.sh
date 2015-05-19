@@ -91,6 +91,20 @@ validate_pkg() {
   done
 }
 
+find_sub() {
+  local f target sub
+
+  for f in $_PKG/*.sh; do
+    [ -h $f ] || continue
+    target=$(readlink $f)
+    target=${target%*.sh}
+    [ $PKG_NAME = "$target" ] || continue
+    sub=$(basename $f)
+    sub=${sub%*.sh}
+    PKG_SUB="$PKG_SUB $sub"
+  done
+}
+
 read_pkg() {
   local _v
   for _v in $PKG_VARS $PKG_COMPUTED_VARS; do
@@ -105,6 +119,9 @@ read_pkg() {
 
   PKG_NAME=$1
   PKG_PARENT_NAME=$PKG_NAME
+
+  find_sub
+
   source_pkg $PKG_NAME
 
   for _v in $PKG_VARS; do
