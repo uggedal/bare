@@ -186,9 +186,20 @@ _bootstrap_contain() {
   CROSS_COMPILE=$TRIPLE- \
     ./mk pkg busybox
 
-  _contain_pkg sbase ubase ksh ed awk pax bzip2 hier pkg build-env
+  _contain_pkg \
+    sbase \
+    ubase \
+    ksh \
+    ed \
+    awk \
+    pax \
+    bzip2 \
+    hier \
+    pkg \
+    base \
+    bld
 
-  _prefix_install build-env $_CONTAIN
+  _prefix_install bld $_CONTAIN
 }
 
 cmd_bootstrap() {
