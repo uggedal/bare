@@ -97,17 +97,22 @@ sub_var() {
 
 sub() {
   local subname=$1
-  local action=$2
+  local var=$2
   shift 2
 
-  local s found
+  local s allowedsub
   for s in $PKG_SUB; do
-    [ "$subname" != "$s" ] || found=yes
+    [ "$subname" != "$s" ] || allowedsub=yes
   done
+  [ "$allowedsub" ] || die "missing sub package '$subname'"
 
-  [ "$found" ] || die "missing sub package '$subname'"
+  local v allowedvar
+  for v in $PKG_SUB_VARS; do
+    [ "$var" != "$v" ] || allowedvar=yes
+  done
+  [ "$allowedvar" ] || die "unsupported sub var '$var'"
 
-  eval $(sub_var $subname $action)=\"\$@\"
+  eval $(sub_var $subname $var)=\"\$@\"
 }
 
 find_sub() {
