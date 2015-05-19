@@ -11,6 +11,9 @@ dist $_dist/$PKG_NAME-${_ver}.tar.xz $_patches
 
 bdep gmp-bld
 
+sub mpfr-bld type bld
+sub mpfr-bld rdep mpfr
+
 distdir $PKG_NAME-$_ver
 
 configure \
