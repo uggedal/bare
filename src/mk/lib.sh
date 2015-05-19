@@ -98,7 +98,7 @@ read_pkg() {
   done
 
   for _v in $PKG_VARS; do
-    eval "$_v() { PKG_$(uppercase $_v)=\"\$@\"; }"
+    eval "$_v() { $(pkg_var $_v)=\"\$@\"; }"
   done
 
   pre_env
