@@ -150,14 +150,14 @@ _bootstrap_contain() {
     --host=$TRIPLE
     --prefix=/usr" \
     ./mk pkg gmp
-  _prefix_install gmp $_BOOTSTRAP_NATIVE
+  _prefix_install gmp-bld $_BOOTSTRAP_NATIVE
 
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr
     --with-gmp=$prefix" \
     ./mk pkg mpfr
-  _prefix_install mpfr $_BOOTSTRAP_NATIVE
+  _prefix_install mpfr-bld $_BOOTSTRAP_NATIVE
 
   MK_CONFIGURE="
     --host=$TRIPLE
@@ -165,7 +165,7 @@ _bootstrap_contain() {
     --with-gmp=$prefix
     --with-mpfr=$prefix" \
     ./mk pkg mpc
-  _prefix_install mpc $_BOOTSTRAP_NATIVE
+  _prefix_install mpc-bld $_BOOTSTRAP_NATIVE
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="
