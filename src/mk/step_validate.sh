@@ -1,6 +1,7 @@
 _validate_name() {
-  [ "${#PKG_NAME}" -le $PKG_NAME_MAX ] ||
-    die "name is longer than $PKG_NAME_MAX (${#PKG_NAME})"
+  local name=$1
+  [ "${#name}" -le $PKG_NAME_MAX ] ||
+    die "name is longer than $PKG_NAME_MAX (${#name})"
 }
 
 _find_conflict_in_db() {
@@ -11,7 +12,8 @@ _find_conflict_in_db() {
   case $t in
     @|f)
       for f in $_VALIDATE_FL; do
-        [ "$f" != "$f1" ] || die "conflicting file in '$_PKG_NAME' ($f)"
+        [ "$f" != "$f1" ] ||
+          die "conflicting file in '$_CONFLICT_PKG_NAME' ($f)"
       done
       ;;
   esac
@@ -23,28 +25,53 @@ _validate_confict() {
   local qualified_name=$3
   local pkg=$4
 
-  [ $name != $PKG_NAME ] || return 0
+  case $name in
+    $_PKG_NAME|$PKG_NAME)
+      return 0
+      ;;
+  esac
 
-  _PKG_NAME=$name
+  _CONFLICT_PKG_NAME=$name
   read_db $_DB $name _find_conflict_in_db
-  unset _PKG_NAME
+  unset _CONFLICT_PKG_NAME
 }
 
 _validate_conflicts() {
-  local dest=$_DEST/$PKG_QUALIFIED_NAME
+  local name=$1
+  local dest=$2
+
   [ -d "$dest" ] || return 0
 
+  _PKG_NAME=$name
   _VALIDATE_FL="$(find $dest -type f -o -type l |
                   sed "s|^$_DEST/$PKG_QUALIFIED_NAME/||")"
 
   read_repo $_REPO _validate_confict
 
+  unset _PKG_NAME
   unset _VALIDATE_FL
 }
 
-step_validate() {
-  progress validate "'$PKG_NAME'"
+_validate() {
+  local name=$1
+  local dest=$2
 
-  _validate_name
-  _validate_conflicts
+  progress validate "'$name'"
+
+  _validate_name $name
+  _validate_conflicts $name $dest
+}
+
+_validate_sub() {
+  local name=$1
+  local qualified_name=$name-${PKG_VER}_$PKG_REV
+  local dest=$_DEST/$qualified_name
+  
+  _validate $name $dest
+}
+
+step_validate() {
+  foreach _validate_sub $PKG_SUB
+
+  _validate $PKG_NAME $_DEST/$PKG_QUALIFIED_NAME
 }
