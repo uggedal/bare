@@ -99,16 +99,31 @@ sub_var() {
   printf 'PKG_SUB_%s_%s' $(uppercase $(undercase $1)) $(uppercase $2)
 }
 
+validate_sub() {
+  local name=$1
+  local f=$_PKG/${name}.sh
+
+  [ -h $f ] || die "missing sub link '$name'"
+
+  local target=$(readlink $f)
+  target=${target%*.sh}
+  [ $PKG_NAME = "$target" ] || die "wrong sub link target '$target'"
+}
+
 sub() {
-  local subname=$1
+  local name=$1
   local var=$2
   shift 2
 
+  if [ "$var" = type ]; then
+    validate_sub $name
+    PKG_SUB="$PKG_SUB $name"
+  fi
+
   local s allowedsub
-  for s in $PKG_SUB; do
-    [ "$subname" != "$s" ] || allowedsub=yes
+  for s in $PKG_SUB_LINKS; do
+    [ "$name" != "$s" ] || allowedsub=yes
   done
-  [ "$allowedsub" ] || die "missing sub package '$subname'"
 
   local v allowedvar
   for v in $PKG_SUB_VARS; do
@@ -116,21 +131,7 @@ sub() {
   done
   [ "$allowedvar" ] || die "unsupported sub var '$var'"
 
-  eval $(sub_var $subname $var)=\"\$@\"
-}
-
-find_sub() {
-  local f target sub
-
-  for f in $_PKG/*.sh; do
-    [ -h $f ] || continue
-    target=$(readlink $f)
-    target=${target%*.sh}
-    [ $PKG_NAME = "$target" ] || continue
-    sub=$(basename $f)
-    sub=${sub%*.sh}
-    PKG_SUB="$PKG_SUB $sub"
-  done
+  eval $(sub_var $name $var)=\"\$@\"
 }
 
 read_pkg() {
@@ -147,8 +148,6 @@ read_pkg() {
 
   PKG_NAME=$1
   PKG_PARENT_NAME=$PKG_NAME
-
-  find_sub
 
   source_pkg $PKG_NAME
 
