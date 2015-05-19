@@ -8,6 +8,7 @@ MK_STEPS='
   install
   optimize
   validate
+  sub
   pkg
 '
 
