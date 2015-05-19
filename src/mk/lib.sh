@@ -91,6 +91,25 @@ validate_pkg() {
   done
 }
 
+sub_var() {
+  printf 'PKG_SUB_%s_%s' $(uppercase $(undercase $1)) $(uppercase $2)
+}
+
+sub() {
+  local subname=$1
+  local action=$2
+  shift 2
+
+  local s found
+  for s in $PKG_SUB; do
+    [ "$subname" != "$s" ] || found=yes
+  done
+
+  [ "$found" ] || die "missing sub package '$subname'"
+
+  eval $(sub_var $subname $action)=\"\$@\"
+}
+
 find_sub() {
   local f target sub
 
