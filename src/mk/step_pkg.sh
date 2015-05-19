@@ -3,7 +3,8 @@ _xz_stat() {
 }
 
 _provided_libs() {
-  local libdir=$_DEST/$PKG_QUALIFIED_NAME$MK_PREFIX/lib
+  local dest=$1
+  local libdir=$dest$MK_PREFIX/lib
   local f mime
 
   [ -d $libdir ] || return 0
@@ -19,7 +20,7 @@ _provided_libs() {
 }
 
 _needed_libs() {
-  local dest=$_DEST/$PKG_QUALIFIED_NAME
+  local dest=$1
   local f mime
 
   [ -d $dest ] || return 0
@@ -42,7 +43,7 @@ _find_lib_in_db() {
   [ "$t" = l ] || return 0
 
   for l in $_NEEDED_LIBS; do
-    [ "$l" != "$f1" ] || printf '%s:%s\n' $_PKG_NAME $l
+    [ "$l" != "$f1" ] || printf '%s:%s\n' $_LIB_PKG_NAME $l
   done
 }
 
@@ -52,39 +53,58 @@ _find_pkg_with_lib() {
   local qualified_name=$3
   local pkg=$4
 
-  [ $name != $PKG_NAME ] || return 0
+  [ $name != $_PKG_NAME ] || return 0
 
-  _PKG_NAME=$name
+  _LIB_PKG_NAME=$name
   read_db $_DB $name _find_lib_in_db
-  unset _PKG_NAME
+  unset _LIB_PKG_NAME
 }
 
 _lib_deps() {
-  _NEEDED_LIBS=$(_needed_libs)
+  local name=$1
+  local dest=$2
+
+  _NEEDED_LIBS=$(_needed_libs $dest)
+  _PKG_NAME=$name
   [ -z "$_NEEDED_LIBS" ] || read_repo $_REPO _find_pkg_with_lib | sort | uniq
   unset _NEEDED_LIBS
+  unset _PKG_NAME
 }
 
-step_pkg() {
-  local pkg=$_REPO/${PKG_QUALIFIED_NAME}$PKG_EXT
+_pkg() {
+  local name=$1
+  local qualified_name=$2
+  local dest=$3
+  local libs="$4"
+  local deps="$5"
 
-  progress pkg "'$PKG_NAME'"
+  local pkg=$_REPO/${qualified_name}$PKG_EXT
 
-  local libs="$PKG_LIB"
-  [ "$libs" ] || libs="$(_provided_libs)"
+  progress pkg "'$name'"
+
+  [ "$libs" ] || libs="$(_provided_libs $dest)"
   msglist 'Provided lib:' $libs
 
-  local deps="$PKG_RDEP $(_lib_deps)"
+  deps="$deps $(_lib_deps $name $dest)"
   msglist 'Run-time dep:' $deps
 
   pkg-create \
-    -p $_DEST/$PKG_QUALIFIED_NAME \
+    -p $dest \
     -o $pkg \
     -l "$libs" \
     -d "$deps" \
-    $PKG_QUALIFIED_NAME
+    $qualified_name
 
   local stat="$(xz -l $pkg | tail -n1)"
   msg "Uncompressed: $(_xz_stat "$stat" 5 6)"
   msg "Compressed:   $(_xz_stat "$stat" 3 4)"
+}
+
+step_pkg() {
+  _pkg \
+    $PKG_NAME \
+    $PKG_QUALIFIED_NAME \
+    $_DEST/$PKG_QUALIFIED_NAME \
+    "$PKG_LIB" \
+    "$PKG_RDEP"
 }
