@@ -14,6 +14,8 @@ _mvp() {
           ;;
       esac
 
+      [ -e $f ] || continue
+
       dir=$(dirname $(relative $f $maindest))
       mkdir -p $dest/$dir
       mv $f $dest/$dir
