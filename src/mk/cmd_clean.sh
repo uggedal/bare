@@ -22,12 +22,19 @@ _clean_db() {
   rm -rf $_DB
 }
 
+_sub_dest_dirs() {
+  local name
+  for name in $PKG_SUB; do
+    printf '%s ' $_DEST/$name-${PKG_VER}_$PKG_REV
+  done
+}
+
 cmd_clean() {
   local dirs="$_BUILD $_DEST"
   local dir
 
   if [ "$PKG_NAME" ]; then
-    dirs="$MK_BUILD_ROOT $_DEST/$PKG_QUALIFIED_NAME"
+    dirs="$MK_BUILD_ROOT $_DEST/$PKG_QUALIFIED_NAME $(_sub_dest_dirs)"
     progress clean "'$PKG_NAME'"
   else
     progress clean "all"
