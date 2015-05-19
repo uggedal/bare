@@ -100,7 +100,27 @@ _pkg() {
   msg "Compressed:   $(_xz_stat "$stat" 3 4)"
 }
 
+_pkg_sub() {
+  local name=$1
+  local qualified_name=$name-${PKG_VER}_$PKG_REV
+  local dest=$_DEST/$qualified_name
+
+  local lib=$(get_sub_var $name lib)
+  local rdep=$(get_sub_var $name rdep)
+
+  _pkg \
+    $name \
+    $qualified_name \
+    $dest \
+    "$lib" \
+    "$rdep"
+
+  step_prep
+}
+
 step_pkg() {
+  foreach _pkg_sub $PKG_SUB
+
   _pkg \
     $PKG_NAME \
     $PKG_QUALIFIED_NAME \
