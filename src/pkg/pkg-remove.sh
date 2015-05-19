@@ -81,5 +81,7 @@ for p; do
   [ "$VERBOSE" -le 0 ] || msg "removing '$p'"
   read_db $PREFIX $p handle_db_line
   rm $(pkg_db $PREFIX $p)
+  rm -f $(pkg_db $PREFIX $p explicit)
+  rm -f $(pkg_db $PREFIX $p dependency)
 done
 unset p
