@@ -6,9 +6,9 @@ MK_STEPS='
   configure
   build
   install
+  sub
   optimize
   validate
-  sub
   pkg
 '
 
