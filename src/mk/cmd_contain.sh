@@ -9,7 +9,7 @@ cmd_contain() {
     VISUAL=vi \
     HOME=/root \
     HOSTDIR=$(pwd) \
-    $_CROSS/bin/pkg-contain $_CONTAIN /bin/ksh
+    $_BOOTSTRAP_CROSS/bin/pkg-contain $_CONTAIN /bin/ksh
 
   rm -f $conf
 }

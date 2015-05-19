@@ -1,5 +1,9 @@
 uppercase() {
-  printf '%s' "$@" | tr 'a-z' 'A-Z'
+  printf '%s' "$@" | tr a-z A-Z
+}
+
+undercase() {
+  printf '%s' "$@" | tr /.- _
 }
 
 relative() {

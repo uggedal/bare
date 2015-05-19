@@ -47,9 +47,10 @@ _manual_install() {
   tar -C $prefix -xJf repo/$(./mk query $name qualified_name).tar.xz
 }
 
-_contain_install() {
+_prefix_install() {
   local name="$1"
-  REPO=repo pkg-install -p $_CONTAIN "$name"
+  local prefix=$2
+  REPO=repo pkg-install -p $prefix "$name"
 }
 
 _build_gcc() {
@@ -72,12 +73,9 @@ _build_gcc() {
 }
 
 _bootstrap_cross() {
-  local prefix=$_CROSS
+  local prefix=$_BOOTSTRAP_CROSS
 
-  if ! [ -e $prefix/$TRIPLE/usr ]; then
-    mkdir -p $prefix/$TRIPLE
-    ln -s . $prefix/$TRIPLE/usr
-  fi
+  mkdir -p $prefix/$TRIPLE
 
   if ! [ -x $prefix/bin/pkg-contain ]; then
     MK_PREFIX=$prefix \
@@ -127,7 +125,7 @@ _contain_pkg() {
 }
 
 _bootstrap_contain() {
-  local prefix=$_CONTAIN/usr
+  local prefix=$_BOOTSTRAP_NATIVE/usr
 
   export CC=$TRIPLE-gcc
   export CXX=$TRIPLE-g++
@@ -139,10 +137,10 @@ _bootstrap_contain() {
   export STRIP=$TRIPLE-strip
 
   _contain_pkg musl
-  _contain_install musl
+  _prefix_install musl $_BOOTSTRAP_NATIVE
 
   _contain_pkg linux-headers
-  _contain_install linux-headers
+  _prefix_install linux-headers $_BOOTSTRAP_NATIVE
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
@@ -152,14 +150,14 @@ _bootstrap_contain() {
     --host=$TRIPLE
     --prefix=/usr" \
     ./mk pkg gmp
-  _contain_install gmp
+  _prefix_install gmp $_BOOTSTRAP_NATIVE
 
   MK_CONFIGURE="
     --host=$TRIPLE
     --prefix=/usr
     --with-gmp=$prefix" \
     ./mk pkg mpfr
-  _contain_install mpfr
+  _prefix_install mpfr $_BOOTSTRAP_NATIVE
 
   MK_CONFIGURE="
     --host=$TRIPLE
@@ -167,7 +165,7 @@ _bootstrap_contain() {
     --with-gmp=$prefix
     --with-mpfr=$prefix" \
     ./mk pkg mpc
-  _contain_install mpc
+  _prefix_install mpc $_BOOTSTRAP_NATIVE
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="
@@ -190,15 +188,12 @@ _bootstrap_contain() {
 
   _contain_pkg sbase ubase ksh ed awk pax bzip2 hier pkg build-env
 
-  rm -r $_CONTAIN
-  mkdir -p $_CONTAIN
-
-  _contain_install build-env
+  _prefix_install build-env $_CONTAIN
 }
 
 cmd_bootstrap() {
   TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
-  PATH=$_CROSS/bin:$PATH
+  PATH=$_BOOTSTRAP_CROSS/bin:$PATH
 
   _bootstrap_reqs
   _bootstrap_fetch
