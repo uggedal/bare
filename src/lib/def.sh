@@ -26,12 +26,6 @@ PKG_COMPUTED_VARS='
   qualified_parent_name
   '
 
-PKG_SUB_VARS='
-  type
-  rdep
-  lib
-  '
-
 PKG_EXT=.tar.xz
 
 PKG_NAME_MAX=20

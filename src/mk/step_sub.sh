@@ -24,19 +24,30 @@ _mvp() {
 }
 
 _split_lib() {
-  local dest=$1
+  local name=$1
+  local dest=$2
+  local prefix=$(relative .$MK_PREFIX .)
 
-  _mvp $dest 'usr/lib/*.so.*'
+  _mvp $dest $prefix/lib/\*.so.\*
 }
 
 _split_bld() {
-  local dest=$1
+  local name=$1
+  local dest=$2
+  local prefix=$(relative .$MK_PREFIX .)
 
-  _mvp $dest 'usr/lib/*.a'
-  _mvp $dest 'usr/lib/*.so'
-  _mvp $dest usr/include
+  _mvp $dest $prefix/lib/\*.a
+  _mvp $dest $prefix/lib/\*.so
+  _mvp $dest $prefix/include
   _mvp $dest $(relative .$MK_MANDIR .)'/man[23]'
-  _mvp $dest usr/lib/pkgconfig
+  _mvp $dest $prefix/lib/pkgconfig
+}
+
+_split_custom() {
+  local name=$1
+  local dest=$2
+
+  _mvp $dest "$(get_sub_var $name mv)"
 }
 
 _create_sub() {
@@ -47,7 +58,7 @@ _create_sub() {
 
   mkdir -p $dest
 
-  _split_$type $dest
+  _split_$type $name $dest
 }
 
 step_sub() {

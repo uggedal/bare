@@ -15,5 +15,6 @@ post_install() {
   ln -s ../lib/libc.so $MK_DESTDIR$MK_PREFIX/bin/ldd
 }
 
-sub musl-bld type bld
+sub musl-bld type custom
+sub musl-bld mv usr/lib/\*.a usr/include
 sub musl-bld rdep musl

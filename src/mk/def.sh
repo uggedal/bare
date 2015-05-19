@@ -12,5 +12,12 @@ MK_STEPS='
   pkg
 '
 
+PKG_SUB_VARS='
+  type
+  mv
+  rdep
+  lib
+  '
+
 URI_GNU=http://www.mirrorservice.org/sites/ftp.gnu.org/gnu
 URI_BB=https://bitbucket.org
