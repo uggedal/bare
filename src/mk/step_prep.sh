@@ -4,8 +4,6 @@ _extract_db_file() {
   local qualified_name=$3
   local pkg=$4
 
-  [ $name != $PKG_NAME ] || return 0
-
   tar -C $_DB -xJf $_REPO/$pkg $PKG_DB/$name
 }
 
