@@ -74,6 +74,7 @@ _optimize() {
   remove_libtool_archives $dest
   remove_below $dest share/info 'info page'
   remove_below $dest share/doc doc
+  remove_below $dest share/examples examples
   strip_binaries $dest
   [ "$PKG_EMPTYDIRS" = keep ] || remove_empty_dirs $dest
 }
