@@ -48,8 +48,9 @@ _split_bld() {
 _split_custom() {
   local name=$1
   local dest=$2
+  local mv="$(get_sub_var $name mv)"
 
-  _mvp $dest "$(get_sub_var $name mv)"
+  [ -z "$mv" ] || _mvp $dest "$mv"
 }
 
 _create_sub() {
@@ -60,7 +61,12 @@ _create_sub() {
 
   mkdir -p $dest
 
-  _split_$type $name $dest
+  case $type in
+    lib|bld)
+      _split_$type $name $dest
+      ;;
+  esac
+  _split_custom $name $dest
 }
 
 step_sub() {
