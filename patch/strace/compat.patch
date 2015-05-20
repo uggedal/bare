@@ -1,0 +1,52 @@
+diff --git a/evdev.c b/evdev.c
+index 9a7430db4d86..e06f9c151e3a 100644
+--- a/evdev.c
++++ b/evdev.c
+@@ -28,6 +28,8 @@
+ 
+ #include "defs.h"
+ 
++#include <linux/ioctl.h>
++
+ #ifdef HAVE_LINUX_INPUT_H
+ #include <linux/input.h>
+ #include "xlat/evdev_abs.h"
+diff --git a/mknod.c b/mknod.c
+index 07e9a4596ab3..b8bfccc8b6d8 100644
+--- a/mknod.c
++++ b/mknod.c
+@@ -2,6 +2,8 @@
+ 
+ #include <fcntl.h>
+ 
++#include <sys/stat.h>
++
+ #ifdef MAJOR_IN_SYSMACROS
+ # include <sys/sysmacros.h>
+ #endif
+diff --git a/printmode.c b/printmode.c
+index 4df1b9f2f5a8..250b95e1fa3d 100644
+--- a/printmode.c
++++ b/printmode.c
+@@ -2,6 +2,8 @@
+ 
+ #include <fcntl.h>
+ 
++#include <sys/stat.h>
++
+ #include "xlat/modetypes.h"
+ 
+ const char *
+diff --git a/resource.c b/resource.c
+index 57ce17e0023f..00b221c17448 100644
+--- a/resource.c
++++ b/resource.c
+@@ -31,7 +31,7 @@
+ #include "defs.h"
+ #include <sys/resource.h>
+ #include <sys/times.h>
+-#include <linux/kernel.h>
++#include <sys/sysinfo.h>
+ 
+ #include "xlat/resources.h"
+ 
