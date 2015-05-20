@@ -14,7 +14,9 @@ _mvp() {
           ;;
       esac
 
-      [ -e $f ] || continue
+      if [ ! -e $f ] && [ ! -h $f ]; then
+        continue
+      fi
 
       dir=$(dirname $(relative $f $maindest))
       mkdir -p $dest/$dir
