@@ -1,4 +1,4 @@
-_mvp() {
+_submv() {
   local dest=$1
   local files="$2"
   local maindest=$MK_DESTDIR
@@ -30,7 +30,7 @@ _split_lib() {
   local dest=$2
   local prefix=$(relative .$MK_PREFIX .)
 
-  _mvp $dest $prefix/lib/\*.so.\*
+  _submv $dest $prefix/lib/\*.so.\*
 }
 
 _split_bld() {
@@ -38,11 +38,11 @@ _split_bld() {
   local dest=$2
   local prefix=$(relative .$MK_PREFIX .)
 
-  _mvp $dest $prefix/lib/\*.a
-  _mvp $dest $prefix/lib/\*.so
-  _mvp $dest $prefix/include
-  _mvp $dest $(relative .$MK_MANDIR .)'/man[23]'
-  _mvp $dest $prefix/lib/pkgconfig
+  _submv $dest $prefix/lib/\*.a
+  _submv $dest $prefix/lib/\*.so
+  _submv $dest $prefix/include
+  _submv $dest $(relative .$MK_MANDIR .)'/man[23]'
+  _submv $dest $prefix/lib/pkgconfig
 }
 
 _split_custom() {
@@ -50,7 +50,7 @@ _split_custom() {
   local dest=$2
   local mv="$(get_sub_var $name mv)"
 
-  [ -z "$mv" ] || _mvp $dest "$mv"
+  [ -z "$mv" ] || _submv $dest "$mv"
 }
 
 _create_sub() {
