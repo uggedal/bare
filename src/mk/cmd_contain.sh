@@ -4,12 +4,10 @@ cmd_contain() {
   printf 'REPO=%s\n' /host/repo > $conf
 
   env -i \
-    PATH="/usr/bin:/usr/sbin:/bin:/sbin" \
     PS1='[contain] \w \$ ' \
-    VISUAL=vi \
     HOME=/root \
     HOSTDIR=$(pwd) \
-    $_BOOTSTRAP_CROSS/bin/pkg-contain $_CONTAIN /bin/ksh
+    $_BOOTSTRAP_CROSS/bin/pkg-contain $_CONTAIN /bin/ksh -l
 
   rm -f $conf
 }

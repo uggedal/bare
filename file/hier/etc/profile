@@ -1,0 +1,5 @@
+PATH=/usr/bin:/usr/sbin:/bin:/sbin
+
+VISUAL=vi
+PAGER=cat
+export VISUAL PAGER
