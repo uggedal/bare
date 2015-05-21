@@ -4,6 +4,7 @@ rev 1
 rdep \
   base \
   vis \
+  mdocml
 
 builddir .
 
