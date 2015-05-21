@@ -50,7 +50,7 @@ _manual_install() {
 _prefix_install() {
   local name="$1"
   local prefix=$2
-  REPO=repo pkg-install -p $prefix "$name"
+  REPO=$_ROOT/repo pkg-install -p $prefix "$name"
 }
 
 _build_gcc() {
