@@ -197,9 +197,9 @@ _bootstrap_contain() {
     hier \
     pkg \
     base \
-    bld
+    base-bld
 
-  _prefix_install bld $_CONTAIN
+  _prefix_install base-bld $_CONTAIN
 }
 
 cmd_bootstrap() {
