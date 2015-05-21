@@ -6,7 +6,7 @@ cmd_contain() {
   env -i \
     PS1='[contain] \w \$ ' \
     HOME=/root \
-    HOSTDIR=$(pwd) \
+    HOSTDIR=$_ROOT \
     $_BOOTSTRAP_CROSS/bin/pkg-contain $_CONTAIN /bin/ksh -l
 
   rm -f $conf
