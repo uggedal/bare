@@ -50,6 +50,7 @@ post_install() {
     vt100
     vt102
     vt220
+    xterm
     '
 
   local t keep
