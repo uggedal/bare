@@ -36,6 +36,8 @@ exec_step_contained() {
   local args
   args="$@"
 
+  REPO=$_ROOT/repo $_BOOTSTRAP_CROSS/bin/pkg-install -p $_CONTAIN base-bld
+
   exec env -i \
     HOSTDIR=$_ROOT \
     MK_CONTAINED=yes \
