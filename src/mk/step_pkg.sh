@@ -105,8 +105,8 @@ _pkg_sub() {
   local qualified_name=$name-${PKG_VER}_$PKG_REV
   local dest=$_DEST/$qualified_name
 
-  local lib=$(get_sub_var $name lib)
-  local rdep=$(get_sub_var $name rdep)
+  local lib="$(get_sub_var $name lib)"
+  local rdep="$(get_sub_var $name rdep)"
 
   _pkg \
     $name \
