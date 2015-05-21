@@ -1,4 +1,4 @@
-cmd_contain() {
+cmd_enter() {
   local conf=$_CONTAIN/etc/pkg.conf
 
   printf 'REPO=%s\n' /host/repo > $conf

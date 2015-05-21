@@ -34,7 +34,7 @@ Commands:
   link <pkg>
   query <pkg> <field>
   bootstrap
-  contain
+  enter
 
 Ordered steps:
   prep <pkg>
@@ -64,7 +64,7 @@ pkg=$1
   exec_step_contained $action $pkg "$@"
 
 case "$action" in
-  bootstrap|contain)
+  bootstrap|enter)
     [ -z "$pkg" ] || _usage
     ;;
   clean)
