@@ -198,8 +198,6 @@ _bootstrap_contain() {
     pkg \
     base \
     base-bld
-
-  _prefix_install base-bld $_CONTAIN
 }
 
 cmd_bootstrap() {
