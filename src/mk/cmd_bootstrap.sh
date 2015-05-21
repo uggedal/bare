@@ -206,6 +206,8 @@ cmd_bootstrap() {
   TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
   PATH=$_BOOTSTRAP_CROSS/bin:$PATH
 
+  export MK_BOOTSTRAP=yes
+
   _bootstrap_reqs
   _bootstrap_fetch
   _bootstrap_cross

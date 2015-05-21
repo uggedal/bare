@@ -31,3 +31,14 @@ run_step() {
     run_cmd clean
   fi
 }
+
+exec_step_contained() {
+  local args
+  args="$@"
+
+  exec env -i \
+    HOSTDIR=$_ROOT \
+    MK_CONTAINED=yes \
+    $_BOOTSTRAP_CROSS/bin/pkg-contain \
+      $_CONTAIN /bin/sh -lc "cd /host && ./mk $args"
+}
