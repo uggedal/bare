@@ -58,7 +58,7 @@ shift
 pkg=$1
 [ -z "$pkg" ] || shift
 
-if is_step $action && ! use_contain; then
+if is_step $action && use_contain; then
   run_step_contained $action $pkg "$@"
   exit $?
 fi
