@@ -1,3 +1,7 @@
+_is_last_step_without_keep() {
+  [ $step = pkg ] && [ "$MK_KEEP" != yes ]
+}
+
 is_step() {
   [ "$(command -v step_$1)" ]
 }
@@ -27,9 +31,7 @@ run_step() {
     fi
   done
 
-  if [ $step = pkg ] && [ "$MK_KEEP" != yes ]; then
-    run_cmd clean
-  fi
+  ! _is_last_step_without_keep || run_cmd clean
 }
 
 exec_step_contained() {
