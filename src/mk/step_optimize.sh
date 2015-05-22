@@ -69,7 +69,7 @@ _optimize() {
   local name=$1
   local dest=$2
 
-  progress optmimize "'$name'"
+  progress optimize "'$name'"
 
   remove_libtool_archives $dest
   remove_below $dest share/info 'info page'
