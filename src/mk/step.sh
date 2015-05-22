@@ -41,7 +41,13 @@ run_step_contained() {
 
   REPO=$_ROOT/repo $_BOOTSTRAP_CROSS/bin/pkg-install -p $_CACHE base-bld
 
-  cp -a $_CACHE/* $_CONTAIN
+  local f
+  for f in $_CONTAIN/*; do
+    [ -e "$f" ] || {
+      cp -a $_CACHE/* $_CONTAIN
+      break
+    }
+  done
 
   env -i \
     HOSTDIR=$_ROOT \
