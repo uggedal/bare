@@ -34,15 +34,18 @@ run_step() {
   ! _is_last_step_without_keep || run_cmd clean
 }
 
-exec_step_contained() {
+run_step_contained() {
+  local step=$1
   local args
   args="$@"
 
   REPO=$_ROOT/repo $_BOOTSTRAP_CROSS/bin/pkg-install -p $_CONTAIN base-bld
 
-  exec env -i \
+  env -i \
     HOSTDIR=$_ROOT \
     MK_CONTAINED=yes \
     $_BOOTSTRAP_CROSS/bin/pkg-contain \
       $_CONTAIN /bin/sh -lc "cd /host && ./mk $args"
+
+  ! _is_last_step_without_keep || run_cmd clean
 }

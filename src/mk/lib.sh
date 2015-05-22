@@ -175,3 +175,7 @@ inherit() {
   source_pkg $PKG_PARENT_NAME
   PKG_NAME=$childname
 }
+
+use_contain() {
+  [ -z "$MK_BOOTSTRAP" ] && [ -z "$MK_CONTAINED" ]
+}

@@ -22,6 +22,12 @@ _clean_db() {
   rm -rf $_DB
 }
 
+_clean_contain() {
+  if use_contain; then
+    rm -rf $_CONTAIN
+  fi
+}
+
 _sub_dest_dirs() {
   local name
   for name in $PKG_SUB; do
@@ -40,6 +46,7 @@ cmd_clean() {
     progress clean "all"
     _clean_obsolete_dist
     _clean_db
+    _clean_contain
   fi
 
   for dir in $dirs; do

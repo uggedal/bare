@@ -58,10 +58,10 @@ shift
 pkg=$1
 [ -z "$pkg" ] || shift
 
-! is_step $action ||
-  [ "$MK_BOOTSTRAP" ] ||
-  [ "$MK_CONTAINED" ] ||
-  exec_step_contained $action $pkg "$@"
+if is_step $action && ! use_contain; then
+  run_step_contained $action $pkg "$@"
+  exit $?
+fi
 
 case "$action" in
   bootstrap|enter)
