@@ -39,7 +39,9 @@ run_step_contained() {
   local args
   args="$@"
 
-  REPO=$_ROOT/repo $_BOOTSTRAP_CROSS/bin/pkg-install -p $_CONTAIN base-bld
+  REPO=$_ROOT/repo $_BOOTSTRAP_CROSS/bin/pkg-install -p $_CACHE base-bld
+
+  cp -a $_CACHE/* $_CONTAIN
 
   env -i \
     HOSTDIR=$_ROOT \

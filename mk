@@ -17,7 +17,16 @@ for _f in $_SRC/lib/*.sh $_SRC/mk/*.sh; do
 done
 unset _f
 
-for _dir in bootstrap/cross bootstrap/native build contain db dest dist repo; do
+for _dir in \
+  bootstrap/cross \
+  bootstrap/native \
+  build \
+  cache \
+  contain \
+  db \
+  dest \
+  dist \
+  repo; do
   eval _$(undercase $(uppercase $_dir))=$_ROOT/$_dir
   mkdir -p $_ROOT/$_dir
 done
