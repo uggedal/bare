@@ -27,11 +27,15 @@ _extract() {
 
 step_extract() {
   if [ "$(command -v do_extract)" ]; then
+    progress extract "'$PKG_NAME' using 'do_extract'"
     do_extract
     return 0
   fi
 
-  [ "$PKG_DIST" ] || return 0
+  [ "$PKG_DIST" ] || {
+    progress extract "'$PKG_NAME' no dist"
+    return 0
+  }
 
   [ -d $_BUILD ] || die "no build directory in '$_BUILD'"
 
