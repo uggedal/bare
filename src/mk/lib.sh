@@ -179,3 +179,18 @@ inherit() {
 use_contain() {
   [ -z "$MK_BOOTSTRAP" ] && [ -z "$MK_CONTAINED" ]
 }
+
+contain() {
+  local conf=$_CONTAIN/etc/pkg.conf
+
+  printf 'REPO=%s\n' /host/repo > $conf
+
+  env -i \
+    PS1='[contain] \w \$ ' \
+    HOME=/root \
+    HOSTDIR=$_ROOT \
+    MK_CONTAINED=yes \
+    $_BOOTSTRAP_CROSS/bin/pkg-contain $_CONTAIN "$@"
+
+  rm -f $conf
+}

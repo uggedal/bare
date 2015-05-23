@@ -49,11 +49,7 @@ run_step_contained() {
     }
   done
 
-  env -i \
-    HOSTDIR=$_ROOT \
-    MK_CONTAINED=yes \
-    $_BOOTSTRAP_CROSS/bin/pkg-contain \
-      $_CONTAIN /bin/sh -lc "cd /host && ./mk $args"
+  contain /bin/sh -lc "cd /host && ./mk $args"
 
   ! _is_last_step_without_keep || run_cmd clean
 }
