@@ -1,4 +1,5 @@
 MK_STEPS='
+  dep
   prep
   checksum
   extract

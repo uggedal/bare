@@ -139,6 +139,19 @@ sub() {
   eval $(sub_var $name $var)=\"\$@\"
 }
 
+sub_to_main() {
+  local name=$1
+  local f=$_PKG/${name}.sh
+
+  if ! [ -h $f ]; then
+    printf '%s' $name
+    return 0
+  fi
+
+  local target=$(readlink $f)
+  printf '%s' ${target%*.sh}
+}
+
 read_pkg() {
   local _v
   for _v in $PKG_VARS $PKG_COMPUTED_VARS; do
