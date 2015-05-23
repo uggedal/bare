@@ -5,7 +5,10 @@ _checksum() {
 step_checksum() {
   local f=$_SUM/${PKG_PARENT_NAME}.sum
 
-  [ "$PKG_DIST" ] || return 0
+  [ "$PKG_DIST" ] || {
+    progress checksum "'$PKG_NAME' no dist"
+    return 0
+  }
 
   progress checksum "'$PKG_NAME' using '$(distfiles $PKG_DIST)'"
 
