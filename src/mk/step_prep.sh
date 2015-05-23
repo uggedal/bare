@@ -8,6 +8,8 @@ _extract_db_file() {
 }
 
 step_prep() {
+  progress prep "'$PKG_NAME'"
+
   read_repo $_REPO _extract_db_file
 
   mkdir -p $MK_BUILD_ROOT
