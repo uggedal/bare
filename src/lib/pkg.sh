@@ -67,6 +67,25 @@ read_db() {
   done < $db
 }
 
+_pkg_in_repo_check() {
+  local name=$1
+
+  [ "$_PKG_NAME" = "$name" ] || return 0
+
+  _HAS_PKG_IN_REPO=yes
+}
+
+pkg_in_repo() {
+  _PKG_NAME=$1
+
+  read_repo $REPO _pkg_in_repo_check
+
+  local has_pkg="$_HAS_PKG_IN_REPO"
+  unset _PKG_NAME _HAS_PKG_IN_REPO
+
+  [ "$has_pkg" ]
+}
+
 file_sum() {
   local f=$1
 
