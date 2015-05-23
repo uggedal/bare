@@ -109,7 +109,7 @@ handle_pkg() {
 : ${PREFIX:=/}
 
 for PKG; do
-  pkg_in_repo $PKG || die "no package named '$PKG'"
+  pkg_in_repo $REPO $PKG || die "no package named '$PKG'"
   unset INSTALLED
   read_repo $REPO handle_pkg
   [ "$INSTALLED" ] || die "unable to install '$PKG'"

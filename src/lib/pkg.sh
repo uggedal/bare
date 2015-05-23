@@ -76,9 +76,10 @@ _pkg_in_repo_check() {
 }
 
 pkg_in_repo() {
-  _PKG_NAME=$1
+  local repo=$1
+  _PKG_NAME=$2
 
-  read_repo $REPO _pkg_in_repo_check
+  read_repo $repo _pkg_in_repo_check
 
   local has_pkg="$_HAS_PKG_IN_REPO"
   unset _PKG_NAME _HAS_PKG_IN_REPO
