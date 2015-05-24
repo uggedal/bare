@@ -1,6 +1,7 @@
 MK_STEPS='
-  dep
   prep
+  dep
+  db
   checksum
   extract
   patch
