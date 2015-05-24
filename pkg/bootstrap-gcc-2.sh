@@ -9,3 +9,7 @@ configure \
   --enable-languages=c,c++ \
   --enable-shared \
   --target=$MK_TARGET_TRIPLE
+
+post_install() {
+  :
+}

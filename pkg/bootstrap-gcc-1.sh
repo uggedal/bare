@@ -18,3 +18,7 @@ configure \
   --enable-languages=c \
   --with-newlib \
   --target=$MK_TARGET_TRIPLE
+
+post_install() {
+  :
+}
