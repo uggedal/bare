@@ -115,7 +115,7 @@ _pkg_sub() {
     "$lib" \
     "$rdep"
 
-  step_prep
+  step_db
 }
 
 step_pkg() {
