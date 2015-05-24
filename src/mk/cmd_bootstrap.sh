@@ -186,25 +186,16 @@ _bootstrap_contain() {
   CROSS_COMPILE=$TRIPLE- \
     ./mk pkg busybox
 
-  _contain_pkg \
-    sbase \
-    ubase \
-    ksh \
-    ed \
-    awk \
-    pax \
-    bzip2 \
-    hier \
-    pkg \
-    base \
-    base-bld
+  unset MK_NO_DEP
+  _contain_pkg base-bld
 }
 
 cmd_bootstrap() {
   TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
   PATH=$_BOOTSTRAP_CROSS/bin:$PATH
 
-  export MK_BOOTSTRAP=yes
+  export MK_NO_DEP=yes
+  export MK_NO_CONTAIN=yes
 
   _bootstrap_reqs
   _bootstrap_fetch

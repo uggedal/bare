@@ -190,7 +190,7 @@ inherit() {
 }
 
 use_contain() {
-  [ -z "$MK_BOOTSTRAP" ] && [ -z "$MK_CONTAINED" ]
+  [ -z "$MK_NO_CONTAIN" ] && [ -z "$MK_CONTAINED" ]
 }
 
 contain() {

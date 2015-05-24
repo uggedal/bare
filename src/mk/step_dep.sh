@@ -2,7 +2,7 @@ step_dep() {
   progress dep "'$PKG_NAME'"
   msglist 'Bdep:' $PKG_BDEP
 
-  [ "$MK_CONTAINED" ] || return 0
+  [ -z "$MK_NO_DEP" ] || return 0
 
   local dep
   for dep in $PKG_BDEP $PKG_RDEP; do
