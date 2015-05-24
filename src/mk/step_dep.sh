@@ -10,5 +10,5 @@ step_dep() {
       MK_CONTAINED=$MK_CONTAINED ./mk pkg $(sub_to_main $dep)
   done
 
-  pkg-install $PKG_BDEP
+  [ -z "$PKG_BDEP" ] || pkg-install $PKG_BDEP
 }
