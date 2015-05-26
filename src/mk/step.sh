@@ -39,7 +39,7 @@ run_step_contained() {
   local args
   args="$@"
 
-  REPO=$_ROOT/repo wrappkg install -p $_CACHE base-bld
+  REPO=$_ROOT/repo $(pkgpath install) -p $_CACHE base-bld
 
   local f
   for f in $_CONTAIN/*; do
