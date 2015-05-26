@@ -62,9 +62,9 @@ _lib_deps() {
   local name=$1
   local dest=$2
 
-  _NEEDED_LIBS=$(_needed_libs $dest)
+  _NEEDED_LIBS=$(_needed_libs $dest | sort | uniq)
   _PKG_NAME=$name
-  [ -z "$_NEEDED_LIBS" ] || read_repo $_REPO _find_pkg_with_lib | sort | uniq
+  [ -z "$_NEEDED_LIBS" ] || read_repo $_REPO _find_pkg_with_lib
   unset _NEEDED_LIBS
   unset _PKG_NAME
 }
