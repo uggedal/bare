@@ -19,7 +19,7 @@ _clean_obsolete_dist() {
 }
 
 _clean_db() {
-  rm -rf $_DB
+  rm -f $_DB/$PKG_DB/*
 }
 
 _clean_contain() {
