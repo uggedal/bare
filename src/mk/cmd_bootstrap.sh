@@ -77,8 +77,8 @@ _bootstrap_cross() {
 
   mkdir -p $prefix/$TRIPLE
 
-  if ! [ -x $prefix/bin/pkg-contain ]; then
-    MK_PREFIX=$prefix \
+  if ! [ -x $_BOOTSTRAP_SUPPORT/bin/pkg-contain ]; then
+    MK_PREFIX=$_BOOTSTRAP_SUPPORT \
     MK_DESTDIR=no \
       ./mk install bootstrap-pkg
   fi
@@ -192,7 +192,7 @@ _bootstrap_contain() {
 
 cmd_bootstrap() {
   TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
-  PATH=$_BOOTSTRAP_CROSS/bin:$PATH
+  PATH=$_BOOTSTRAP_SUPPORT/bin:$_BOOTSTRAP_CROSS/bin:$PATH
 
   export MK_NO_DEP=yes
   export MK_NO_CONTAIN=yes

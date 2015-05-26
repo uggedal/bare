@@ -20,6 +20,7 @@ unset _f
 for _dir in \
   bootstrap/cross \
   bootstrap/native \
+  bootstrap/support \
   build \
   cache \
   contain \

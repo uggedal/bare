@@ -193,6 +193,15 @@ use_contain() {
   [ -z "$MK_NO_CONTAIN" ] && [ -z "$MK_CONTAINED" ]
 }
 
+wrappkg() {
+  local cmd=pkg-$1
+  shift
+
+  command -v $cmd >/dev/null || cmd=$_BOOTSTRAP_SUPPORT/$cmd
+
+  $cmd "$@"
+}
+
 contain() {
   local conf=$_CONTAIN/etc/pkg.conf
 
@@ -203,7 +212,7 @@ contain() {
     HOME=/root \
     HOSTDIR=$_ROOT \
     MK_CONTAINED=yes \
-    $_BOOTSTRAP_CROSS/bin/pkg-contain $_CONTAIN "$@"
+    wrappkg contain $_CONTAIN "$@"
 
   rm -f $conf
 }
