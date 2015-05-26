@@ -197,7 +197,7 @@ wrappkg() {
   local cmd=pkg-$1
   shift
 
-  command -v $cmd >/dev/null || cmd=$_BOOTSTRAP_SUPPORT/$cmd
+  command -v $cmd >/dev/null || cmd=$_BOOTSTRAP_SUPPORT/bin/$cmd
 
   $cmd "$@"
 }
