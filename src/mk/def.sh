@@ -1,7 +1,6 @@
 MK_STEPS='
   prep
   dep
-  db
   checksum
   extract
   patch
@@ -10,6 +9,7 @@ MK_STEPS='
   install
   sub
   optimize
+  db
   validate
   pkg
 '
