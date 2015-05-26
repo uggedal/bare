@@ -45,9 +45,9 @@ cmd_clean() {
   else
     progress clean "all"
     _clean_obsolete_dist
-    _clean_db
     _clean_contain
   fi
+  _clean_db
 
   for dir in $dirs; do
     rm -rf $dir
