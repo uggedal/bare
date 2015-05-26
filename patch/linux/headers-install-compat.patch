@@ -1,0 +1,11 @@
+--- a/scripts/headers_install.sh
++++ b/scripts/headers_install.sh
+@@ -30,7 +30,7 @@
+ for i in "$@"
+ do
+ 	FILE="$(basename "$i")"
+-	sed -r \
++	sed -E \
+ 		-e 's/([ \t(])(__user|__force|__iomem)[ \t]/\1/g' \
+ 		-e 's/__attribute_const__([ \t]|$)/\1/g' \
+ 		-e 's@^#include <linux/compiler.h>@@' \
