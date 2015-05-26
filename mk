@@ -65,30 +65,32 @@ action=$1
 shift
 [ "$action" ] || _usage
 
-pkg=$1
-[ -z "$pkg" ] || shift
-
 if is_step $action && use_contain; then
-  run_step_contained $action $pkg "$@"
+  run_step_contained $action "$@"
   exit $?
 fi
 
-case "$action" in
+case $action in
   bootstrap|enter)
     :
     ;;
   clean)
-    [ -z "$pkg" ] || read_pkg $pkg
+    [ -z "$1" ] || {
+      read_pkg $1
+      shift
+    }
     ;;
   *)
-    [ "$pkg" ] || _usage
-    read_pkg $pkg
+    [ "$1" ] || _usage
+    read_pkg $1
+    shift
     ;;
 esac
 
-[ "$action" != link ] || MK_NO_SUB_VALIDATION=yes
-
 case $action in
+  link)
+    MK_NO_SUB_VALIDATION=yes
+    ;;
   pkg|bootstrap)
     while getopts "fk" opt; do
       case $opt in
