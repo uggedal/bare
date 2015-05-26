@@ -190,6 +190,10 @@ _bootstrap_contain() {
   _contain_pkg base-bld
 }
 
+_bootstrap_clean() {
+  rm -r $_BOOTSTRAP_CROSS $_BOOTSTRAP_NATIVE
+}
+
 cmd_bootstrap() {
   TRIPLE=$(./mk query gcc MK_TARGET_TRIPLE)
   PATH=$_BOOTSTRAP_SUPPORT/bin:$_BOOTSTRAP_CROSS/bin:$PATH
@@ -201,4 +205,5 @@ cmd_bootstrap() {
   _bootstrap_fetch
   _bootstrap_cross
   _bootstrap_contain
+  [ "$MK_KEEP" ] || _bootstrap_clean
 }

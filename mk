@@ -43,7 +43,7 @@ Commands:
   clean [pkg]
   link <pkg>
   query <pkg> <field>
-  bootstrap
+  bootstrap [-k]
   enter
 
 Ordered steps:
@@ -75,7 +75,7 @@ fi
 
 case "$action" in
   bootstrap|enter)
-    [ -z "$pkg" ] || _usage
+    :
     ;;
   clean)
     [ -z "$pkg" ] || read_pkg $pkg
@@ -88,19 +88,21 @@ esac
 
 [ "$action" != link ] || MK_NO_SUB_VALIDATION=yes
 
-if [ "$action" = pkg ]; then
-  while getopts "fk" opt; do
-    case $opt in
-      f)
-        MK_FORCE=yes
-        ;;
-      k)
-        MK_KEEP=yes
-        ;;
-    esac
-  done
-  unset opt
-fi
+case $action in
+  pkg|bootstrap)
+    while getopts "fk" opt; do
+      case $opt in
+        f)
+          MK_FORCE=yes
+          ;;
+        k)
+          MK_KEEP=yes
+          ;;
+      esac
+    done
+    unset opt
+    ;;
+esac
 
 if is_step $action; then
   run_step $action "$@"
