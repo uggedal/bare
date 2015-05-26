@@ -40,8 +40,6 @@ _find_lib_in_db() {
   local f1=$2
   local l
 
-  [ "$t" = l ] || return 0
-
   for l in $_NEEDED_LIBS; do
     [ "$l" != "$f1" ] || printf '%s:%s\n' $_LIB_PKG_NAME $l
   done
