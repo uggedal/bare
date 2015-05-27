@@ -19,6 +19,8 @@ distdir $PKG_NAME-$_ver
 configure \
   --with-pic
 
+patchflag -p1 --posix
+
 pre_configure() {
   cp -f $MK_FILE/config.sub .
 }
