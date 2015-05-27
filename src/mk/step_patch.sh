@@ -12,7 +12,7 @@ _patch() {
   progress patch "'$PKG_NAME' using '${p##*/}'"
   (
     cd $MK_DIST
-    patch ${PKG_PATCHFLAG:-'-p1 -u'} < $p
+    patch ${PKG_PATCHFLAG:-'-p1'} < $p
   )
 }
 
