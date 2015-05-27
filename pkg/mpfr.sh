@@ -12,7 +12,7 @@ dist $_dist/$PKG_NAME-${_ver}.tar.xz $_patches
 bdep gmp-bld
 
 sub mpfr-bld type bld
-sub mpfr-bld rdep mpfr
+sub mpfr-bld rdep mpfr gmp-bld
 
 distdir $PKG_NAME-$_ver
 
