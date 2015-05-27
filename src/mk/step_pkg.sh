@@ -38,11 +38,8 @@ _needed_libs() {
 _find_lib_in_db() {
   local t=$1
   local f1=$2
-  local l
 
-  for l in $_NEEDED_LIBS; do
-    [ "$l" != "$f1" ] || printf '%s:%s\n' $_LIB_PKG_NAME $l
-  done
+  [ "$_NEEDED_LIB" != "$f1" ] || printf '%s:%s\n' $_LIB_PKG_NAME $l
 }
 
 _find_pkg_with_lib() {
@@ -61,12 +58,27 @@ _find_pkg_with_lib() {
 _lib_deps() {
   local name=$1
   local dest=$2
+  local provided_libs="$3"
+  local provided_lib lib_dep
 
-  _NEEDED_LIBS=$(_needed_libs $dest | sort | uniq)
+  local needed_libs=$(_needed_libs $dest | sort | uniq)
   _PKG_NAME=$name
-  [ -z "$_NEEDED_LIBS" ] || read_repo $_REPO _find_pkg_with_lib
-  unset _NEEDED_LIBS
-  unset _PKG_NAME
+
+  for _NEEDED_LIB in $needed_libs; do
+    # No need checking for libraries internal to the pkg:
+    for provided_lib in $provided_lib; do
+      [ "$provided_lib" != "$_NEEDED_LIB" ] || continue 2
+    done
+
+    lib_dep=$(read_repo $_REPO _find_pkg_with_lib)
+
+    [ "$lib_dep" ] ||
+      die "unable to find package providing '$_NEEDED_LIB'"
+
+    printf '%s\n' $lib_dep
+  done
+
+  unset _PKG_NAME _NEEDED_LIB
 }
 
 _pkg() {
@@ -83,7 +95,7 @@ _pkg() {
   [ "$libs" ] || libs="$(_provided_libs $dest)"
   msglist 'Provided lib:' $libs
 
-  deps="$deps $(_lib_deps $name $dest)"
+  deps="$deps $(_lib_deps $name $dest "$libs")"
   msglist 'Run-time dep:' $deps
 
   pkg-create \
