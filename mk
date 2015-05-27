@@ -48,13 +48,16 @@ Commands:
 
 Ordered steps:
   prep <pkg>
+  dep <pkg>
   checksum <pkg>
   extract <pkg>
   patch <pkg>
   configure <pkg>
   build <pkg>
   install <pkg>
+  sub <pkg>
   optimize <pkg>
+  db <pkg>
   validate <pkg>
   pkg <pkg> [-f] [-k]
 EOF
