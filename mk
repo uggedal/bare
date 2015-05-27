@@ -62,8 +62,8 @@ EOF
 }
 
 action=$1
-shift
 [ "$action" ] || _usage
+shift
 
 if is_step $action && use_contain; then
   run_step_contained $action "$@"
