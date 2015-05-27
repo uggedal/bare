@@ -8,6 +8,7 @@ rdep \
   binutils \
   gcc \
   make \
+  patch \
   file
 
 builddir .
