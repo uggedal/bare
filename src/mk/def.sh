@@ -29,6 +29,7 @@ PKG_OPTIONAL_VARS='
   distdir
   builddir
   emptydirs
+  patchflag
   '
 
 PKG_VARS="
