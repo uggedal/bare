@@ -37,7 +37,7 @@ foreach() {
 distfile() {
   case $1 in
     *\|*)
-      printf '%s\n' ${1##*|}
+      printf '%s\n' ${1##*\|}
       ;;
     *)
       printf '%s\n' ${1##*/}
