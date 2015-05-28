@@ -39,7 +39,7 @@ _find_lib_in_db() {
   local t=$1
   local f1=$2
 
-  [ "$_NEEDED_LIB" != "$f1" ] || printf '%s:%s\n' $_LIB_PKG_NAME $l
+  [ "$_NEEDED_LIB" != "$f1" ] || printf '%s:%s\n' $_LIB_PKG_NAME $_NEEDED_LIB
 }
 
 _find_pkg_with_lib() {
