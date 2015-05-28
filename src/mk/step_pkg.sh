@@ -58,10 +58,10 @@ _find_pkg_with_lib() {
 _lib_deps() {
   local name=$1
   local dest=$2
-  local provided_libs="$3"
-  local provided_lib lib_dep
+  local needed_libs provided_libs provided_lib lib_dep
+  provided_libs="$3"
 
-  local needed_libs=$(_needed_libs $dest | sort | uniq)
+  needed_libs=$(_needed_libs $dest | sort | uniq)
   _PKG_NAME=$name
 
   for _NEEDED_LIB in $needed_libs; do
