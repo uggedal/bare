@@ -47,6 +47,7 @@ builddir gcc-build
 export lt_cv_sys_max_cmd_len=8192
 
 post_install() {
+  ln -s gcc $MK_DESTDIR$MK_PREFIX/bin/cc
   rm $MK_DESTDIR$MK_PREFIX/lib/*.py
   rm -r $MK_DESTDIR$MK_PREFIX/share/gcc-$PKG_VER/python
 }
