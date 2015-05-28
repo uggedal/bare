@@ -32,6 +32,7 @@ _bootstrap_fetch() {
     awk
     pax
     bzip2
+    patch
   '
   local d
 
