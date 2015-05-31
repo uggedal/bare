@@ -4,7 +4,7 @@ dist \
   $URI_GNU/$PKG_NAME/$PKG_NAME-$PKG_VER/$PKG_NAME-${PKG_VER}.tar.bz2 \
   $URI_BB/GregorR/musl-cross/raw/a945614feb1e213411728cf52d8813c966691e14/patches/$PKG_NAME-$PKG_VER-musl.diff
 
-bdep gxx mpc-bld
+bdep gxx mpc-bld libz-bld
 
 sub libgcc type custom
 sub libgcc mv usr/lib/libgcc_s.so.\*
@@ -26,19 +26,26 @@ sub gxx mv \
   usr/libexec/gcc/$MK_TARGET_TRIPLE/$PKG_VER/cc1plus \
   usr/share/man/man1/g++.1
 
-configure \
-  --disable-libsanitizer \
-  --disable-libstdcxx-pch \
-  --disable-multilib \
-  --disable-nls \
-  --enable-checking=release \
-  --enable-languages=c,c++,lto \
-  --enable-lto \
-  --enable-shared \
-  --libdir=/usr/lib \
-  --build=$MK_BUILD_TRIPLE \
-  --host=$MK_HOST_TRIPLE \
+_configure="
+  --disable-libsanitizer
+  --disable-libstdcxx-pch
+  --disable-multilib
+  --disable-nls
+  --enable-checking=release
+  --enable-languages=c,c++,lto
+  --enable-lto
+  --enable-shared
+  --libdir=/usr/lib
+  --build=$MK_BUILD_TRIPLE
+  --host=$MK_HOST_TRIPLE
   --target=$MK_TARGET_TRIPLE
+  "
+
+if [ "$MK_BUILD_TRIPLE" = "$MK_TARGET_TRIPLE" ]; then
+  _configure="$_configure --with-system-zlib"
+fi
+
+configure $_configure
 
 builddir gcc-build
 
