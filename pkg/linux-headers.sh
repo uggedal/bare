@@ -1,7 +1,5 @@
 inherit linux
 
-bdep ''
-
 do_build() {
   :
 }
