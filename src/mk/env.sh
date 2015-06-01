@@ -6,7 +6,7 @@ pre_env() {
 
   : ${MK_BUILD_TRIPLE:=$($CC -dumpmachine)}
   : ${MK_HOST_TRIPLE:=$($CC -dumpmachine)}
-  : ${MK_TARGET_TRIPLE:=$MK_ARCH-bare-linux-musl}
+  : ${MK_TARGET_TRIPLE:=$MK_ARCH-linux-musl}
 }
 
 post_env() {
