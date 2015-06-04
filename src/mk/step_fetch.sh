@@ -11,7 +11,7 @@ _fetch() {
   fi
 }
 
-cmd_fetch() {
+step_fetch() {
   [ "$PKG_DIST" ] || return 0
 
   foreach _fetch $PKG_DIST

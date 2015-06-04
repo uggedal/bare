@@ -216,3 +216,10 @@ contain() {
 
   rm -f $conf
 }
+
+contain_mk() {
+  local args
+  args="$@"
+
+  contain /bin/sh -lc "cd /host && ./mk $args"
+}

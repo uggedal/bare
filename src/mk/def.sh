@@ -1,6 +1,9 @@
 MK_STEPS='
   prep
+  fetch
+  contain
   dep
+  fetch
   checksum
   extract
   patch
@@ -13,6 +16,12 @@ MK_STEPS='
   validate
   pkg
 '
+
+MK_HOST_STEPS='
+  prep
+  fetch
+  contain
+  '
 
 PKG_REQUIRED_VARS='
   name

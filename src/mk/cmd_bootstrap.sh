@@ -12,35 +12,6 @@ _bootstrap_reqs() {
   fi
 }
 
-_bootstrap_fetch() {
-  local deps='
-    binutils
-    gmp
-    mpfr
-    mpc
-    gcc
-    linux-headers
-    musl
-    busybox
-    make
-    xz
-    file
-    sbase
-    ubase
-    ksh
-    ed
-    awk
-    pax
-    bzip2
-    patch
-  '
-  local d
-
-  for d in $deps; do
-    ./mk fetch $d
-  done
-}
-
 _manual_install() {
   local prefix=$1
   local name=$2
@@ -203,7 +174,6 @@ cmd_bootstrap() {
   export MK_NO_CONTAIN=yes
 
   _bootstrap_reqs
-  _bootstrap_fetch
   _bootstrap_cross
   _bootstrap_contain
   [ "$MK_KEEP" ] || _bootstrap_clean

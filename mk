@@ -38,79 +38,53 @@ _usage() {
 mk <command|step> [<args>]
 
 Commands:
-  fetch <pkg>
   sum <pkg>
   clean [pkg]
   link <pkg>
   query <pkg> <field>
-  bootstrap [-k]
+  bootstrap
   enter
 
 Ordered steps:
-  prep <pkg>
-  dep <pkg>
-  checksum <pkg>
-  extract <pkg>
-  patch <pkg>
-  configure <pkg>
-  build <pkg>
-  install <pkg>
-  sub <pkg>
-  optimize <pkg>
-  db <pkg>
-  validate <pkg>
-  pkg <pkg> [-f] [-k]
+$(printf '  %s <pkg>\n' $MK_STEPS)
+
+Options:
+  -k keep build artifacts
+  -f force build
+  -n skip step dependencies
 EOF
   exit 64
 }
+
+while getopts fkn opt; do
+  case $opt in
+    f)
+      MK_FORCE=yes
+      ;;
+    k)
+      MK_KEEP=yes
+      ;;
+    n)
+      MK_NO_STEP_DEP=yes
+      ;;
+  esac
+done
+unset opt
+
+for i in $(seq $(($OPTIND - 1))); do
+  eval MK_FLAGS=\"\$FLAGS \$$i\"
+done
+unset i
+
+shift $(( $OPTIND - 1 ))
 
 action=$1
 [ "$action" ] || _usage
 shift
 
-if is_step $action && use_contain; then
-  run_step_contained $action "$@"
-  exit $?
-fi
-
-case $action in
-  bootstrap|enter)
-    :
-    ;;
-  clean)
-    [ -z "$1" ] || {
-      read_pkg $1
-      shift
-    }
-    ;;
-  *)
-    [ "$1" ] || _usage
-    read_pkg $1
-    shift
-    ;;
-esac
-
-case $action in
-  link)
-    MK_NO_SUB_VALIDATION=yes
-    ;;
-  pkg|bootstrap)
-    while getopts "fk" opt; do
-      case $opt in
-        f)
-          MK_FORCE=yes
-          ;;
-        k)
-          MK_KEEP=yes
-          ;;
-      esac
-    done
-    unset opt
-    ;;
-esac
-
 if is_step $action; then
-  run_step $action "$@"
+  [ "$1" ] || _usage
+  run_step $action "$1"
 elif is_cmd $action; then
   run_cmd $action "$@"
 else
