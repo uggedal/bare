@@ -21,6 +21,7 @@ MK_HOST_STEPS='
   prep
   fetch
   contain
+  dep
   '
 
 PKG_REQUIRED_VARS='

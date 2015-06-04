@@ -6,9 +6,8 @@ step_dep() {
 
   local dep
   for dep in $PKG_BDEP $PKG_RDEP; do
-    pkg_in_repo $_REPO $dep ||
-      MK_CONTAINED=$MK_CONTAINED ./mk pkg $(sub_to_main $dep)
+    pkg_in_repo $_REPO $dep || ./mk pkg $(sub_to_main $dep)
   done
 
-  [ -z "$PKG_BDEP" ] || pkg-install $PKG_BDEP
+  [ -z "$PKG_BDEP" ] || contain pkg-install $PKG_BDEP
 }
