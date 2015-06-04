@@ -28,6 +28,10 @@ _clean_contain() {
   fi
 }
 
+_clean_cache() {
+  rm -rf $_CACHE
+}
+
 _sub_dest_dirs() {
   local name
   for name in $PKG_SUB; do
@@ -46,6 +50,7 @@ cmd_clean() {
     progress clean "all"
     _clean_obsolete_dist
     _clean_contain
+    _clean_cache
   fi
   _clean_db
 

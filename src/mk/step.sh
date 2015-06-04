@@ -37,7 +37,7 @@ run_step() {
   local s
 
   read_pkg $pkg
-  
+
   if [ $step = pkg ] &&
     [ "$MK_FORCE" != yes ] &&
     [ -s $_REPO/${PKG_QUALIFIED_NAME}$PKG_EXT ]; then
