@@ -1,4 +1,6 @@
 step_contain() {
+  use_contain || return 0
+
   progress contain "'$PKG_NAME'"
 
   REPO=$_ROOT/repo $(pkgpath install) -p $_CACHE base-bld
