@@ -57,8 +57,12 @@ run_step() {
     done
 
     if [ $step = pkg ] && [ "$MK_KEEP" != yes ]; then
-      contain_mk clean $PKG_NAME
-      _clean_contain
+      if use_contain; then
+        contain_mk clean $PKG_NAME
+        _clean_contain
+      else
+        run_cmd clean $PKG_NAME
+      fi
     fi
   fi
 }
