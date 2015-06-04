@@ -1,0 +1,31 @@
+From 7f1134b2918e44b53b0a9e4e1aa0349294550fac Mon Sep 17 00:00:00 2001
+From: Eivind Uggedal <eivind@uggedal.com>
+Date: Thu, 4 Jun 2015 14:17:31 +0000
+Subject: [PATCH] readlink: simplify -f
+
+Use output from realpath(3) directly. This makes usage
+with . more consistent with other implementations.
+---
+ readlink.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/readlink.c b/readlink.c
+index 3fa1f2e34d8a..77fc2437dab4 100644
+--- a/readlink.c
++++ b/readlink.c
+@@ -76,11 +76,8 @@ mdone:
+ 			eprintf("realpath %s:", argv[0]);
+ 		break;
+ 	case 'f':
+-		p = dirname(estrdup(argv[0]));
+-		if (!realpath(p, b))
++		if (!realpath(argv[0], b))
+ 			eprintf("realpath %s:", p);
+-		estrlcat(b, "/", sizeof(arg));
+-		estrlcat(b, basename(estrdup(argv[0])), sizeof(arg));
+ 		break;
+ 	default:
+ 		if ((n = readlink(argv[0], b, PATH_MAX - 1)) < 0)
+-- 
+2.4.2
+
