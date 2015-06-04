@@ -2,7 +2,7 @@
 
 set -e
 
-_ROOT=$(realpath $(dirname $0))
+_ROOT=$(readlink -f $(dirname $0))
 
 _FILE=$_ROOT/file
 _PATCH=$_ROOT/patch
