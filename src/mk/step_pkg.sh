@@ -66,7 +66,7 @@ _lib_deps() {
 
   for _NEEDED_LIB in $needed_libs; do
     # No need checking for libraries internal to the pkg:
-    for provided_lib in $provided_lib; do
+    for provided_lib in $provided_libs; do
       [ "$provided_lib" != "$_NEEDED_LIB" ] || continue 2
     done
 
