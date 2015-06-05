@@ -52,11 +52,12 @@ Options:
   -k keep build artifacts
   -f force build
   -n skip step dependencies
+  -j number of parallel build procs
 EOF
   exit 64
 }
 
-while getopts fkn opt; do
+while getopts fknj: opt; do
   case $opt in
     f)
       MK_FORCE=yes
@@ -66,6 +67,9 @@ while getopts fkn opt; do
       ;;
     n)
       MK_NO_STEP_DEP=yes
+      ;;
+    j)
+      MK_NPROC=$OPTARG
       ;;
   esac
 done
