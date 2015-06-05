@@ -5,6 +5,8 @@ step_contain() {
 
   REPO=$_ROOT/repo $(pkgpath install) -p $_CACHE base-bld
 
+  mkdir -p $_CONTAIN
+
   local f
   for f in $_CONTAIN/*; do
     [ -e "$f" ] || {
