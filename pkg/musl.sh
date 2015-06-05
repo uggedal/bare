@@ -1,4 +1,4 @@
-ver 1.1.9
+ver 1.1.10
 rev 1
 dist http://www.$PKG_NAME-libc.org/releases/$PKG_NAME-${PKG_VER}.tar.gz
 
