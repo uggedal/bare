@@ -35,7 +35,7 @@ post_install() {
     rm -f $MK_DESTDIR$MK_MANDIR/man1/${f}.1
   done
 
-  rm $MK_DESTDIR$MK_PREFIX/lib/terminfo
+  rm -f $MK_DESTDIR$MK_PREFIX/lib/terminfo
   rm -r $MK_DESTDIR$MK_PREFIX/share/tabset
 
   local terminfo_files='
