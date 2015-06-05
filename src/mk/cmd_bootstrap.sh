@@ -55,13 +55,6 @@ _bootstrap_cross() {
       ./mk install bootstrap-pkg
   fi
 
-  ./mk pkg linux-headers
-  if ! [ -e $prefix/$TRIPLE/include/linux/inotify.h ]; then
-    _manual_install $prefix/$TRIPLE linux-headers
-    mv $prefix/$TRIPLE/usr/include $prefix/$TRIPLE
-    rmdir $prefix/$TRIPLE/usr
-  fi
-
   if ! [ -x $prefix/bin/$TRIPLE-ar ]; then
     MK_PREFIX=$prefix \
     MK_CONFIGURE="--prefix=$prefix" \
@@ -110,9 +103,6 @@ _bootstrap_contain() {
 
   _contain_pkg musl
   _prefix_install musl $_BOOTSTRAP_NATIVE
-
-  _contain_pkg linux-headers
-  _prefix_install linux-headers $_BOOTSTRAP_NATIVE
 
   MK_BUILD_TRIPLE=$(gcc -dumpmachine) \
   MK_CONFIGURE="--prefix=/usr" \
