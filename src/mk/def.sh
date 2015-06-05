@@ -1,8 +1,9 @@
 MK_STEPS='
   prep
   fetch
+  deppkg
   contain
-  dep
+  bdepinstall
   fetch
   checksum
   extract
@@ -20,8 +21,9 @@ MK_STEPS='
 MK_HOST_STEPS='
   prep
   fetch
+  deppkg
   contain
-  dep
+  bdepinstall
   '
 
 PKG_REQUIRED_VARS='
