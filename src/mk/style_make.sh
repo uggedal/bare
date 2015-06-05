@@ -3,6 +3,7 @@ make_default_configure() {
 }
 
 make_default_build() {
+  msg $MK_NPROC procs
   make -j $MK_NPROC
 }
 
