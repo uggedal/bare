@@ -14,7 +14,7 @@ cmd_query() {
     eval v="\$$(pkg_var $field)"
   fi
 
-  [ "$v" ] || die "undefined pkg field '$field'"
+  [ "$v" ] || return 0
 
   printf '%s\n' "$v"
 }
