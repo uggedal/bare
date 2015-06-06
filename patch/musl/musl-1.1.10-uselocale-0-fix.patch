@@ -8,8 +8,8 @@ be assigned unconditonally resulting in crashes later on.
 ---
 diff --git src/locale/uselocale.c src/locale/uselocale.c
 index b70a0c1..0fc5ecb 100644
---- src/locale/uselocale.c
-+++ src/locale/uselocale.c
+--- a/src/locale/uselocale.c
++++ b/src/locale/uselocale.c
 @@ -8,9 +8,7 @@ locale_t __uselocale(locale_t new)
  	locale_t old = self->locale;
  	locale_t global = &libc.global_locale;
