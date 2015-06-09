@@ -22,8 +22,6 @@ unset opt
 
 shift $(( $OPTIND - 1 ))
 
-[ "$REPO" ] || usage
-
 : ${PREFIX:=/}
 
 PKG=$1
