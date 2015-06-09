@@ -29,7 +29,23 @@ _clean_contain() {
 }
 
 _clean_cache() {
-  rm -rf $_CACHE
+  local name=$1
+  local dep
+
+  [ -d $_CACE/$PKG_DB ] || return 0
+
+  if [ "$name" ]; then
+    REPO=$_ROOT/repo $(pkgpath tree) -p $_CACHE base-bld |
+      awk '{ print $1 }' | sort | uniq | while read dep; do
+
+      if [ "$name" = "$(sub_to_main $dep)" ]; then
+        rm -rf $_CACHE
+        break
+      fi
+    done
+  else
+    rm -rf $_CACHE
+  fi
 }
 
 _sub_dest_dirs() {
@@ -46,6 +62,7 @@ cmd_clean() {
   if [ "$PKG_NAME" ]; then
     dirs="$MK_BUILD_ROOT $MK_DESTDIR $(_sub_dest_dirs)"
     progress clean "'$PKG_NAME'"
+    _clean_cache $PKG_NAME
   else
     progress clean "all"
     _clean_obsolete_dist
