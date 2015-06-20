@@ -1,5 +1,5 @@
-_ver=3.1.2
-_patchver=11
+_ver=3.1.3
+_patchver=0
 ver ${_ver}.p$_patchver
 rev 1
 
@@ -18,7 +18,3 @@ distdir $PKG_NAME-$_ver
 
 configure \
   --with-pic
-
-pre_configure() {
-  cp -f $MK_FILE/config.sub .
-}
