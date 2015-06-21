@@ -10,3 +10,12 @@ sub libmagic-bld rdep libmagic
 pre_configure() {
   cp -f $MK_FILE/config.sub .
 }
+
+post_configure() {
+  # Ignore check for equal host version of file:
+  ed magic/Makefile <<EOF
+,s/if expr/if true ||
+w
+q
+EOF
+}
