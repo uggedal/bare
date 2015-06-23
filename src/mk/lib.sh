@@ -223,3 +223,17 @@ contain_mk() {
 
   contain /bin/sh -lc "cd /host && ./mk $args"
 }
+
+prepare_contain() {
+  REPO=$_ROOT/repo $(pkgpath install) -p $_CACHE base-bld
+
+  mkdir -p $_CONTAIN
+
+  local f
+  for f in $_CONTAIN/*; do
+    [ -e "$f" ] || {
+      cp -a $_CACHE/* $_CONTAIN
+      break
+    }
+  done
+}
