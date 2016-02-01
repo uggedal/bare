@@ -9,6 +9,7 @@ configure \
   --disable-libgomp \
   --disable-libmudflap \
   --disable-libquadmath \
+  --disable-libsanitizer \
   --disable-libssp \
   --disable-multilib \
   --disable-nls \
