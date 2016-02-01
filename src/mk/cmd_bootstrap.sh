@@ -39,7 +39,7 @@ _build_gcc() {
   done
 
   MK_PREFIX=$prefix \
-  MK_CONFIGURE="--prefix=$prefix" \
+  MK_CONFIGURE="--prefix=$prefix --with-sysroot=$prefix/$TRIPLE" \
   MK_DESTDIR=no \
     ./mk install $name
 }
@@ -57,7 +57,7 @@ _bootstrap_cross() {
 
   if ! [ -x $prefix/bin/$TRIPLE-ar ]; then
     MK_PREFIX=$prefix \
-    MK_CONFIGURE="--prefix=$prefix" \
+    MK_CONFIGURE="--prefix=$prefix --with-sysroot=$prefix/$TRIPLE" \
     MK_DESTDIR=no \
       ./mk install bootstrap-binutils
   fi
@@ -66,13 +66,11 @@ _bootstrap_cross() {
     _build_gcc bootstrap-gcc-1 $prefix
   fi
 
-
   if ! [ -e $prefix/$TRIPLE/include/stdio.h ]; then
-    MK_PREFIX=$prefix/$TRIPLE \
     CROSS_COMPILE=$TRIPLE- \
     CC=$TRIPLE-gcc \
-    MK_CONFIGURE="--prefix=$prefix/$TRIPLE" \
-    MK_DESTDIR=no \
+    MK_CONFIGURE="--prefix=" \
+    MK_DESTDIR=$prefix/$TRIPLE \
       ./mk install bootstrap-musl
   fi
 
