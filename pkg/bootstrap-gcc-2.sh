@@ -1,8 +1,8 @@
 inherit gcc
 
 configure \
+  --disable-libmudflap \
   --disable-libsanitizer \
-  --disable-libstdcxx-pch \
   --disable-multilib \
   --disable-nls \
   --enable-checking=release \
