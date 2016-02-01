@@ -17,8 +17,9 @@ configure \
   --disable-threads \
   --enable-checking=release \
   --enable-languages=c \
+  --target=$MK_TARGET_TRIPLE \
   --with-newlib \
-  --target=$MK_TARGET_TRIPLE
+  MAKEINFO=/bin/false
 
 post_install() {
   :
