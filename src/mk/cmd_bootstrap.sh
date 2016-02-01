@@ -55,6 +55,13 @@ _bootstrap_cross() {
       ./mk install bootstrap-pkg
   fi
 
+  # file needs the same version on host to cross compile:
+  if ! [ -x $_BOOTSTRAP_SUPPORT/bin/file ]; then
+    MK_PREFIX=$_BOOTSTRAP_SUPPORT \
+    MK_DESTDIR=no \
+      ./mk install bootstrap-file
+  fi
+
   if ! [ -x $prefix/bin/$TRIPLE-ar ]; then
     MK_PREFIX=$prefix \
     MK_CONFIGURE="--prefix=$prefix --with-sysroot=$prefix/$TRIPLE" \
