@@ -12,6 +12,14 @@ _versort() {
 	sort -t. -k1,1n -k2,2n -k3,3n -k4,4n -k5,5n
 }
 
+_verignore() {
+	if [ "$PKG_STALE_IGNORE" ]; then
+		grep -v "$PKG_STALE_IGNORE"
+	else
+		cat
+	fi
+}
+
 _latest() {
 	local url=${1%/*}
 	local name_re=$(_re '([^\/]+)' '(?:[^-\/_\s]+?)')
@@ -21,7 +29,7 @@ _latest() {
 
 	curl -sL $url |
 		perl -ne 'if (/'$ver_re'/) { print "$1\n" }' |
-		_versort
+		_versort | _verignore
 }
 
 cmd_stale() {

@@ -139,6 +139,17 @@ sub() {
   eval $(sub_var $name $var)=\"\$@\"
 }
 
+stale() {
+  local type=$1
+  shift
+
+  case $type in
+    ignore)
+      PKG_STALE_IGNORE="$@"
+      ;;
+  esac
+}
+
 pkgfile_to_name() {
   local f=$(basename $1)
 
