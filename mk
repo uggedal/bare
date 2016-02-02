@@ -42,6 +42,7 @@ Commands:
   clean [pkg]
   link <pkg>
   query <pkg> <field>
+  stale [pkg]
   bootstrap
   enter
 

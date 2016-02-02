@@ -10,7 +10,7 @@ run_cmd() {
     bootstrap|enter)
       :
       ;;
-    clean)
+    clean|stale)
       [ -z "$1" ] || {
         read_pkg $1
         shift

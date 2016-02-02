@@ -139,6 +139,12 @@ sub() {
   eval $(sub_var $name $var)=\"\$@\"
 }
 
+pkgfile_to_name() {
+  local f=$(basename $1)
+
+  printf '%s' ${f%*.sh}
+}
+
 sub_to_main() {
   local name=$1
   local f=$_PKG/${name}.sh
@@ -179,6 +185,14 @@ read_pkg() {
   validate_pkg
 
   post_env
+}
+
+list_pkgs() {
+  local f
+
+  for f in $_PKG/*.sh; do
+    printf '%s\n' $(sub_to_main $(pkgfile_to_name $f))
+  done | sort | uniq
 }
 
 inherit() {
