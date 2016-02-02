@@ -10,3 +10,5 @@ sub liblzma type lib
 
 sub liblzma-bld type bld
 sub liblzma-bld rdep liblzma
+
+stale ignore 'b$'
