@@ -1,6 +1,6 @@
-ver 5.9
+ver 6.0
 rev 1
-dist ftp://invisible-island.net/$PKG_NAME/$PKG_NAME-5.9.tar.gz
+dist ftp://invisible-island.net/$PKG_NAME/$PKG_NAME-$PKG_VER.tar.gz
 
 configure \
   --disable-termcap \
