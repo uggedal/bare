@@ -26,3 +26,5 @@ do_install() {
   install -Dm755 a.out $MK_DESTDIR$MK_PREFIX/bin/awk
   install -Dm644 awk.1 $MK_DESTDIR$MK_MANDIR/man1/awk.1
 }
+
+stale re 'Updated \w+ \d+, (\d+)\.'
