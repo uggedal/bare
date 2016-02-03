@@ -26,3 +26,5 @@ do_install() {
     ln -s bzip2.1 $MK_DESTDIR$MK_MANDIR/man1/${l}.1
   done
 }
+
+stale url http://bzip.org/downloads.html
