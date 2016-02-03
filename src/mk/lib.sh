@@ -144,8 +144,8 @@ stale() {
   shift
 
   case $type in
-    ignore)
-      PKG_STALE_IGNORE="$@"
+    ignore|url|re)
+      eval PKG_STALE_$(uppercase $type)=\"\$@\"
       ;;
   esac
 }

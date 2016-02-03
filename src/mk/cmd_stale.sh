@@ -14,21 +14,26 @@ _versort() {
 
 _verignore() {
 	if [ "$PKG_STALE_IGNORE" ]; then
-		grep -v "$PKG_STALE_IGNORE"
+		grep -v "$PKG_STALE_IGNORE" || :
 	else
 		cat
 	fi
 }
 
 _latest() {
-	local url=${1%/*}
-	local name_re=$(_re '([^\/]+)' '(?:[^-\/_\s]+?)')
-	local name=$(printf '%s' $1 |
-		perl -ne 'if (/'$name_re'/) { print "$1\n" }')
-	local ver_re=$(_re $name '([^-\/_\s]+?)')
+	local url=$PKG_STALE_URL
+	[ "$url" ] || url=${PKG_DIST%/*}
+
+	local re="$PKG_STALE_RE"
+	[ "$re" ] || {
+		local name_re=$(_re '([^\/]+)' '(?:[^-\/_\s]+?)')
+		local name=$(printf '%s' $PKG_DIST |
+			perl -ne 'if (/'$name_re'/) { print "$1\n" }')
+		re=$(_re $name '([^-\/_\s]+?)')
+	}
 
 	curl -sL $url |
-		perl -ne 'if (/'$ver_re'/) { print "$1\n" }' |
+		perl -ne 'if (/'"$re"'/) { print "$1\n" }' |
 		_versort | _verignore
 }
 
@@ -43,7 +48,7 @@ cmd_stale() {
 	[ "$PKG_DIST" ] || return 0
 	[ "$PKG_PARENT_NAME" = "$PKG_NAME" ] || return 0
 
-	v1=$(_latest $PKG_DIST)
+	v1=$(_latest)
 
 	[ "$v1" ] || {
 		msg "$PKG_NAME: no upstream version"
