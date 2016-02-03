@@ -54,11 +54,12 @@ Options:
   -f force build
   -n skip step dependencies
   -j number of parallel build procs
+  -v verbose output
 EOF
   exit 64
 }
 
-while getopts fknj: opt; do
+while getopts fknvj: opt; do
   case $opt in
     f)
       MK_FORCE=yes
@@ -68,6 +69,9 @@ while getopts fknj: opt; do
       ;;
     n)
       MK_NO_STEP_DEP=yes
+      ;;
+    v)
+      MK_VERBOSE=yes
       ;;
     j)
       MK_NPROC=$OPTARG

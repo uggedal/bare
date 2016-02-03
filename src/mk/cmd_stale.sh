@@ -38,7 +38,7 @@ _latest() {
 }
 
 cmd_stale() {
-	local v1 v2 v
+	local v1 v2 v found
 
 	[ "$PKG_NAME" ] || {
 		list_pkgs | xargs -L1 ./mk stale
@@ -55,20 +55,20 @@ cmd_stale() {
 		return 0
 	}
 
-	v2=$(printf '%s\n%s\n' $v1 $PKG_VER | _versort | uniq | awk "
-		{
-			if (found) {
-				print;
-			}
-		}
-		/^$PKG_VER\$/ {
-			found = 1;
-		}
-	")
+	v2=$(printf '%s\n%s\n' $v1 $PKG_VER | _versort | uniq)
 
 	[ -z "$v2" ] || {
 		for v in $v2; do
-			msg "$PKG_NAME: $PKG_VER -> $v"
+			if [ "$found" ]; then
+				msg "$PKG_NAME: $v (new)"
+			elif [ "$v" = "$PKG_VER" ]; then
+				found=yes
+				if [ "$MK_VERBOSE" ]; then
+					msg "$PKG_NAME: $v (current)"
+				fi
+			elif [ "$MK_VERBOSE" ]; then
+				msg "$PKG_NAME: $v (old)"
+			fi
 		done
 	}
 }
