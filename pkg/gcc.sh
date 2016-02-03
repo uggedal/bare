@@ -58,3 +58,6 @@ post_install() {
   rm $MK_DESTDIR$MK_PREFIX/lib/*.py
   rm -r $MK_DESTDIR$MK_PREFIX/share/gcc-$PKG_VER/python
 }
+
+stale url https://gcc.gnu.org/releases.html
+stale re 'GCC ([\d\.]+)<'
