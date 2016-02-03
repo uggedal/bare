@@ -1,6 +1,6 @@
-ver 6.0.0
+ver 6.1.0
 rev 1
-dist https://gmplib.org/download/$PKG_NAME/${PKG_NAME}-${PKG_VER}a.tar.xz
+dist https://gmplib.org/download/$PKG_NAME/${PKG_NAME}-${PKG_VER}.tar.xz
 bdep m4
 
 configure \
