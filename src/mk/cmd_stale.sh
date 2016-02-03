@@ -22,7 +22,7 @@ _verignore() {
 
 _latest() {
 	local url=$PKG_STALE_URL
-	[ "$url" ] || url=${PKG_DIST%/*}
+	[ "$url" ] || url=${PKG_DIST%/*}/
 
 	local re="$PKG_STALE_RE"
 	[ "$re" ] || {
