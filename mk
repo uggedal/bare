@@ -43,6 +43,7 @@ Commands:
   link <pkg>
   query <pkg> <field>
   stale [pkg]
+  bump <pkg> <version>
   bootstrap
   enter
 
