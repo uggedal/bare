@@ -45,17 +45,17 @@ strip_binaries() {
 		type=
 		args=
 		case "$mime" in
-			application/x-executable*)
-				type=executable
-				;;
-			application/x-sharedlib*)
-				type='shared lib'
-				args=--strip-unneeded
-				;;
-			application/x-archive*)
-				type='static lib'
-				args=--strip-debug
-				;;
+		application/x-executable*)
+			type=executable
+			;;
+		application/x-sharedlib*)
+			type='shared lib'
+			args=--strip-unneeded
+			;;
+		application/x-archive*)
+			type='static lib'
+			args=--strip-debug
+			;;
 		esac
 
 		if [ "$type" ]; then

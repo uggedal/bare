@@ -36,12 +36,12 @@ foreach() {
 
 distfile() {
 	case $1 in
-		*\|*)
-			printf '%s\n' ${1##*\|}
-			;;
-		*)
-			printf '%s\n' ${1##*/}
-			;;
+	*\|*)
+		printf '%s\n' ${1##*\|}
+		;;
+	*)
+		printf '%s\n' ${1##*/}
+		;;
 	esac
 }
 
@@ -144,9 +144,9 @@ stale() {
 	shift
 
 	case $type in
-		ignore|url|re)
-			eval PKG_STALE_$(uppercase $type)=\"\$@\"
-			;;
+	ignore|url|re)
+		eval PKG_STALE_$(uppercase $type)=\"\$@\"
+		;;
 	esac
 }
 

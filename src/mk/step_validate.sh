@@ -10,12 +10,12 @@ _find_conflict_in_db() {
 	local f
 
 	case $t in
-		@|f)
-			for f in $_VALIDATE_FL; do
-				[ "$f" != "$f1" ] ||
-					die "conflicting file in '$_CONFLICT_PKG_NAME' ($f)"
-			done
-			;;
+	@|f)
+		for f in $_VALIDATE_FL; do
+			[ "$f" != "$f1" ] ||
+				die "conflicting file in '$_CONFLICT_PKG_NAME' ($f)"
+		done
+		;;
 	esac
 }
 
@@ -26,9 +26,9 @@ _validate_confict() {
 	local pkg=$4
 
 	case $name in
-		$_PKG_NAME|$PKG_NAME)
-			return 0
-			;;
+	$_PKG_NAME|$PKG_NAME)
+		return 0
+		;;
 	esac
 
 	_CONFLICT_PKG_NAME=$name

@@ -43,9 +43,9 @@ read_repo() {
 	local f p
 	for f in $repo/*$PKG_EXT; do
 		case $f in
-			$repo/\*$PKG_EXT)
-				return 0
-				;;
+		$repo/\*$PKG_EXT)
+			return 0
+			;;
 		esac
 
 		p=$(basename $f)

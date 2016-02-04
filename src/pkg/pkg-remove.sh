@@ -10,12 +10,12 @@ VERBOSE=0
 
 while getopts "p:v" opt; do
 	case $opt in
-		p)
-			PREFIX=$OPTARG
-			;;
-		v)
-			VERBOSE=$(($VERBOSE + 1))
-			;;
+	p)
+		PREFIX=$OPTARG
+		;;
+	v)
+		VERBOSE=$(($VERBOSE + 1))
+		;;
 	esac
 done
 unset opt
@@ -24,12 +24,12 @@ shift $(( $OPTIND - 1 ))
 : ${PREFIX:=/}
 
 case $PREFIX in
-	/*)
-		:
-		;;
-	*)
-		usage
-		;;
+/*)
+	:
+	;;
+*)
+	usage
+	;;
 esac
 
 _changed_err() {
@@ -51,29 +51,29 @@ handle_db_line() {
 	local meta=$3
 
 	case $t in
-		f)
-			if check_sum $path $meta; then
-				_rm $path
-			else
-				_changed_err $path
+	f)
+		if check_sum $path $meta; then
+			_rm $path
+		else
+			_changed_err $path
+		fi
+		;;
+	@)
+		if [ "$(readlink $path)" = $meta ]; then
+			_rm $path
+		else
+			_changed_err $path
+		fi
+		;;
+	/)
+		if [ -d $path ]; then
+			if rmdir $d 2>/dev/null; then
+				[ "$VERBOSE" -le 1 ] || printf '%s\n' $d
 			fi
-			;;
-		@)
-			if [ "$(readlink $path)" = $meta ]; then
-				_rm $path
-			else
-				_changed_err $path
-			fi
-			;;
-		/)
-			if [ -d $path ]; then
-				if rmdir $d 2>/dev/null; then
-					[ "$VERBOSE" -le 1 ] || printf '%s\n' $d
-				fi
-			else
-				_changed_err $path
-			fi
-			;;
+		else
+			_changed_err $path
+		fi
+		;;
 	esac
 }
 

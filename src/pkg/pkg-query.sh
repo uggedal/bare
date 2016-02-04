@@ -20,9 +20,9 @@ query_line() {
 
 while getopts "v" opt; do
 	case $opt in
-		v)
-			VERBOSE=yes
-			;;
+	v)
+		VERBOSE=yes
+		;;
 	esac
 done
 unset opt

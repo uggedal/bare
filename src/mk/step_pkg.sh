@@ -12,9 +12,9 @@ _provided_libs() {
 	find $libdir -type f | while read f; do
 		mime="$(file -bi "$f")"
 		case "$mime" in
-			application/x-sharedlib*)
-				objdump -p $f | awk '/^ +SONAME/ { print $2 }'
-				;;
+		application/x-sharedlib*)
+			objdump -p $f | awk '/^ +SONAME/ { print $2 }'
+			;;
 		esac
 	done
 }
@@ -28,9 +28,9 @@ _needed_libs() {
 	find $dest -type f | while read f; do
 		mime="$(file -bi "$f")"
 		case "$mime" in
-			application/x-executable*|application/x-sharedlib*)
-				objdump -p $f | awk '/^ +NEEDED/ { print $2 }'
-				;;
+		application/x-executable*|application/x-sharedlib*)
+			objdump -p $f | awk '/^ +NEEDED/ { print $2 }'
+			;;
 		esac
 	done
 }

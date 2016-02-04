@@ -9,18 +9,18 @@ _USAGE='-p prefix -o output
 
 while getopts "p:o:l:d:" opt; do
 	case $opt in
-		p)
-			PREFIX=$OPTARG
-			;;
-		o)
-			OUTPUT=$OPTARG
-			;;
-		l)
-			LIBS="$OPTARG"
-			;;
-		d)
-			DEPS="$OPTARG"
-			;;
+	p)
+		PREFIX=$OPTARG
+		;;
+	o)
+		OUTPUT=$OPTARG
+		;;
+	l)
+		LIBS="$OPTARG"
+		;;
+	d)
+		DEPS="$OPTARG"
+		;;
 	esac
 done
 unset opt

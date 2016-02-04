@@ -9,9 +9,9 @@ _submv() {
 		local f dir
 		for f in $files; do
 			case $f in
-				*\**)
-					continue
-					;;
+			*\**)
+				continue
+				;;
 			esac
 
 			if [ ! -e $f ] && [ ! -h $f ]; then
@@ -62,9 +62,9 @@ _create_sub() {
 	mkdir -p $dest
 
 	case $type in
-		lib|bld)
-			_split_$type $name $dest
-			;;
+	lib|bld)
+		_split_$type $name $dest
+		;;
 	esac
 	_split_custom $name $dest
 }

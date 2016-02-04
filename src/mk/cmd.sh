@@ -7,26 +7,26 @@ run_cmd() {
 	shift
 
 	case $cmd in
-		bootstrap|enter)
-			:
-			;;
-		clean|stale)
-			[ -z "$1" ] || {
-				read_pkg $1
-				shift
-			}
-			;;
-		*)
-			[ "$1" ] || _usage
+	bootstrap|enter)
+		:
+		;;
+	clean|stale)
+		[ -z "$1" ] || {
 			read_pkg $1
 			shift
-			;;
+		}
+		;;
+	*)
+		[ "$1" ] || _usage
+		read_pkg $1
+		shift
+		;;
 	esac
 
 	case $cmd in
-		link)
-			MK_NO_SUB_VALIDATION=yes
-			;;
+	link)
+		MK_NO_SUB_VALIDATION=yes
+		;;
 	esac
 
 	cmd_$cmd "$@"

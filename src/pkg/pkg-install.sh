@@ -14,19 +14,19 @@ DB_TYPE=explicit
 
 while getopts "p:vfd" opt; do
 	case $opt in
-		p)
-			PREFIX=$OPTARG
-			;;
-		v)
-			VERBOSE=$(($VERBOSE + 1))
-			;;
-		f)
-			FORCE=yes
-			;;
-		d)
-			DEPENDENCY=yes
-			DB_TYPE=dependency
-			;;
+	p)
+		PREFIX=$OPTARG
+		;;
+	v)
+		VERBOSE=$(($VERBOSE + 1))
+		;;
+	f)
+		FORCE=yes
+		;;
+	d)
+		DEPENDENCY=yes
+		DB_TYPE=dependency
+		;;
 	esac
 done
 unset opt
@@ -46,13 +46,13 @@ handle_deps() {
 
 	local name lib
 	case $f1 in
-		*:*)
-			name=${f1%:*}
-			lib=${f1#*:}
-			;;
-		*)
-			name=$f1
-			;;
+	*:*)
+		name=${f1%:*}
+		lib=${f1#*:}
+		;;
+	*)
+		name=$f1
+		;;
 	esac
 
 	# TODO: collect all deps and fork off once?

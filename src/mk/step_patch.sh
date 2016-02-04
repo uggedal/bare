@@ -1,8 +1,8 @@
 _filter_patch() {
 	case $1 in
-		*.diff|*.patch)
-			printf '%s\n' $1
-			;;
+	*.diff|*.patch)
+		printf '%s\n' $1
+		;;
 	esac
 }
 

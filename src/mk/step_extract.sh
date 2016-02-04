@@ -3,21 +3,21 @@ _extract() {
 	local arg
 
 	case $(distfile $d) in
-		*.tar.gz)
-			arg=z
-			;;
-		*.tar.bz2)
-			arg=j
-			;;
-		*.tar.xz)
-			arg=J
-			;;
-		*.diff|*.patch)
-			return 0
-			;;
-		*)
-			die "unsupported archive '$(distfile $d)'"
-			;;
+	*.tar.gz)
+		arg=z
+		;;
+	*.tar.bz2)
+		arg=j
+		;;
+	*.tar.xz)
+		arg=J
+		;;
+	*.diff|*.patch)
+		return 0
+		;;
+	*)
+		die "unsupported archive '$(distfile $d)'"
+		;;
 	esac
 
 	progress extract "'$PKG_NAME' using '$(distfile $d)'"
