@@ -1,20 +1,20 @@
-_current_qualified_name() {
-	local qualified_name=$1
+_cur_qual_name() {
+	local qual_name=$1
 
-	$_ROOT/mk query $(pkg_to_name $qualified_name) qualified_name
+	$_ROOT/mk query $(pkg_to_name $qual_name) qual_name
 }
 
 _clean_obsolete_dist() {
 	[ -d $_DIST ] || return 0
 
-	local qualified_name
+	local qual_name
 
 	for dir in $_DIST/*; do
 		[ -d "$dir" ] || continue
 
-		qualified_name=$(basename $dir)
+		qual_name=$(basename $dir)
 
-		[ "$qualified_name" = "$(_current_qualified_name $qualified_name)" ] || rm -r $dir
+		[ "$qual_name" = "$(_cur_qual_name $qual_name)" ] || rm -r $dir
 	done
 }
 
