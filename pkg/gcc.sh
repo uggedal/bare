@@ -1,8 +1,8 @@
 ver 5.3.0
 rev 1
 dist \
-  $URI_GNU/$PKG_NAME/$PKG_NAME-$PKG_VER/$PKG_NAME-${PKG_VER}.tar.bz2 \
-  http://port70.net/~nsz/musl/$PKG_NAME-$PKG_VER/$PKG_NAME-$PKG_VER.diff
+	$URI_GNU/$PKG_NAME/$PKG_NAME-$PKG_VER/$PKG_NAME-${PKG_VER}.tar.bz2 \
+	http://port70.net/~nsz/musl/$PKG_NAME-$PKG_VER/$PKG_NAME-$PKG_VER.diff
 
 bdep gxx mpc-bld libz-bld
 
@@ -15,34 +15,34 @@ sub libstdcxx mv usr/lib/libstdc++.so.\*
 sub libstdcxx-bld type custom
 sub libstdcxx-bld rdep libstdcxx
 sub libstdcxx-bld mv \
-  usr/include/c++ \
-  usr/lib/*++*
+	usr/include/c++ \
+	usr/lib/*++*
 
 sub gxx type custom
 sub gxx rdep libstdcxx-bld gcc
 sub gxx mv \
-  usr/bin/'[gc]'++ \
-  usr/bin/$MK_TARGET_TRIPLE-'[gc]'++ \
-  usr/libexec/gcc/$MK_TARGET_TRIPLE/$PKG_VER/cc1plus \
-  usr/share/man/man1/g++.1
+	usr/bin/'[gc]'++ \
+	usr/bin/$MK_TARGET_TRIPLE-'[gc]'++ \
+	usr/libexec/gcc/$MK_TARGET_TRIPLE/$PKG_VER/cc1plus \
+	usr/share/man/man1/g++.1
 
 _configure="
-  --disable-libsanitizer
-  --disable-libstdcxx-pch
-  --disable-multilib
-  --disable-nls
-  --enable-checking=release
-  --enable-languages=c,c++,lto
-  --enable-lto
-  --enable-shared
-  --libdir=/usr/lib
-  --build=$MK_BUILD_TRIPLE
-  --host=$MK_HOST_TRIPLE
-  --target=$MK_TARGET_TRIPLE
-  "
+	--disable-libsanitizer
+	--disable-libstdcxx-pch
+	--disable-multilib
+	--disable-nls
+	--enable-checking=release
+	--enable-languages=c,c++,lto
+	--enable-lto
+	--enable-shared
+	--libdir=/usr/lib
+	--build=$MK_BUILD_TRIPLE
+	--host=$MK_HOST_TRIPLE
+	--target=$MK_TARGET_TRIPLE
+	"
 
 if [ "$MK_BUILD_TRIPLE" = "$MK_TARGET_TRIPLE" ]; then
-  _configure="$_configure --with-system-zlib"
+	_configure="$_configure --with-system-zlib"
 fi
 
 configure $_configure
@@ -54,9 +54,9 @@ builddir gcc-build
 export lt_cv_sys_max_cmd_len=8192
 
 post_install() {
-  ln -s gcc $MK_DESTDIR$MK_PREFIX/bin/cc
-  rm $MK_DESTDIR$MK_PREFIX/lib/*.py
-  rm -r $MK_DESTDIR$MK_PREFIX/share/gcc-$PKG_VER/python
+	ln -s gcc $MK_DESTDIR$MK_PREFIX/bin/cc
+	rm $MK_DESTDIR$MK_PREFIX/lib/*.py
+	rm -r $MK_DESTDIR$MK_PREFIX/share/gcc-$PKG_VER/python
 }
 
 stale url https://gcc.gnu.org/releases.html

@@ -8,5 +8,5 @@ sub libmagic-bld type bld
 sub libmagic-bld rdep libmagic
 
 pre_configure() {
-  cp -f $MK_FILE/config.sub .
+	cp -f $MK_FILE/config.sub .
 }

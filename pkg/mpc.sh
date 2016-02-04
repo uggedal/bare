@@ -4,7 +4,7 @@ dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.gz
 bdep mpfr-bld
 
 configure \
-  --with-pic
+	--with-pic
 
 sub mpc-bld type bld
 sub mpc-bld rdep mpc mpfr-bld

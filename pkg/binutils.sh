@@ -6,15 +6,15 @@ sub binutils-bld type bld
 sub binutils-bld rdep binutils
 
 configure \
-  --disable-multilib \
-  --disable-nls \
-  --disable-werror \
-  --build=$MK_BUILD_TRIPLE \
-  --host=$MK_HOST_TRIPLE \
-  --target=$MK_TARGET_TRIPLE
+	--disable-multilib \
+	--disable-nls \
+	--disable-werror \
+	--build=$MK_BUILD_TRIPLE \
+	--host=$MK_HOST_TRIPLE \
+	--target=$MK_TARGET_TRIPLE
 
 pre_configure() {
-  ed configure <<EOF
+	ed configure <<EOF
 ,s|MAKEINFO="\$MISSING makeinfo"|MAKEINFO=true|g
 w
 q
