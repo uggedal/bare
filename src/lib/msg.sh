@@ -1,84 +1,84 @@
 if [ "$_FANCY_MSG" ] && [ -t 2 ] && tput colors >/dev/null 2>&1; then
-  _USE_COLOR=yes
+	_USE_COLOR=yes
 fi
 
 strong() {
-  if [ "$_USE_COLOR" ]; then
-    printf '\033[1m%s\033[0m\n' "$@"
-  else
-    printf '%s' "$@"
-  fi
+	if [ "$_USE_COLOR" ]; then
+		printf '\033[1m%s\033[0m\n' "$@"
+	else
+		printf '%s' "$@"
+	fi
 }
 
 color() {
-  local n=$1
-  shift
+	local n=$1
+	shift
 
-  if [ "$_USE_COLOR" ]; then
-    printf '\033[%dm%s\033[39;49m' $n "$@"
-  else
-    printf '%s' "$@"
-  fi
+	if [ "$_USE_COLOR" ]; then
+		printf '\033[%dm%s\033[39;49m' $n "$@"
+	else
+		printf '%s' "$@"
+	fi
 }
 
 msg() {
-  local prefix
+	local prefix
 
-  [ -z "$_FANCY_MSG" ] || prefix='>>> '
+	[ -z "$_FANCY_MSG" ] || prefix='>>> '
 
-  printf '%s\n' "$(strong "$(color 37 "$prefix")$@")" 1>&2
+	printf '%s\n' "$(strong "$(color 37 "$prefix")$@")" 1>&2
 }
 
 msglist() {
-  local prefix="$1"
-  shift
+	local prefix="$1"
+	shift
 
-  local part
-  for part; do
-    msg "$prefix '$part'"
-  done
+	local part
+	for part; do
+		msg "$prefix '$part'"
+	done
 }
 
 err() {
-  local progname=$(basename $0)
-  msg "$(color 31 $progname:) $@"
+	local progname=$(basename $0)
+	msg "$(color 31 $progname:) $@"
 }
 
 die() {
-  err "$@"
-  exit 1
+	err "$@"
+	exit 1
 }
 
 progress() {
-  local step="$(printf '%-10s' $1:)"
-  shift
+	local step="$(printf '%-10s' $1:)"
+	shift
 
-  msg "$(color 33 "$step") $@"
+	msg "$(color 33 "$step") $@"
 }
 
 usage() {
-  local progname=$(basename $0)
-  local prefix='usage: '
-  local indent_width=$((${#prefix} + ${#progname} + 1))
-  (
-    IFS='
+	local progname=$(basename $0)
+	local prefix='usage: '
+	local indent_width=$((${#prefix} + ${#progname} + 1))
+	(
+		IFS='
 '
-    heading=yes
-    for l in $_USAGE; do
-      if [ "$heading" ]; then
-        printf 'usage: %s %s\n' $progname "$l"
-      else
-        printf '%-*s%s\n' $indent_width '' "$l"
-      fi
-      unset heading
-    done
-  ) >&2
-  exit 1
+		heading=yes
+		for l in $_USAGE; do
+			if [ "$heading" ]; then
+				printf 'usage: %s %s\n' $progname "$l"
+			else
+				printf '%-*s%s\n' $indent_width '' "$l"
+			fi
+			unset heading
+		done
+	) >&2
+	exit 1
 }
 
 dump() {
-  local w
-  for w; do
-    printf '%-4s%s\n' '' $w
-  done
+	local w
+	for w; do
+		printf '%-4s%s\n' '' $w
+	done
 }
