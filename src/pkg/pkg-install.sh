@@ -13,95 +13,95 @@ VERBOSE=0
 DB_TYPE=explicit
 
 while getopts "p:vfd" opt; do
-  case $opt in
-    p)
-      PREFIX=$OPTARG
-      ;;
-    v)
-      VERBOSE=$(($VERBOSE + 1))
-      ;;
-    f)
-      FORCE=yes
-      ;;
-    d)
-      DEPENDENCY=yes
-      DB_TYPE=dependency
-      ;;
-  esac
+	case $opt in
+		p)
+			PREFIX=$OPTARG
+			;;
+		v)
+			VERBOSE=$(($VERBOSE + 1))
+			;;
+		f)
+			FORCE=yes
+			;;
+		d)
+			DEPENDENCY=yes
+			DB_TYPE=dependency
+			;;
+	esac
 done
 unset opt
 
 for i in $(seq $(($OPTIND - 1))); do
-  eval FLAGS=\"\$FLAGS \$$i\"
+	eval FLAGS=\"\$FLAGS \$$i\"
 done
 unset i
 
 shift $(( $OPTIND - 1 ))
 
 handle_deps() {
-  local t=$1
-  local f1=$2
+	local t=$1
+	local f1=$2
 
-  [ "$t" = d ] || return 0
+	[ "$t" = d ] || return 0
 
-  local name lib
-  case $f1 in
-    *:*)
-      name=${f1%:*}
-      lib=${f1#*:}
-      ;;
-    *)
-      name=$f1
-      ;;
-  esac
+	local name lib
+	case $f1 in
+		*:*)
+			name=${f1%:*}
+			lib=${f1#*:}
+			;;
+		*)
+			name=$f1
+			;;
+	esac
 
-  # TODO: collect all deps and fork off once?
-  REPO=$REPO $0 $FLAGS -d $name || exit $?
+	# TODO: collect all deps and fork off once?
+	REPO=$REPO $0 $FLAGS -d $name || exit $?
 }
 
 handle_pkg() {
-  local name=$1
-  local ver=$2
-  local qualified_name=$3
-  local f=$4
+	local name=$1
+	local ver=$2
+	local qualified_name=$3
+	local f=$4
 
-  [ "$PKG" = "$name" ] || return 0
+	[ "$PKG" = "$name" ] || return 0
 
-  local installedmsg="'$PKG' already installed"
-  [ -z "$DEPENDENCY" ] || installedmsg="$installedmsg (dependency)"
-  local installmsg="installing '$PKG'"
-  [ -z "$DEPENDENCY" ] || installmsg="$installmsg (dependency)"
+	local installedmsg="'$PKG' already installed"
+	[ -z "$DEPENDENCY" ] || installedmsg="$installedmsg (dependency)"
+	local installmsg="installing '$PKG'"
+	[ -z "$DEPENDENCY" ] || installmsg="$installmsg (dependency)"
 
-  if pkg_installed $PREFIX $PKG; then
-    if [ "$DEPENDENCY" ] || [ -z "$FORCE" ]; then
-      [ "$VERBOSE" -le 0 ] || msg "$installedmsg"
-      INSTALLED=yes
-      return 0
-    fi
-  fi
+	if pkg_installed $PREFIX $PKG; then
+		if [ "$DEPENDENCY" ] || [ -z "$FORCE" ]; then
+			[ "$VERBOSE" -le 0 ] || msg "$installedmsg"
+			INSTALLED=yes
+			return 0
+		fi
+	fi
 
-  [ "$VERBOSE" -le 0 ] || msg "$installmsg"
+	[ "$VERBOSE" -le 0 ] || msg "$installmsg"
 
-  [ "$VERBOSE" -le 1 ] || tar -tJf $REPO/$f
+	[ "$VERBOSE" -le 1 ] || tar -tJf $REPO/$f
 
-  local tmp=$PREFIX/$PKG_TMP/$qualified_name
+	local tmp=$PREFIX/$PKG_TMP/$qualified_name
 
-  rm -rf $tmp
-  mkdir -p $tmp
+	rm -rf $tmp
+	mkdir -p $tmp
 
-  tar -C $tmp -xJf $REPO/$f
+	tar -C $tmp -xJf $REPO/$f
 
-  read_db $tmp $name handle_deps
+	read_db $tmp $name handle_deps
 
-  dir_merge $tmp $PREFIX
+	dir_merge $tmp $PREFIX
 
-  rm -rf $tmp
+	rm -rf $tmp
 
-  local record=$(pkg_db $PREFIX $name $DB_TYPE)
-  mkdir -p $(dirname $record)
-  ln -s ../$name $record
+	local record=$(pkg_db $PREFIX $name $DB_TYPE)
+	mkdir -p $(dirname $record)
+	ln -s ../$name $record
 
-  INSTALLED=yes
+	INSTALLED=yes
 }
 
 [ "$REPO" ] || usage
@@ -109,9 +109,9 @@ handle_pkg() {
 : ${PREFIX:=/}
 
 for PKG; do
-  pkg_in_repo $REPO $PKG || die "no package named '$PKG'"
-  unset INSTALLED
-  read_repo $REPO handle_pkg
-  [ "$INSTALLED" ] || die "unable to install '$PKG'"
+	pkg_in_repo $REPO $PKG || die "no package named '$PKG'"
+	unset INSTALLED
+	read_repo $REPO handle_pkg
+	[ "$INSTALLED" ] || die "unable to install '$PKG'"
 done
 unset PKG

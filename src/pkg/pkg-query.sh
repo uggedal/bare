@@ -8,22 +8,22 @@
 _USAGE='[-v]'
 
 query_line() {
-  local name=$1
-  local ver=$2
+	local name=$1
+	local ver=$2
 
-  if [ "$VERBOSE" ]; then
-    printf "%-${PKG_NAME_MAX}s %s\n" $name $ver
-  else
-    printf '%s\n' $name
-  fi
+	if [ "$VERBOSE" ]; then
+		printf "%-${PKG_NAME_MAX}s %s\n" $name $ver
+	else
+		printf '%s\n' $name
+	fi
 }
 
 while getopts "v" opt; do
-  case $opt in
-    v)
-      VERBOSE=yes
-      ;;
-  esac
+	case $opt in
+		v)
+			VERBOSE=yes
+			;;
+	esac
 done
 unset opt
 
