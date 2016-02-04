@@ -19,9 +19,20 @@ Philosophy
 Usage
 -----
 
-To build packages in a native Bare system:
+First bootstrap from a linux system with the necessary toolchain:
 
-    ./mk <command>
+    ./mk bootstrap
+
+Then build packages in a native Bare system:
+
+    ./mk pkg <package>
+
+The contained rootfs can be entered with:
+
+    ./mk enter
+
+Environment
+-----------
 
 The following environment variables can be overridden from the defaults:
 
@@ -30,15 +41,6 @@ The following environment variables can be overridden from the defaults:
 
 Bootstrap
 ---------
-
-First bootstrap from a linux system with the necessary toolchain:
-
-    ./mk bootstrap
-
-Then enter the new rootfs (requires a kernel with user_namespaces(7)
-support):
-
-    ./mk contain
 
 Legal Information
 -----------------
