@@ -1,19 +1,19 @@
 _checksum() {
-  sha512sum $(merge $(foreach relative $(distpaths $PKG_DIST)))
+	sha512sum $(merge $(foreach relative $(distpaths $PKG_DIST)))
 }
 
 step_checksum() {
-  local f=$_SUM/${PKG_PARENT_NAME}.sum
+	local f=$_SUM/${PKG_PARENT_NAME}.sum
 
-  [ "$PKG_DIST" ] || {
-    progress checksum "'$PKG_NAME' no dist"
-    return 0
-  }
+	[ "$PKG_DIST" ] || {
+		progress checksum "'$PKG_NAME' no dist"
+		return 0
+	}
 
-  progress checksum "'$PKG_NAME' using '$(distfiles $PKG_DIST)'"
+	progress checksum "'$PKG_NAME' using '$(distfiles $PKG_DIST)'"
 
-  assert_distfiles
+	assert_distfiles
 
-  [ "$(_checksum)" = "$(cat $f)" ] ||
-    die "invalid checksum for '$PKG_NAME' ($(distfiles $PKG_DIST))"
+	[ "$(_checksum)" = "$(cat $f)" ] ||
+		die "invalid checksum for '$PKG_NAME' ($(distfiles $PKG_DIST))"
 }

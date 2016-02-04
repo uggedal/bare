@@ -1,5 +1,5 @@
 cmd_enter() {
-  prepare_contain
+	prepare_contain
 
-  contain /bin/ksh -l
+	contain /bin/ksh -l
 }

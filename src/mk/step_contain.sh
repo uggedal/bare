@@ -1,7 +1,7 @@
 step_contain() {
-  use_contain || return 0
+	use_contain || return 0
 
-  progress contain "'$PKG_NAME'"
+	progress contain "'$PKG_NAME'"
 
-  prepare_contain
+	prepare_contain
 }

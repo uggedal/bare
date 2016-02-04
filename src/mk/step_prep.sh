@@ -1,9 +1,9 @@
 step_prep() {
-  progress prep "'$PKG_NAME'"
+	progress prep "'$PKG_NAME'"
 
-  mkdir -p $MK_BUILD_ROOT
+	mkdir -p $MK_BUILD_ROOT
 
-  if [ "$PKG_BUILDDIR" ]; then
-    mkdir -p $MK_BUILD
-  fi
+	if [ "$PKG_BUILDDIR" ]; then
+		mkdir -p $MK_BUILD
+	fi
 }
