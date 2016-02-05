@@ -1,5 +1,4 @@
 ver 5.3.0
-rev 1
 dist \
 	$URI_GNU/$PKG_NAME/$PKG_NAME-$PKG_VER/$PKG_NAME-${PKG_VER}.tar.bz2 \
 	http://port70.net/~nsz/musl/$PKG_NAME-$PKG_VER/$PKG_NAME-$PKG_VER.diff

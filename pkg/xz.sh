@@ -1,5 +1,4 @@
 ver 5.2.2
-rev 1
 dist http://tukaani.org/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.xz
 
 configure \
