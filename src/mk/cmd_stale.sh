@@ -32,7 +32,7 @@ _latest() {
 		re=$(_re $name '([^-\/_\s]+?)')
 	}
 
-	curl -sL $url |
+	curl -m5 -sL $url |
 		perl -ne 'if (/'"$re"'/) { print "$1\n" }' |
 		_versort | _verignore
 }
