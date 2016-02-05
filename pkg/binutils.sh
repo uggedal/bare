@@ -1,4 +1,5 @@
 ver 2.25.1
+rev 1
 dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.bz2
 
 sub binutils-bld type bld

@@ -1,4 +1,5 @@
 ver 0.0.1
+rev 1
 
 do_extract() {
 	mkdir -p $MK_DIST

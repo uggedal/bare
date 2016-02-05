@@ -3,13 +3,7 @@ rev 1
 
 rdep \
 	base \
-	musl-bld \
-	bzip2 \
-	binutils \
-	gcc \
-	make \
-	patch \
-	file
+	strace
 
 builddir .
 
