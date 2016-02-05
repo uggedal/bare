@@ -183,6 +183,7 @@ read_pkg() {
 
 	PKG_NAME=$1
 	PKG_PARENT_NAME=$PKG_NAME
+	PKG_REV=1
 
 	source_pkg $PKG_NAME
 

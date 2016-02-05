@@ -1,7 +1,6 @@
 _ver=3.1.3
 _patchver=0
 ver ${_ver}.p$_patchver
-rev 1
 
 _dist=http://www.${PKG_NAME}.org/$PKG_NAME-$_ver
 for _patch in $(seq -w $_patchver); do

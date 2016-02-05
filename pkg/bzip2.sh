@@ -1,5 +1,4 @@
 ver 1.0.6
-rev 1
 dist http://bzip.org/$PKG_VER/$PKG_NAME-${PKG_VER}.tar.gz
 
 pre_configure() {

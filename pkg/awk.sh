@@ -1,5 +1,4 @@
 ver 20121220
-rev 1
 dist http://www.cs.princeton.edu/~bwk/btl.mirror/awk.tar.gz
 
 distdir .

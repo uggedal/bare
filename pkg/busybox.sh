@@ -1,5 +1,4 @@
 ver 1.23.2
-rev 1
 dist http://${PKG_NAME}.net/downloads/$PKG_NAME-${PKG_VER}.tar.bz2
 
 pre_build() {
