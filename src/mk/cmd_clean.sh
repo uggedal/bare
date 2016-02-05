@@ -1,7 +1,7 @@
 _cur_qual_name() {
 	local qual_name=$1
 
-	$_ROOT/mk query $(pkg_to_name $qual_name) qual_name
+	$_ROOT/mk query $(pkg_to_name $qual_name) qualified_name
 }
 
 _clean_obsolete_dist() {
