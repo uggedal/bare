@@ -6,7 +6,6 @@ rdep \
 	ubase \
 	busybox \
 	ksh \
-	ed \
 	awk \
 	pax \
 	xz \
