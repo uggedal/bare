@@ -1,0 +1,98 @@
+--- a/trap.c
++++ b/trap.c
+@@ -10,20 +10,92 @@
+ 
+ static struct sigaction Sigact_ign, Sigact_trap;
+ 
++static const char map[] = {
++	[0]         = 0,
++	[SIGHUP]    = 1,
++	[SIGINT]    = 2,
++	[SIGQUIT]   = 3,
++	[SIGILL]    = 4,
++	[SIGTRAP]   = 5,
++	[SIGABRT]   = 6,
++	[SIGBUS]    = 7,
++	[SIGFPE]    = 8,
++	[SIGKILL]   = 9,
++	[SIGUSR1]   = 10,
++	[SIGSEGV]   = 11,
++	[SIGUSR2]   = 12,
++	[SIGPIPE]   = 13,
++	[SIGALRM]   = 14,
++	[SIGTERM]   = 15,
++	[SIGSTKFLT] = 16,
++	[SIGCHLD]   = 17,
++	[SIGCONT]   = 18,
++	[SIGSTOP]   = 19,
++	[SIGTSTP]   = 20,
++	[SIGTTIN]   = 21,
++	[SIGTTOU]   = 22,
++	[SIGURG]    = 23,
++	[SIGXCPU]   = 24,
++	[SIGXFSZ]   = 25,
++	[SIGVTALRM] = 26,
++	[SIGPROF]   = 27,
++	[SIGWINCH]  = 28,
++	[SIGPOLL]   = 29,
++	[SIGPWR]    = 30,
++	[SIGSYS]    = 31,
++};
++
++#define sigmap(x) ((x) >= sizeof map ? (x) : map[(x)])
++
++static const char *const sys_signame[NSIG] = {
++	"Signal 0",
++	"HUP",
++	"INT",
++	"QUIT",
++	"ILL",
++	"TRAP",
++	"ABRT",
++	"BUS",
++	"FPE",
++	"KILL",
++	"USR1",
++	"SEGV",
++	"USR2",
++	"PIPE",
++	"ALRM",
++	"TERM",
++	"STKFLT",
++	"CHLD",
++	"CONT",
++	"STOP",
++	"TSTP",
++	"TTIN",
++	"TTOU",
++	"URG",
++	"XCPU",
++	"XFSZ",
++	"VTALRM",
++	"PROF",
++	"WINCH",
++	"POLL",
++	"PWR",
++	"SYS",
++};
++
+ void
+ inittraps(void)
+ {
+ 	int	i;
+ 
+-	/* Populate sigtraps based on sys_signame and sys_siglist. */
++	/* Populate sigtraps based on sys_signame. */
+ 	for (i = 0; i <= NSIG; i++) {
+ 		sigtraps[i].signal = i;
+ 		if (i == SIGERR_) {
+ 			sigtraps[i].name = "ERR";
+ 			sigtraps[i].mess = "Error handler";
+ 		} else {
+-			sigtraps[i].name = sys_signame[i];
+-			sigtraps[i].mess = sys_siglist[i];
++			sigtraps[i].name = sys_signame[sigmap(i)];
++			sigtraps[i].mess = strsignal(i);
+ 		}
+ 	}
+ 	sigtraps[SIGEXIT_].name = "EXIT";	/* our name for signal 0 */

@@ -1,0 +1,10 @@
+--- a/sh.h
++++ b/sh.h
+@@ -418,3 +418,7 @@
+ # undef EXTERN
+ #endif
+ #undef I__
++
++#ifndef CHILD_MAX
++#define CHILD_MAX sysconf(_SC_CHILD_MAX)
++#endif

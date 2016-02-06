@@ -1,0 +1,10 @@
+--- a/history.c
++++ b/history.c
+@@ -17,6 +17,7 @@
+ 
+ #include "sh.h"
+ #include <sys/stat.h>
++#include <sys/file.h>
+ 
+ #ifdef HISTORY
+ # include <sys/mman.h>

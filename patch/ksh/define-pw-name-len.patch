@@ -1,0 +1,14 @@
+--- a/main.c
++++ b/main.c
+@@ -10,6 +10,11 @@
+ #include <sys/stat.h>
+ #include <pwd.h>
+ 
++#ifndef _PW_NAME_LEN
++#include <utmp.h>
++#define _PW_NAME_LEN UT_NAMESIZE
++#endif
++
+ extern char **environ;
+ 
+ /*

@@ -1,0 +1,11 @@
+--- a/var.c
++++ b/var.c
+@@ -1024,7 +1024,7 @@
+ 		break;
+ 	case V_RANDOM:
+ 		vp->flag &= ~SPECIAL;
+-		srand_deterministic((unsigned int)intval(vp));
++		srand((unsigned int)intval(vp));
+ 		vp->flag |= SPECIAL;
+ 		break;
+ 	case V_SECONDS:
