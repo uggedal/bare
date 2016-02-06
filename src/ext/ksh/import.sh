@@ -18,7 +18,7 @@ done
 mkdir -p dist
 
 cp $GEN/charclass.h dist/
-mkdir -p sys
+mkdir -p dist/sys
 cp $SYS/queue.h dist/sys
 
 cp $KSH/* dist/
