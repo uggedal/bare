@@ -21,4 +21,7 @@ cp $GEN/charclass.h dist/
 mkdir -p dist/sys
 cp $SYS/queue.h dist/sys
 
-cp $KSH/* dist/
+cp -a $KSH/* dist/
+find dist -name CVS -type d | xargs rm -r
+
+rm -r src
