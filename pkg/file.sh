@@ -1,4 +1,4 @@
-ver 5.25
+ver 5.24
 dist ftp://ftp.astron.com/pub/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.gz
 
 sub libmagic type lib
