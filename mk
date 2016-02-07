@@ -1,6 +1,4 @@
-#!/bin/sh
-
-set -e
+#!/bin/sh -e
 
 _ROOT=$(readlink -f $(dirname $0))
 
