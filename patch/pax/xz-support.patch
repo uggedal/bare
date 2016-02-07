@@ -1,0 +1,71 @@
+--- a/options.c
++++ b/options.c
+@@ -79,6 +79,7 @@
+ #define GZIP_CMD	"gzip"		/* command to run as gzip */
+ #define COMPRESS_CMD	"compress"	/* command to run as compress */
+ #define BZIP2_CMD	"bzip2"		/* command to run as bzip2 */
++#define XZ_CMD	"xz"		/* command to run as xz */
+ 
+ /*
+  *	Format specific routine table
+@@ -635,7 +640,7 @@
+ 	 * process option flags
+ 	 */
+ 	while ((c = getoldopt(argc, argv,
+-	    "b:cef:hjmopqruts:vwxzBC:HI:LNOPXZ014578")) != -1) {
++	    "b:cef:hjmopqruts:vwxzBC:HI:JLNOPXZ014578")) != -1) {
+ 		switch (c) {
+ 		case 'b':
+ 			/*
+@@ -686,6 +693,12 @@
+ 			 */
+ 			gzip_program = BZIP2_CMD;
+ 			break;
++		case 'J':
++			/*
++			 * use xz.  Non standard option.
++			 */
++			gzip_program = XZ_CMD;
++			break;
+ 		case 'm':
+ 			/*
+ 			 * do not preserve modification time
+--- a/tar.1
++++ b/tar.1
+@@ -32,7 +32,7 @@
+ .Sh SYNOPSIS
+ .Nm tar
+ .Sm off
+-.No { Cm crtux No } Op Cm 014578befHhjLmNOoPpqsvwXZz
++.No { Cm crtux No } Op Cm 014578befHhJjLmNOoPpqsvwXZz
+ .Sm on
+ .Bk -words
+ .Op Ar blocking-factor | archive | replstr
+@@ -43,7 +43,7 @@
+ .Nm tar
+ .No { Ns Fl crtux Ns }
+ .Bk -words
+-.Op Fl 014578eHhjLmNOoPpqvwXZz
++.Op Fl 014578eHhJjLmNOoPpqvwXZz
+ .Op Fl b Ar blocking-factor
+ .Op Fl C Ar directory
+ .Op Fl f Ar archive
+@@ -156,6 +156,9 @@
+ .It Fl I Ar file
+ This is a positional argument which reads the names of files to
+ archive or extract from the given file, one per line.
++.It Fl J
++Compress archive using xz.
++The xz utility must be installed separately.
+ .It Fl j
+ Compress archive using bzip2.
+ The bzip2 utility must be installed separately.
+@@ -384,6 +387,8 @@
+ at the University of California, San Diego.
+ .Sh CAVEATS
+ The
++.Fl J
++,
+ .Fl j
+ and
+ .Fl L
