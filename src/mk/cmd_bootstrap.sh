@@ -96,6 +96,7 @@ _contain_pkg() {
 
 _bootstrap_contain() {
 	local prefix=$_BOOTSTRAP_NATIVE/usr
+	local p
 
 	export CC=$TRIPLE-gcc
 	export CXX=$TRIPLE-g++
@@ -142,17 +143,31 @@ _bootstrap_contain() {
 		--with-mpc=$prefix" \
 		./mk pkg gcc
 
-	local bin
-	for bin in make xz file; do
+	for p in bsd-headers linux-headers; do
+		_contain_pkg $p
+		_prefix_install $p $_BOOTSTRAP_NATIVE
+	done
+
+	CPPFLAGS="-isystem $prefix/include" \
+	MK_CONFIGURE="
+		--host=$TRIPLE
+		--prefix=/usr" \
+		./mk pkg libbsd
+	_prefix_install libbsd-bld $_BOOTSTRAP_NATIVE
+
+	for p in make xz file; do
 		MK_CONFIGURE="
 			--host=$TRIPLE
 			--prefix=/usr" \
-			./mk pkg $bin
+			./mk pkg $p
 	done
 
 	CROSS_COMPILE=$TRIPLE- \
 		./mk pkg busybox
 
+	export CFLAGS="-isystem $prefix/include"
+	export LDFLAGS="-L$prefix/lib"
+	_contain_pkg ksh pax patch diff
 	unset MK_NO_DEP
 	_contain_pkg base-bld
 }
