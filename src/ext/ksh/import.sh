@@ -5,7 +5,6 @@ RELEASE=5_7
 CVS=anoncvs@anoncvs.eu.openbsd.org
 KSH=src/bin/ksh
 GEN=src/lib/libc/gen
-SYS=src/sys/sys
 
 for d in $KSH $GEN $SYS; do
 	if ! [ -d $d ]; then
@@ -18,8 +17,6 @@ done
 mkdir -p dist
 
 cp $GEN/charclass.h dist/
-mkdir -p dist/sys
-cp $SYS/queue.h dist/sys
 
 cp -a $KSH/* dist/
 find dist -name CVS -type d | xargs rm -r

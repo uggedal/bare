@@ -1,0 +1,11 @@
+--- a/emacs.c
++++ b/emacs.c
+@@ -16,7 +16,7 @@
+ 
+ #include "sh.h"
+ #include <sys/stat.h>
+-#include <sys/queue.h>
++#include <bsd/sys/queue.h>
+ #include <ctype.h>
+ #include <locale.h>
+ #include "edit.h"

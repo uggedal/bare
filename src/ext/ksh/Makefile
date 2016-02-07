@@ -1,4 +1,5 @@
 CFLAGS += -Wall -isystem .
+LDFLAGS += -lbsd
 
 PREFIX ?= /usr
 BIN_DIR ?= /bin

@@ -1,5 +1,7 @@
 ver 5.7
 
+bdep libbsd-bld
+
 do_extract() {
 	mkdir -p $MK_DIST
 	cp -a $_SRC/ext/$PKG_NAME/dist/* $MK_DIST
