@@ -1,0 +1,44 @@
+--- a/fts.c
++++ b/fts.c
+@@ -37,7 +37,7 @@
+ #include <fcntl.h>
+ #include <fts.h>
+ #include <limits.h>
+-#include <stdlib.h>
++#include <bsd/stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
+ 
+--- a/options.c
++++ b/options.c
+@@ -42,7 +42,7 @@
+ #include <string.h>
+ #include <errno.h>
+ #include <unistd.h>
+-#include <stdlib.h>
++#include <bsd/stdlib.h>
+ #include <limits.h>
+ #include <paths.h>
+ #include "pax.h"
+--- a/tables.c
++++ b/tables.c
+@@ -44,7 +44,7 @@
+ #include <string.h>
+ #include <unistd.h>
+ #include <errno.h>
+-#include <stdlib.h>
++#include <bsd/stdlib.h>
+ #include "pax.h"
+ #include "tables.h"
+ #include "extern.h"
+--- a/gen_subs.c
++++ b/gen_subs.c
+@@ -43,7 +43,7 @@
+ #include <unistd.h>
+ #include <stdlib.h>
+-#include <string.h>
+-#include <vis.h>
++#include <bsd/string.h>
++#include <bsd/vis.h>
+ #include "pax.h"
+ #include "extern.h"

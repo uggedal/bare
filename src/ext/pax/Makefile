@@ -1,4 +1,5 @@
 CFLAGS += -Wall -isystem .
+LDFLAGS += -lbsd
 
 PREFIX ?= /usr
 BIN_DIR ?= /bin
@@ -7,7 +8,6 @@ MAN_DIR ?= $(PREFIX)/share/man
 HEADERS = \
 	fts.h \
 	tzfile.h \
-	vis.h \
   cache.h \
   cpio.h \
   extern.h \
@@ -21,9 +21,6 @@ HEADERS = \
 
 OBJECTS = \
   fts.o \
-	vis.o \
-  reallocarray.o \
-  strmode.o \
   ar_io.o \
   ar_subs.o \
   buf_subs.o \

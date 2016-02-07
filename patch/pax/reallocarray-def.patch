@@ -1,8 +1,0 @@
---- a/pax.h
-+++ b/pax.h
-@@ -254,3 +254,5 @@
- #define OCT		8
- #define _PAX_		1
- #define _TFILE_BASE	"paxXXXXXXXXXX"
-+
-+void *reallocarray(void *, size_t, size_t);

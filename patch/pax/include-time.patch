@@ -8,3 +8,23 @@
  #include <unistd.h>
  #include "pax.h"
  #include "sel_subs.h"
+--- a/ar_subs.c
++++ b/ar_subs.c
+@@ -44,6 +44,7 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <stdlib.h>
++#include <time.h>
+ #include "pax.h"
+ #include "extern.h"
+ 
+--- a/gen_subs.c
++++ b/gen_subs.c
+@@ -39,6 +39,7 @@
+ #include <sys/stat.h>
+ #include <stdio.h>
+ #include <tzfile.h>
++#include <time.h>
+ #include <utmp.h>
+ #include <unistd.h>
+ #include <stdlib.h>
