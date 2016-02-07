@@ -8,6 +8,7 @@ rdep \
 	ksh \
 	awk \
 	pax \
+	diff \
 	xz \
 	pkg
 
