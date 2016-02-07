@@ -9,3 +9,14 @@
  #include <ctype.h>
  #include <locale.h>
  #include "edit.h"
+--- a/sh.h
++++ b/sh.h
+@@ -15,7 +15,7 @@
+ #include <setjmp.h>
+ #include <stdbool.h>
+ #include <stddef.h>
+-#include <stdlib.h>
++#include <bsd/stdlib.h>
+ #include <unistd.h>
+ #include <string.h>
+ #include <stdarg.h>
