@@ -1,2 +1,7 @@
 ver 5.7.1
-dist http://bare.li/dist/$PKG_NAME-${PKG_VER}.tar.gz
+
+do_extract() {
+	mkdir -p $MK_DIST
+	cp -a $_SRC/ext/$PKG_NAME/dist/* $MK_DIST
+	cp $_SRC/ext/$PKG_NAME/Makefile $MK_DIST
+}
