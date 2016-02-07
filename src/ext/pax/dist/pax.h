@@ -1,4 +1,4 @@
-/*	$OpenBSD: pax.h,v 1.24.2.1 2015/04/30 19:28:46 guenther Exp $	*/
+/*	$OpenBSD: pax.h,v 1.27 2015/03/19 05:14:24 guenther Exp $	*/
 /*	$NetBSD: pax.h,v 1.3 1995/03/21 09:07:41 cgd Exp $	*/
 
 /*-
@@ -127,6 +127,10 @@ typedef struct {
 #define PAX_GLF		12		/* GNU long file */
 } ARCHD;
 
+#define PAX_IS_REG(type)	((type) == PAX_REG || (type) == PAX_CTG)
+#define PAX_IS_HARDLINK(type)	((type) == PAX_HLK || (type) == PAX_HRG)
+#define PAX_IS_LINK(type)	((type) == PAX_SLK || PAX_IS_HARDLINK(type))
+
 /*
  * Format Specific Routine Table
  *
@@ -217,11 +221,11 @@ typedef struct {
  * at the given name has the indicated dev+ino.
  */
 struct file_times {
-	ino_t	ft_ino;		/* inode number to verify */
-	time_t	ft_mtime;	/* times to set */
-	time_t	ft_atime;
-	char	*ft_name;	/* name of file to set the times on */
-	dev_t	ft_dev;		/* device number to verify */
+	ino_t	ft_ino;			/* inode number to verify */
+	struct	timespec ft_mtim;	/* times to set */
+	struct	timespec ft_atim;
+	char	*ft_name;		/* name of file to set the times on */
+	dev_t	ft_dev;			/* device number to verify */
 };
 
 /*

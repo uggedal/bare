@@ -1,4 +1,4 @@
-/*	$OpenBSD: gen_subs.c,v 1.26 2014/07/14 05:58:19 guenther Exp $	*/
+/*	$OpenBSD: gen_subs.c,v 1.28 2015/03/17 03:23:17 guenther Exp $	*/
 /*	$NetBSD: gen_subs.c,v 1.5 1995/03/21 09:07:26 cgd Exp $	*/
 
 /*-
@@ -38,7 +38,6 @@
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <stdio.h>
-#include <tzfile.h>
 #include <utmp.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -56,7 +55,8 @@
  */
 #define MODELEN 20
 #define DATELEN 64
-#define SIXMONTHS	 ((DAYSPERNYEAR / 2) * SECSPERDAY)
+#define SECSPERDAY	(24 * 60 * 60)
+#define SIXMONTHS	(SECSPERDAY * 365 / 2)
 #define CURFRMT		"%b %e %H:%M"
 #define OLDFRMT		"%b %e  %Y"
 #define NAME_WIDTH	8
@@ -124,7 +124,7 @@ ls_list(ARCHD *arcn, time_t now, FILE *fp)
 	(void)fputs(f_date, fp);
 	(void)putc(' ', fp);
 	safe_print(arcn->name, fp);
-	if ((arcn->type == PAX_HLK) || (arcn->type == PAX_HRG)) {
+	if (PAX_IS_HARDLINK(arcn->type)) {
 		fputs(" == ", fp);
 		safe_print(arcn->ln_name, fp);
 	} else if (arcn->type == PAX_SLK) {

@@ -1,4 +1,4 @@
-/*	$OpenBSD: pax.c,v 1.40.2.1 2015/04/30 19:28:46 guenther Exp $	*/
+/*	$OpenBSD: pax.c,v 1.41 2015/03/09 04:23:29 guenther Exp $	*/
 /*	$NetBSD: pax.c,v 1.5 1996/03/26 23:54:20 mrg Exp $	*/
 
 /*-

@@ -7,7 +7,6 @@ MAN_DIR ?= $(PREFIX)/share/man
 
 HEADERS = \
 	fts.h \
-	tzfile.h \
   cache.h \
   cpio.h \
   extern.h \

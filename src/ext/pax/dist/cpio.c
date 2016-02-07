@@ -1,4 +1,4 @@
-/*	$OpenBSD: cpio.c,v 1.25 2014/02/19 03:59:47 guenther Exp $	*/
+/*	$OpenBSD: cpio.c,v 1.27 2015/03/19 05:14:24 guenther Exp $	*/
 /*	$NetBSD: cpio.c,v 1.5 1995/03/21 09:07:13 cgd Exp $	*/
 
 /*-
@@ -298,7 +298,8 @@ cpio_rd(ARCHD *arcn, char *buf)
 		arcn->sb.st_mtime = INT_MAX;			/* XXX 2038 */
 	else
 		arcn->sb.st_mtime = val;
-	arcn->sb.st_ctime = arcn->sb.st_atime = arcn->sb.st_mtime;
+	arcn->sb.st_mtim.tv_nsec = 0;
+	arcn->sb.st_ctim = arcn->sb.st_atim = arcn->sb.st_mtim;
 	arcn->sb.st_size = (off_t)asc_uqd(hd->c_filesize,sizeof(hd->c_filesize),
 	    OCT);
 
@@ -456,8 +457,7 @@ cpio_wr(ARCHD *arcn)
 	 * if this file has data, we are done. The caller will write the file
 	 * data, if we are link tell caller we are done, go to next file
 	 */
-	if ((arcn->type == PAX_CTG) || (arcn->type == PAX_REG) ||
-	    (arcn->type == PAX_HRG))
+	if (PAX_IS_REG(arcn->type) || (arcn->type == PAX_HRG))
 		return(0);
 	if (arcn->type != PAX_SLK)
 		return(1);
@@ -573,7 +573,8 @@ vcpio_rd(ARCHD *arcn, char *buf)
 	arcn->sb.st_uid = (uid_t)asc_ul(hd->c_uid, sizeof(hd->c_uid), HEX);
 	arcn->sb.st_gid = (gid_t)asc_ul(hd->c_gid, sizeof(hd->c_gid), HEX);
 	arcn->sb.st_mtime = (time_t)asc_ul(hd->c_mtime,sizeof(hd->c_mtime),HEX);
-	arcn->sb.st_ctime = arcn->sb.st_atime = arcn->sb.st_mtime;
+	arcn->sb.st_mtim.tv_nsec = 0;
+	arcn->sb.st_ctim = arcn->sb.st_atim = arcn->sb.st_mtim;
 	arcn->sb.st_size = (off_t)asc_uqd(hd->c_filesize,
 	    sizeof(hd->c_filesize), HEX);
 	arcn->sb.st_nlink = (nlink_t)asc_ul(hd->c_nlink, sizeof(hd->c_nlink),
@@ -777,8 +778,7 @@ vcpio_wr(ARCHD *arcn)
 	/*
 	 * if we have file data, tell the caller we are done, copy the file
 	 */
-	if ((arcn->type == PAX_CTG) || (arcn->type == PAX_REG) ||
-	    (arcn->type == PAX_HRG))
+	if (PAX_IS_REG(arcn->type) || (arcn->type == PAX_HRG))
 		return(0);
 
 	/*
@@ -894,7 +894,8 @@ bcpio_rd(ARCHD *arcn, char *buf)
 			((off_t)(SHRT_EXT(hd->h_filesize_2)));
 		nsz = (int)(SHRT_EXT(hd->h_namesize));
 	}
-	arcn->sb.st_ctime = arcn->sb.st_atime = arcn->sb.st_mtime;
+	arcn->sb.st_mtim.tv_nsec = 0;
+	arcn->sb.st_ctim = arcn->sb.st_atim = arcn->sb.st_mtim;
 
 	/*
 	 * check the file name size, if bogus give up. otherwise read the file
@@ -1095,8 +1096,7 @@ bcpio_wr(ARCHD *arcn)
 	/*
 	 * if we have file data, tell the caller we are done
 	 */
-	if ((arcn->type == PAX_CTG) || (arcn->type == PAX_REG) ||
-	    (arcn->type == PAX_HRG))
+	if (PAX_IS_REG(arcn->type) || (arcn->type == PAX_HRG))
 		return(0);
 
 	/*

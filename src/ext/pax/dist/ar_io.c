@@ -1,4 +1,4 @@
-/*	$OpenBSD: ar_io.c,v 1.48 2014/05/24 18:51:00 guenther Exp $	*/
+/*	$OpenBSD: ar_io.c,v 1.50 2015/03/22 03:15:00 guenther Exp $	*/
 /*	$NetBSD: ar_io.c,v 1.5 1996/03/26 23:54:13 mrg Exp $	*/
 
 /*-
@@ -181,7 +181,7 @@ ar_open(const char *name)
 		artyp = ISREG;
 
 	/*
-	 * make sure we beyond any doubt that we only can unlink regular files
+	 * make sure beyond any doubt that we can unlink only regular files
 	 * we created
 	 */
 	if (artyp != ISREG)
@@ -390,7 +390,7 @@ ar_close(int in_sig)
 		return;
 	}
 
-	if (strcmp(NM_TAR, argv0) != 0)
+	if (strcmp(NM_PAX, argv0) == 0)
 		(void)dprintf(listfd, "%s: %s vol %d, %lu files,"
 		    " %llu bytes read, %llu bytes written.\n",
 		    argv0, frmt->name, arvol-1, flcnt, rdcnt, wrcnt);

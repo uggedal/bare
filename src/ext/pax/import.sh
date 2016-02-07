@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-RELEASE=5_7
+RELEASE=5_8
 
 CVS=anoncvs@anoncvs.eu.openbsd.org
 PAX=src/bin/pax
@@ -17,10 +17,7 @@ done
 
 mkdir -p dist
 
-for f in fts.h tzfile.h; do
-	cp $INCLUDE/$f dist/
-done
-
+cp $INCLUDE/fts.h dist/
 cp $GEN/fts.c dist/
 
 cp -a $PAX/* dist/
