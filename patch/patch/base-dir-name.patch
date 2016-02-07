@@ -1,0 +1,61 @@
+--- a/backupfile.c
++++ b/backupfile.c
+@@ -53,21 +53,30 @@
+ char *
+ find_backup_file_name(const char *file)
+ {
+-	char	*dir, *base_versions;
++	char	*dir, *base_versions, *tmp_file;
+ 	int	highest_backup;
+ 
+ 	if (backup_type == simple)
+ 		return concat(file, simple_backup_suffix);
+-	base_versions = concat(basename(file), ".~");
++	if ((tmp_file = strdup(file)) == NULL)
++		return NULL;
++	base_versions = concat(basename(tmp_file), ".~");
++	free(tmp_file);
+ 	if (base_versions == NULL)
+ 		return NULL;
+-	dir = dirname(file);
++	if ((tmp_file = strdup(file)) == NULL) {
++		free(base_versions);
++		return NULL;
++	}
++	dir = dirname(tmp_file);
+ 	if (dir == NULL) {
++		free(tmp_file);
+ 		free(base_versions);
+ 		return NULL;
+ 	}
+ 	highest_backup = max_backup_version(base_versions, dir);
+ 	free(base_versions);
++	free(tmp_file);
+ 	if (backup_type == numbered_existing && highest_backup == 0)
+ 		return concat(file, simple_backup_suffix);
+ 	return make_version_name(file, highest_backup + 1);
+--- /pch.c	2015-02-05 12:59:57.000000000 +0000
++++ pch.c	2015-05-27 20:59:00.833796814 +0000
+@@ -1482,7 +1482,7 @@
+ {
+ 	size_t min_components, min_baselen, min_len, tmp;
+ 	char *best = NULL;
+-	char *path;
++	char *path, *tmp_path;
+ 	int i;
+ 
+ 	/*
+@@ -1505,8 +1505,12 @@
+ 			min_components = tmp;
+ 			best = path;
+ 		}
+-		if ((tmp = strlen(basename(path))) > min_baselen)
++		tmp_path = strdup(path);
++		if ((tmp = strlen(basename(tmp_path))) > min_baselen) {
++			free(tmp_path);
+ 			continue;
++		}
++		free(tmp_path);
+ 		if (tmp < min_baselen) {
+ 			min_baselen = tmp;
+ 			best = path;

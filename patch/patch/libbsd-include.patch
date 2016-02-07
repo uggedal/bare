@@ -1,0 +1,22 @@
+--- a/common.h
++++ b/common.h
+@@ -31,6 +31,8 @@
+ #include <limits.h>
+ #include <stdbool.h>
+ 
++#include <bsd/stdlib.h>
++
+ #define DEBUGGING
+ 
+ /* constants */
+--- a/mkpath.c
++++ b/mkpath.c
+@@ -34,6 +34,8 @@
+ #include <errno.h>
+ #include <string.h>
+ 
++#include <bsd/err.h>
++
+ #include "common.h"
+ #include "util.h"
+ 
