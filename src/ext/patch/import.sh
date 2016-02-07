@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-RELEASE=5_7
+RELEASE=5_8
 
 CVS=anoncvs@anoncvs.eu.openbsd.org
 PATCH=src/usr.bin/patch
