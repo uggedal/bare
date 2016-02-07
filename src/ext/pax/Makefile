@@ -1,4 +1,4 @@
-CFLAGS += -Wall -I.
+CFLAGS += -Wall -isystem .
 
 PREFIX ?= /usr
 BIN_DIR ?= /bin
