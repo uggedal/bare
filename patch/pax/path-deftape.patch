@@ -19,23 +19,18 @@
  Defaults to
 -.Pa /dev/rst0 .
 +.Pa /dev/st0 .
- .It Fl H
- Follow symlinks given on the command line only.
- .It Fl h
-@@ -279,18 +279,18 @@
- The options
- .Op Fl 014578
- can be used to select one of the compiled-in backup devices,
--.Pa /dev/rstN .
-+.Pa /dev/stN .
- .Sh ENVIRONMENT
- .Bl -tag -width Fl
- .It Ev TMPDIR
+ If set to hyphen
+ .Pq Sq -
+ standard output is used.
+@@ -292,14 +292,14 @@
  Path in which to store temporary files.
  .It Ev TAPE
  Default tape device to use instead of
 -.Pa /dev/rst0 .
 +.Pa /dev/st0 .
+ If set to hyphen
+ .Pq Sq -
+ standard output is used.
  .El
  .Sh FILES
 -.Bl -tag -width "/dev/rst0"

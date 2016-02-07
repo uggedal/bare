@@ -20,11 +20,11 @@
  
 --- a/gen_subs.c
 +++ b/gen_subs.c
-@@ -39,6 +39,7 @@
+@@ -38,6 +38,7 @@
  #include <sys/stat.h>
  #include <stdio.h>
- #include <tzfile.h>
 +#include <time.h>
  #include <utmp.h>
  #include <unistd.h>
  #include <stdlib.h>
+ #include <string.h>

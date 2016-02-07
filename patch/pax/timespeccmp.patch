@@ -1,0 +1,11 @@
+--- a/pax.h
++++ b/pax.h
+@@ -258,3 +258,8 @@
+ #define OCT		8
+ #define _PAX_		1
+ #define _TFILE_BASE	"paxXXXXXXXXXX"
++
++#define	timespeccmp(tsp, usp, cmp)					\
++	(((tsp)->tv_sec == (usp)->tv_sec) ?				\
++	    ((tsp)->tv_nsec cmp (usp)->tv_nsec) :			\
++	    ((tsp)->tv_sec cmp (usp)->tv_sec))
