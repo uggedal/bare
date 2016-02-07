@@ -1,7 +1,7 @@
 LDFLAGS += -lbsd
 
 PREFIX ?= /usr
-BIN_DIR ?= /bin
+BIN_DIR ?= $(PREFIX)/bin
 MAN_DIR ?= $(PREFIX)/share/man
 
 HEADERS = \
