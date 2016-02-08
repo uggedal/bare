@@ -5,19 +5,6 @@ PREFIX ?= /usr
 BIN_DIR ?= /bin
 MAN_DIR ?= $(PREFIX)/share/man
 
-HEADERS = \
-	fts.h \
-  cache.h \
-  cpio.h \
-  extern.h \
-  ftree.h \
-  options.h \
-  pat_rep.h \
-  pax.h \
-  sel_subs.h \
-  tables.h \
-  tar.h
-
 OBJECTS = \
   fts.o \
   ar_io.o \
@@ -37,13 +24,8 @@ OBJECTS = \
   tar.o \
   tty_subs.o
 
-all: pax
-
-%.o: %.c $(HEADERS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
 pax: $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 install: pax
 	install -Dm755 pax $(DESTDIR)/$(BIN_DIR)/pax

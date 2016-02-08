@@ -4,14 +4,6 @@ PREFIX ?= /usr
 BIN_DIR ?= $(PREFIX)/bin
 MAN_DIR ?= $(PREFIX)/share/man
 
-HEADERS = \
-	backupfile.h \
-	common.h \
-	inp.h \
-	pathnames.h \
-	pch.h \
-	util.h
-
 OBJECTS = \
 	backupfile.o \
 	inp.o \
@@ -20,14 +12,8 @@ OBJECTS = \
 	pch.o \
 	util.o
 
-
-all: patch
-
-%.o: %.c $(HEADERS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
 patch: $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 install: patch
 	install -Dm755 patch $(DESTDIR)/$(BIN_DIR)/patch

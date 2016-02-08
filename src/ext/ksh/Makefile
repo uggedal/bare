@@ -5,21 +5,6 @@ PREFIX ?= /usr
 BIN_DIR ?= /bin
 MAN_DIR ?= $(PREFIX)/share/man
 
-HEADERS = \
-	c_test.h \
-	charclass.h \
-	config.h \
-	edit.h \
-	expand.h \
-	ksh_limval.h \
-	lex.h \
-	proto.h \
-	sh.h \
-	shf.h \
-	table.h \
-	tree.h \
-	tty.h
-
 OBJECTS = \
 	alloc.o \
   c_ksh.o \
@@ -50,13 +35,8 @@ OBJECTS = \
   version.o \
   vi.o
 
-all: ksh
-
-%.o: %.c $(HEADERS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
 ksh: $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 install: ksh
 	install -Dm755 ksh $(DESTDIR)/$(BIN_DIR)/ksh
