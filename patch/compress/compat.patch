@@ -1,0 +1,141 @@
+--- a/compress.h
++++ b/compress.h
+@@ -28,6 +28,7 @@
+  */
+ 
+ #include <sys/stat.h>
++#include <sys/types.h>
+ 
+ struct z_info {
+ 	u_int32_t mtime;	/* timestamp */
+@@ -56,10 +57,20 @@ enum program_mode {
+ #define	FAILURE	1
+ #define	WARNING	2
+ 
++#define EFTYPE 79
++
++#define	DEFFILEMODE	(S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)
++
++#define	st_atimespec		st_atim
++#define	st_mtimespec		st_mtim
++
++#ifndef __dead
++#define __dead __attribute__((__noreturn__))
++#endif
++
+ extern char null_magic[];
+ 
+ extern void *z_open(int, const char *, char *, int, u_int32_t, int);
+-extern FILE *zopen(const char *, const char *,int);
+ extern int zread(void *, char *, int);
+ extern int zwrite(void *, const char *, int);
+ extern int z_close(void *, struct z_info *, const char *, struct stat *);
+--- a/main.c
++++ b/main.c
+@@ -39,13 +39,14 @@
+ #include <fts.h>
+ #include <libgen.h>
+ #include <stdio.h>
+-#include <stdlib.h>
++#include <bsd/stdlib.h>
+ #include <stdbool.h>
+ #include <string.h>
+ #include <unistd.h>
+ #include <limits.h>
+ #include <fcntl.h>
+ #include <paths.h>
++#include <time.h>
+ #include "compress.h"
+ 
+ #define min(a,b) ((a) < (b)? (a) : (b))
+@@ -473,7 +474,7 @@ docompress(const char *in, char *out, const struct compressor *method,
+ {
+ #ifndef SMALL
+ 	u_char buf[Z_BUFSIZE];
+-	char *name;
++	char *name, *tmp_name;
+ 	int error, ifd, ofd, flags, oreg;
+ 	void *cookie;
+ 	ssize_t nr;
+@@ -485,6 +486,7 @@ docompress(const char *in, char *out, const struct compressor *method,
+ 	flags = oreg = 0;
+ 	error = SUCCESS;
+ 	name = NULL;
++	tmp_name = NULL;
+ 	cookie  = NULL;
+ 
+ 	if (pipin)
+@@ -526,7 +528,9 @@ docompress(const char *in, char *out, const struct compressor *method,
+ 	}
+ 
+ 	if (!pipin && storename) {
+-		name = basename(in);
++		if ((tmp_name = strdup(in)) == NULL)
++			return (FAILURE);
++		name = basename(tmp_name);
+ 		mtime = (u_int32_t)sb->st_mtime;
+ 	}
+ 	if ((cookie = (*method->open)(ofd, "w", name, bits, mtime, flags)) == NULL) {
+@@ -538,6 +542,8 @@ docompress(const char *in, char *out, const struct compressor *method,
+ 		(void) close(ifd);
+ 		return (FAILURE);
+ 	}
++	if (tmp_name != NULL)
++		free(tmp_name);
+ 
+ 	while ((nr = read(ifd, buf, sizeof(buf))) > 0)
+ 		if ((method->write)(cookie, buf, nr) != nr) {
+@@ -781,9 +787,6 @@ setfile(const char *name, int fd, struct stat *fs)
+ 	if (fchmod(fd, fs->st_mode))
+ 		warn("fchmod: %s", name);
+ 
+-	if (fs->st_flags && fchflags(fd, fs->st_flags))
+-		warn("fchflags: %s", name);
+-
+ 	ts[0] = fs->st_atim;
+ 	ts[1] = fs->st_mtim;
+ 	if (futimens(fd, ts))
+--- a/zopen.c
++++ b/zopen.c
+@@ -50,12 +50,6 @@
+  * Cleaned up and converted to library returning I/O streams by
+  * Diomidis Spinellis <dds@doc.ic.ac.uk>.
+  *
+- * zopen(filename, mode, bits)
+- *	Returns a FILE * that can be used for read or write.  The modes
+- *	supported are only "r" and "w".  Seeking is not allowed.  On
+- *	reading the file is decompressed, on writing it is compressed.
+- *	The output is compatible with compress(1) with 16 bit tables.
+- *	Any file produced by compress(1) can be read.
+  */
+ 
+ #include <sys/stat.h>
+@@ -735,28 +729,6 @@ cl_hash(struct s_zstate *zs, count_int cl_hsize)
+ 		*--htab_p = m1;
+ }
+ 
+-FILE *
+-zopen(const char *name, const char *mode, int bits)
+-{
+-	FILE *fp;
+-	int fd;
+-	void *cookie;
+-	if ((fd = open(name, (*mode=='r'? O_RDONLY:O_WRONLY|O_CREAT),
+-	    S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)) == -1)
+-		return NULL;
+-	if ((cookie = z_open(fd, mode, NULL, bits, 0, 0)) == NULL) {
+-		close(fd);
+-		return NULL;
+-	}
+-	if ((fp = funopen(cookie, (*mode == 'r'?zread:NULL),
+-	    (*mode == 'w'?zwrite:NULL), NULL, zclose)) == NULL) {
+-		close(fd);
+-		free(cookie);
+-		return NULL;
+-	}
+-	return fp;
+-}
+-
+ void *
+ z_open(int fd, const char *mode, char *name, int bits,
+     u_int32_t mtime, int gotmagic)
