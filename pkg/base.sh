@@ -9,6 +9,7 @@ rdep \
 	awk \
 	pax \
 	diff \
+	compress \
 	xz \
 	pkg
 
