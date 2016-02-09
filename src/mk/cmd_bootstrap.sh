@@ -148,12 +148,14 @@ _bootstrap_contain() {
 		_prefix_install $p $_BOOTSTRAP_NATIVE
 	done
 
-	CPPFLAGS="-isystem $prefix/include" \
-	MK_CONFIGURE="
-		--host=$TRIPLE
-		--prefix=/usr" \
-		./mk pkg libbsd
-	_prefix_install libbsd-bld $_BOOTSTRAP_NATIVE
+	for p in libbsd libz; do
+		CPPFLAGS="-isystem $prefix/include" \
+		MK_CONFIGURE="
+			--host=$TRIPLE
+			--prefix=/usr" \
+			./mk pkg $p
+		_prefix_install $p-bld $_BOOTSTRAP_NATIVE
+	done
 
 	for p in make xz file; do
 		MK_CONFIGURE="
@@ -167,7 +169,7 @@ _bootstrap_contain() {
 
 	export CPPFLAGS="$CPPFLAGS -isystem $prefix/include"
 	export LDFLAGS="$LDFLAGS -L$prefix/lib"
-	_contain_pkg ksh pax patch diff
+	_contain_pkg ksh pax patch diff compress
 	unset MK_NO_DEP
 	_contain_pkg base-bld
 }
