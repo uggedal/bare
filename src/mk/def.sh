@@ -62,5 +62,5 @@ PKG_SUB_VARS='
 	lib
 	'
 
-URI_GNU=http://www.mirrorservice.org/sites/ftp.gnu.org/gnu
+URI_GNU=http://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu
 URI_SF=http://downloads.sourceforge.net/sourceforge
