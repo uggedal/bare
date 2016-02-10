@@ -4,7 +4,7 @@ dist http://libbsd.freedesktop.org/releases/$PKG_NAME-${PKG_VER}.tar.xz
 bdep bsd-headers linux-headers
 
 sub libbsd-bld type bld
-sub libbsd-bld rdep bsd-headers
+sub libbsd-bld rdep libbsd bsd-headers
 
 pre_configure() {
 	ed src/funopen.c <<-EOF
