@@ -7,7 +7,6 @@ rdep \
 	busybox \
 	ksh \
 	awk \
-	pax \
 	diff \
 	compress \
 	xz \
