@@ -76,5 +76,7 @@ trap "rm -f $TMP" INT TERM EXIT
 	set -- *
 	tar -cJf $OUTPUT "$@"
 
+	[ -s $OUTPUT ] || die "empty package '$OUTPUT'"
+
 	cat $PKG_DB/$NAME
 )
