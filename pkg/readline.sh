@@ -11,7 +11,7 @@ dist $_dist/$PKG_NAME-${_ver}.tar.gz $_patches
 
 sub readline-bld type bld
 sub readline-bld rdep readline
-sub readline-bld mv usr/share/'*'
+sub readline-bld mv usr/share/readline
 
 distdir $PKG_NAME-$_ver
 
