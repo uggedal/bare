@@ -77,6 +77,7 @@ trap "rm -f $TMP" INT TERM EXIT
 	tar -cJf $OUTPUT "$@"
 
 	[ -s $OUTPUT ] || die "empty package '$OUTPUT'"
+	xz -l $OUTPUT >/dev/null || die "corrupt package '$OUTPUT'"
 
 	cat $PKG_DB/$NAME
 )
