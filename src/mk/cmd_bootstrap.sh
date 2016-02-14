@@ -166,7 +166,7 @@ _bootstrap_contain() {
 
 	export CPPFLAGS="$CPPFLAGS -isystem $prefix/include"
 	export LDFLAGS="$LDFLAGS -L$prefix/lib"
-	_contain_pkg ksh patch diff compress sbase
+	_contain_pkg ksh patch diff compress ed sbase
 	unset MK_NO_DEP
 	_contain_pkg base-bld
 }
