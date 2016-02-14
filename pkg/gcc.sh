@@ -43,7 +43,9 @@ _configure="
 if [ "$MK_BUILD_TRIPLE" = "$MK_TARGET_TRIPLE" ]; then
 	_configure="$_configure --with-system-zlib"
 
-	export TAR='bsdtar --no-same-owner'
+	if [ -z "$MK_NO_DEP" ]; then
+		export TAR='bsdtar --no-same-owner'
+	fi
 fi
 
 configure $_configure
