@@ -60,6 +60,7 @@ PKG_SUB_VARS='
 	mv
 	rdep
 	lib
+	pkgorder
 	'
 
 URI_GNU=http://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu

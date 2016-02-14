@@ -114,9 +114,19 @@ _pkg() {
 
 _pkg_sub() {
 	local name=$1
+
+	local pkgorder="$(get_sub_var $name pkgorder)"
+
+	if [ -z "$pkgorder" ] && [ "$_BUILD_STEP" = after_main ]; then
+		return 0
+	fi
+
+	if [ "$pkgorder" ] && [ "$_BUILD_STEP" != "$pkgorder" ]; then
+		return 0
+	fi
+
 	local qualified_name=$name-${PKG_VER}_$PKG_REV
 	local dest=$_DEST/$qualified_name
-
 	local lib="$(get_sub_var $name lib)"
 	local rdep="$(get_sub_var $name rdep)"
 
@@ -126,11 +136,10 @@ _pkg_sub() {
 		$dest \
 		"$lib" \
 		"$rdep"
-
-	step_db
 }
 
 step_pkg() {
+	_BUILD_STEP=before_main
 	foreach _pkg_sub $PKG_SUB
 
 	_pkg \
@@ -139,4 +148,9 @@ step_pkg() {
 		$MK_DESTDIR \
 		"$PKG_LIB" \
 		"$PKG_RDEP"
+
+	_BUILD_STEP=after_main
+	foreach _pkg_sub $PKG_SUB
+
+	unset _AFTER_MAIN
 }
