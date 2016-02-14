@@ -7,6 +7,7 @@ rdep \
 	ksh \
 	awk \
 	diff \
+	ed \
 	compress \
 	xz \
 	pkg
