@@ -3,7 +3,7 @@ dist \
 	$URI_GNU/$PKG_NAME/$PKG_NAME-$PKG_VER/$PKG_NAME-${PKG_VER}.tar.bz2 \
 	http://port70.net/~nsz/musl/$PKG_NAME-$PKG_VER/$PKG_NAME-$PKG_VER.diff
 
-bdep gxx mpc-bld libz-bld
+bdep gxx mpc-bld libz-bld bsdtar
 
 sub libgcc type custom
 sub libgcc mv usr/lib/libgcc_s.so.\*
@@ -51,6 +51,8 @@ builddir gcc-build
 # configure detects max_cmd_len=512 without getconf and the
 # libtool code to split long command lines is utterly broken.
 export lt_cv_sys_max_cmd_len=8192
+
+export TAR=bsdtar
 
 post_install() {
 	ln -s gcc $MK_DESTDIR$MK_PREFIX/bin/cc
