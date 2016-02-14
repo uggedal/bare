@@ -1,0 +1,475 @@
+New command with corresponding man page. Includes the flags:
+
+-s         strip binary
+-d         create directory
+-D         create missing directories
+-t DIR     target directory
+-m MODE    permission bits
+-o USER    set owner
+-g GROUP   set group
+
+Installed files are copied, and default mode is 755.
+
+Signed-off-by: Mattias Andrée <maandree@kth.se>
+---
+ LICENSE   |   1 +
+ Makefile  |  15 ++--
+ README    |   1 +
+ TODO      |   1 -
+ install.1 |  88 +++++++++++++++++++++
+ install.c | 257 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 357 insertions(+), 6 deletions(-)
+ create mode 100644 install.1
+ create mode 100644 install.c
+
+diff --git a/LICENSE b/LICENSE
+index cb5a797..2a26979 100644
+--- a/LICENSE
++++ b/LICENSE
+@@ -59,3 +59,4 @@ Authors/contributors include:
+ © 2015 Quentin Rameau <quinq@quinq.eu.org>
+ © 2015 Dionysis Grigoropoulos <info@erethon.com>
+ © 2015 Wolfgang Corcoran-Mathe <first.lord.of.teal@gmail.com>
++© 2016 Mattias Andrée <maandree@kth.se>
+diff --git a/Makefile b/Makefile
+index 1c09cac..99b9053 100644
+--- a/Makefile
++++ b/Makefile
+@@ -103,6 +103,7 @@ BIN =\
+ 	getconf\
+ 	grep\
+ 	head\
++	install.out\
+ 	join\
+ 	hostname\
+ 	kill\
+@@ -165,8 +166,8 @@ BIN =\
+ LIBUTFOBJ = $(LIBUTFSRC:.c=.o)
+ LIBUTILOBJ = $(LIBUTILSRC:.c=.o)
+ OBJ = $(BIN:=.o) $(LIBUTFOBJ) $(LIBUTILOBJ)
+-SRC = $(BIN:=.c)
+-MAN = $(BIN:=.1)
++SRC = $(foreach F,$(BIN:.out=),$(F:=.c))
++MAN = $(foreach F,$(BIN:.out=),$(F:=.1))
+ 
+ all: $(BIN)
+ 
+@@ -177,6 +178,9 @@ $(OBJ): $(HDR) config.mk
+ .o:
+ 	$(CC) $(LDFLAGS) -o $@ $< $(LIB)
+ 
++install.out: install.o
++	$(CC) $(LDFLAGS) -o $@ $^ $(LIB)
++
+ .c.o:
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+ 
+@@ -196,13 +200,14 @@ confstr_l.h limits_l.h sysconf_l.h pathconf_l.h: getconf.sh
+ install: all
+ 	mkdir -p $(DESTDIR)$(PREFIX)/bin
+ 	cp -f $(BIN) $(DESTDIR)$(PREFIX)/bin
+-	cd $(DESTDIR)$(PREFIX)/bin && ln -f test [ && chmod 755 $(BIN)
++	mv -f $(DESTDIR)$(PREFIX)/bin/install.out $(DESTDIR)$(PREFIX)/bin/install
++	cd $(DESTDIR)$(PREFIX)/bin && ln -f test [ && chmod 755 $(BIN:.out=)
+ 	mkdir -p $(DESTDIR)$(MANPREFIX)/man1
+ 	for m in $(MAN); do sed "s/^\.Os sbase/.Os sbase $(VERSION)/g" < "$$m" > $(DESTDIR)$(MANPREFIX)/man1/"$$m"; done
+ 	cd $(DESTDIR)$(MANPREFIX)/man1 && chmod 644 $(MAN)
+ 
+ uninstall:
+-	cd $(DESTDIR)$(PREFIX)/bin && rm -f $(BIN)
++	cd $(DESTDIR)$(PREFIX)/bin && rm -f $(BIN:.out=)
+ 	cd $(DESTDIR)$(MANPREFIX)/man1 && rm -f $(MAN)
+ 
+ dist: clean
+@@ -237,7 +242,7 @@ sbase-box-install: sbase-box
+ 	mkdir -p $(DESTDIR)$(PREFIX)/bin
+ 	cp -f sbase-box $(DESTDIR)$(PREFIX)/bin
+ 	chmod 755 $(DESTDIR)$(PREFIX)/bin/sbase-box
+-	for f in $(BIN); do ln -sf sbase-box $(DESTDIR)$(PREFIX)/bin/"$$f"; done
++	for f in $(BIN:.out=); do ln -sf sbase-box $(DESTDIR)$(PREFIX)/bin/"$$f"; done
+ 	ln -sf sbase-box $(DESTDIR)$(PREFIX)/bin/[
+ 	mkdir -p $(DESTDIR)$(MANPREFIX)/man1
+ 	for m in $(MAN); do sed "s/^\.Os sbase/.Os sbase $(VERSION)/g" < "$$m" > $(DESTDIR)$(MANPREFIX)/man1/"$$m"; done
+diff --git a/README b/README
+index c72ed76..69e4f69 100644
+--- a/README
++++ b/README
+@@ -42,6 +42,7 @@ The following tools are implemented:
+ =*|o grep        .
+ =*|o head        .
+ =*|x hostname    .
++=*|x install     .
+ =* o join        .
+ =*|o kill        .
+ =*|o link        .
+diff --git a/TODO b/TODO
+index 80dd3ec..2721170 100644
+--- a/TODO
++++ b/TODO
+@@ -8,7 +8,6 @@ awk
+ bc
+ diff
+ ed manpage
+-install
+ patch
+ pathchk
+ stty
+diff --git a/install.1 b/install.1
+new file mode 100644
+index 0000000..99eff81
+--- /dev/null
++++ b/install.1
+@@ -0,0 +1,88 @@
++.Dd 2016-02-12
++.Dt INSTALL 1
++.Os sbase
++.Sh NAME
++.Nm install
++.Nd copy files and set attributes
++.Sh SYNOPSIS
++.Nm
++.Op Fl g Ar group
++.Op Fl o Ar owner
++.Op Fl m Ar mode
++.Po
++.Fl d Ar dir ...
++|
++.Op Fl sD
++.Po
++.Fl t Ar dest
++.Ar source ...
++|
++.Ar source ...
++.Ar dest
++.Pc
++.Pc
++.Sh DESCRIPTION
++.Nm
++copies
++.Ar source
++to
++.Ar dest .
++If more than one
++.Ar source
++is given
++.Ar dest
++has to be a directory.
++.Nm
++can also change the attributes of the copies.
++.Sh OPTIONS
++.Bl -tag -width Ds
++.It Fl d
++Create the directories
++.Ar dir .
++.It Fl D
++Create missing parent directories to
++.Ar dest .
++If
++.Fl t
++is used, the
++.Ar dest
++itself is also created if missing.
++.It Fl g Ar group
++Change the installed files' group to
++.Ar group .
++This may be a group name or a group identifier.
++.It Fl m Ar mode
++Change the file modes. Both numerical and symbolic
++values are supported. See
++.Xr chmod 1
++for the syntex.
++Default mode 0755. If a file has the mode 0644 and
++is copied with
++.It Fl o Ar owner
++Change the installed files' owner to
++.Ar owner .
++This may be a user name or a user identifier.
++.It Fl s
++Remove unnecessary symbols using
++.Xr strip 1 .
++Failure to strip a file does not imply failure to install the file.
++.It Fl t Ar dest
++Copy files into the directory
++.Ar dest .
++.Nm install ,
++the copy's mode will be 0755 unless
++.Fl m
++is used to select another mode. When the symbolic
++notation is used, the base mode is 0000.
++.Sh SEE ALSO
++.Xr chmod 1 ,
++.Xr chown 1 ,
++.Xr cp 1 ,
++.Xr mkdir 1 ,
++.Xr strip 1
++.Sh STANDARDS
++The
++.Nm
++utility is not standardized. This implementation is a subset
++of the GNU implementation and a subset with extensions to
++the FreeBSD implementation.
+diff --git a/install.c b/install.c
+new file mode 100644
+index 0000000..ec96c05
+--- /dev/null
++++ b/install.c
+@@ -0,0 +1,257 @@
++/* See LICENSE file for copyright and license details. */
++#include <grp.h>
++#include <pwd.h>
++#include <errno.h>
++#include <unistd.h>
++#include <stdlib.h>
++#include <string.h>
++#include <dirent.h>
++#include <sys/stat.h>
++#include <sys/wait.h>
++
++#include "util.h"
++#include "text.h"
++
++static int Dflag = 0;
++static int sflag = 0;
++static gid_t group;
++static uid_t owner;
++static mode_t mode = 0755;
++
++static void
++make_dir(char *dir, int was_missing)
++{
++	if (!mkdir(dir, was_missing ? 0755 : mode)) {
++		if (!was_missing && (lchown(dir, owner, group) < 0))
++			eprintf("lchmod %s:", dir);
++	} else if (errno != EEXIST) {
++		eprintf("mkdir %s:", dir);
++	}
++}
++
++static void
++make_dirs(char *dir, int was_missing)
++{
++	char *p;
++	for (p = strchr(dir + (dir[0] == '/'), '/'); p; p = strchr(p + 1, '/')) {
++		*p = '\0';
++		make_dir(dir, was_missing);
++		*p = '/';
++	}
++	make_dir(dir, was_missing);
++}
++
++static void
++strip(const char *filename)
++{
++	pid_t pid = fork();
++	switch (pid) {
++	case -1:
++		eprintf("fork:");
++	case 0:
++		execlp("strip", "strip", "--", filename, (char *)0);
++		eprintf("exec: strip:");
++	default:
++		waitpid(pid, NULL, 0);
++		break;
++	}
++}
++
++static int
++install(const char *s1, const char *s2, int depth)
++{
++	DIR *dp;
++	FILE *f1, *f2;
++	struct dirent *d;
++	struct stat st;
++	ssize_t r;
++	char target[PATH_MAX], ns1[PATH_MAX], ns2[PATH_MAX];
++
++	if (stat(s1, &st) < 0)
++		eprintf("stat %s:", s1);
++
++	if (S_ISLNK(st.st_mode)) {
++		if ((r = readlink(s1, target, sizeof(target) - 1)) >= 0) {
++			target[r] = '\0';
++			if (unlink(s2) < 0 && errno != ENOENT)
++				eprintf("unlink %s:", s2);
++			else if (symlink(target, s2) < 0)
++				eprintf("symlink %s -> %s:", s2, target);
++		}
++	} else if (S_ISDIR(st.st_mode)) {
++		if (!(dp = opendir(s1)))
++			eprintf("opendir %s:", s1);
++		if (mkdir(s2, mode | 0111) < 0 && errno != EEXIST)
++			eprintf("mkdir %s:", s2);
++
++		while ((d = readdir(dp))) {
++			if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
++				continue;
++
++			estrlcpy(ns1, s1, sizeof(ns1));
++			if (s1[strlen(s1) - 1] != '/')
++				estrlcat(ns1, "/", sizeof(ns1));
++			estrlcat(ns1, d->d_name, sizeof(ns1));
++
++			estrlcpy(ns2, s2, sizeof(ns2));
++			if (s2[strlen(s2) - 1] != '/')
++				estrlcat(ns2, "/", sizeof(ns2));
++			estrlcat(ns2, d->d_name, sizeof(ns2));
++
++			fnck(ns1, ns2, install, depth + 1);
++		}
++
++		closedir(dp);
++	} else if (S_ISBLK(st.st_mode) || S_ISCHR(st.st_mode) ||
++	           S_ISSOCK(st.st_mode) || S_ISFIFO(st.st_mode)) {
++		if (unlink(s2) < 0 && errno != ENOENT)
++			eprintf("unlink %s:", s2);
++		else if (mknod(s2, (st.st_mode & ~07777) | mode, st.st_rdev) < 0)
++			eprintf("mknod %s:", s2);
++	} else {
++		if (!(f1 = fopen(s1, "r")))
++			eprintf("fopen %s:", s1);
++		if (!(f2 = fopen(s2, "w"))) {
++			if (unlink(s2) < 0 && errno != ENOENT)
++				eprintf("unlink %s:", s2);
++			else if (!(f2 = fopen(s2, "w")))
++				eprintf("fopen %s:", s2);
++		}
++		concat(f1, s1, f2, s2);
++
++		fchmod(fileno(f2), mode);
++
++		if (fclose(f2) == EOF)
++			eprintf("fclose %s:", s2);
++		if (fclose(f1) == EOF)
++			eprintf("fclose %s:", s1);
++
++		if (sflag)
++			strip(s2);
++	}
++
++	if (lchown(s2, owner, group) < 0)
++		eprintf("lchown %s:", s2);
++
++	return 0;
++}
++
++static void
++usage(void)
++{
++	eprintf("usage: %s [-g group] [-o owner] [-m mode] (-d dir ... | [-Ds] (-t dest source ... | source ... dest))\n", argv0);
++}
++
++int
++main(int argc, char *argv[])
++{
++	int dflag = 0;
++	char *gflag = 0;
++	char *oflag = 0;
++	char *mflag = 0;
++	char *tflag = 0;
++	struct group *gr;
++	struct passwd *pw;
++	struct stat st;
++	char *p;
++
++	ARGBEGIN {
++	case 'd':
++		dflag = 1;
++		break;
++	case 'D':
++		Dflag = 1;
++		break;
++	case 's':
++		sflag = 1;
++		break;
++	case 'g':
++		gflag = EARGF(usage());
++		break;
++	case 'o':
++		oflag = EARGF(usage());
++		break;
++	case 'm':
++		mflag = EARGF(usage());
++		break;
++	case 't':
++		tflag = EARGF(usage());
++		break;
++	default:
++		usage();
++	} ARGEND
++
++	if (argc < 1 + (!tflag & !dflag) || dflag & (Dflag | sflag | !!tflag))
++		usage();
++
++	if (gflag) {
++		errno = 0;
++		gr = getgrnam(gflag);
++		if (gr) {
++			group = gr->gr_gid;
++		} else {
++			if (errno)
++				eprintf("getgrnam %s:", gflag);
++			group = estrtonum(gflag, 0, UINT_MAX);
++		}
++	} else {
++		group = getgid();
++	}
++
++	if (oflag) {
++		errno = 0;
++		pw = getpwnam(oflag);
++		if (pw) {
++			owner = pw->pw_uid;
++		} else {
++			if (errno)
++				eprintf("getpwnam %s:", oflag);
++			owner = estrtonum(oflag, 0, UINT_MAX);
++		}
++	} else {
++		owner = getuid();
++	}
++
++	if (mflag) {
++		mode = parsemode(mflag, mode, 0);
++		if (mode < 0)
++			return 1;
++	}
++
++	if (tflag) {
++		memmove(argv - 1, argv, argc);
++		argv[argc++] = tflag;
++	}
++	if (tflag || argc > 2) {
++		if (stat(argv[argc - 1], &st) < 0) {
++			if ((errno == ENOENT) && Dflag) {
++				make_dirs(argv[argc - 1], 1);
++			} else {
++				eprintf("stat %s:", argv[argc - 1]);
++			}
++		} else if (!S_ISDIR(st.st_mode)) {
++			eprintf("%s: not a directory\n", argv[argc - 1]);
++		}
++	}
++
++	if (dflag) {
++		for (; *argv; argc--, argv++)
++			make_dirs(*argv, 0);
++	} else {
++		if (stat(argv[argc - 1], &st) < 0) {
++			if (errno != ENOENT)
++				eprintf("stat %s:", argv[argc - 1]);
++			if (tflag || argc > 2) {
++				p = strrchr(argv[argc - 1], '/');
++				*p = '\0';
++				make_dirs(argv[argc - 1], 1);
++				*p = '/';
++			} else {
++				make_dirs(argv[argc - 1], 1);
++			}
++		}
++		enmasse(argc, argv, install);
++	}
++
++	return 0;
++}
+-- 
+2.7.1
