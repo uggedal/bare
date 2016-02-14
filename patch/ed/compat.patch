@@ -1,0 +1,11 @@
+--- a/ed.h
++++ b/ed.h
+@@ -36,7 +36,7 @@
+ #include <regex.h>
+ #include <signal.h>
+ #include <stdio.h>
+-#include <stdlib.h>
++#include <bsd/stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
+ 
