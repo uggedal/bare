@@ -108,6 +108,8 @@ _pkg() {
 	local stat="$(xz -l $pkg | tail -n1)"
 	msg "Uncompressed: $(_xz_stat "$stat" 5 6)"
 	msg "Compressed:	 $(_xz_stat "$stat" 3 4)"
+
+	extract_db_file $name $PKG_VER $qualified_name ${qualified_name}$PKG_EXT
 }
 
 _pkg_sub() {
