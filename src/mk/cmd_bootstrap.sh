@@ -164,9 +164,6 @@ _bootstrap_contain() {
 			./mk pkg $p
 	done
 
-	CROSS_COMPILE=$TRIPLE- \
-		./mk pkg busybox
-
 	export CPPFLAGS="$CPPFLAGS -isystem $prefix/include"
 	export LDFLAGS="$LDFLAGS -L$prefix/lib"
 	_contain_pkg ksh patch diff compress

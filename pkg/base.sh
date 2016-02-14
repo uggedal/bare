@@ -4,7 +4,6 @@ rdep \
 	hier \
 	sbase \
 	ubase \
-	busybox \
 	ksh \
 	awk \
 	diff \
