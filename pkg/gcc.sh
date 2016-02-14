@@ -42,6 +42,8 @@ _configure="
 
 if [ "$MK_BUILD_TRIPLE" = "$MK_TARGET_TRIPLE" ]; then
 	_configure="$_configure --with-system-zlib"
+
+	export TAR=bsdtar
 fi
 
 configure $_configure
@@ -51,8 +53,6 @@ builddir gcc-build
 # configure detects max_cmd_len=512 without getconf and the
 # libtool code to split long command lines is utterly broken.
 export lt_cv_sys_max_cmd_len=8192
-
-export TAR=bsdtar
 
 post_install() {
 	ln -s gcc $MK_DESTDIR$MK_PREFIX/bin/cc
