@@ -20,7 +20,3 @@ sub libarchive-bld mv usr/share/man/man5
 sub bsdtar type custom
 sub bsdtar mv usr/bin/bsdtar usr/share/man/man1/bsdtar.1
 sub bsdtar pkgorder after_main
-
-post_install() {
-	rm $MK_DESTDIR$MK_MANDIR/man1/cpio.1
-}
