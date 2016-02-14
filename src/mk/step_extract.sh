@@ -22,7 +22,7 @@ _extract() {
 
 	progress extract "'$PKG_NAME' using '$(distfile $d)'"
 
-	tar -C $MK_BUILD_ROOT -x${arg}f $(distpath $d)
+	${TAR:-tar} -C $MK_BUILD_ROOT -x${arg}f $(distpath $d)
 }
 
 step_extract() {
