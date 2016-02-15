@@ -56,6 +56,14 @@ builddir gcc-build
 # libtool code to split long command lines is utterly broken.
 export lt_cv_sys_max_cmd_len=8192
 
+pre_configure() {
+	ed $MK_DIST/gcc/Makefile.in <<EOF
+,s|tar xpf|tar -xf
+w
+q
+EOF
+}
+
 post_install() {
 	ln -s gcc $MK_DESTDIR$MK_PREFIX/bin/cc
 	rm $MK_DESTDIR$MK_PREFIX/lib/*.py
