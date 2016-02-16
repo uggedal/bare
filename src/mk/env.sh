@@ -7,6 +7,10 @@ pre_env() {
 	: ${MK_BUILD_TRIPLE:=$($CC -dumpmachine)}
 	: ${MK_HOST_TRIPLE:=$($CC -dumpmachine)}
 	: ${MK_TARGET_TRIPLE:=$MK_ARCH-linux-musl}
+
+	if [ "$MK_BUILD_TRIPLE" != "$MK_TARGET_TRIPLE" ]; then
+		MK_CROSS=yes
+	fi
 }
 
 post_env() {
