@@ -31,6 +31,14 @@ The contained rootfs can be entered with:
 
 	./mk enter
 
+Compatibility
+-------------
+
+Bare was successfully bootstrapped from:
+
+* Debian 8.3
+* Gentoo 20160211
+
 Environment
 -----------
 
