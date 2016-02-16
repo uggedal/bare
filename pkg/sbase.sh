@@ -5,7 +5,7 @@ bdep bsdtar
 
 distdir $PKG_NAME-${PKG_VER##*.}
 
-if [ "$MK_BUILD_TRIPLE" = "$MK_TARGET_TRIPLE" ] && [ -z "$MK_NO_DEP" ]; then
+if [ -z "$MK_CROSS" ] && [ -z "$MK_NO_DEP" ]; then
 	export TAR='bsdtar --no-same-owner'
 fi
 

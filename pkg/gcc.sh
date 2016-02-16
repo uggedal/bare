@@ -40,16 +40,16 @@ _configure="
 	--target=$MK_TARGET_TRIPLE
 	"
 
-if [ "$MK_BUILD_TRIPLE" = "$MK_TARGET_TRIPLE" ]; then
+if [ "$MK_CROSS" ]; then
+	# target library libgomp-plugin-host_nonshm.so gets linked
+	# against host libc on gentoo:
+	_configure="$_configure --disable-libgomp"
+else
 	_configure="$_configure --with-system-zlib"
 
 	if [ -z "$MK_NO_DEP" ]; then
 		export TAR='bsdtar --no-same-owner'
 	fi
-else
-	# target library libgomp-plugin-host_nonshm.so gets linked
-	# against host libc on gentoo:
-	_configure="$_configure --disable-libgomp"
 fi
 
 configure $_configure
