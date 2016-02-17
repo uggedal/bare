@@ -1,4 +1,4 @@
-ver 1.1.12
+ver 1.1.13
 dist http://www.$PKG_NAME-libc.org/releases/$PKG_NAME-${PKG_VER}.tar.gz
 
 lib libc.so
