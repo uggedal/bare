@@ -1,4 +1,4 @@
-ver 0.0.023.ae5282
+ver 0.0.024.bb83ea
 dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
 bdep bsdtar
