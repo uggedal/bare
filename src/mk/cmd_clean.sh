@@ -66,8 +66,21 @@ cmd_clean() {
 	else
 		progress clean "all"
 		_clean_obsolete_dist
-		_clean_contain
-		_clean_cache
+
+		if [ "$MK_FORCE" ]; then
+			dirs="
+			    $dirs
+			    $_BOOTSTRAP_CROSS
+			    $_BOOTSTRAP_NATIVE
+			    $_BOOTSTRAP_SUPPORT
+			    $_CONTAIN
+			    $_CACHE
+			    $_REPO
+			"
+		else
+			_clean_contain
+			_clean_cache
+		fi
 	fi
 	_clean_db
 

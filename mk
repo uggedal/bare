@@ -50,7 +50,7 @@ _usage() {
 
 	Options:
 	    -k keep build artifacts
-	    -f force rebuild
+	    -f force rebuild or total clean
 	    -r recursive forced rebuild
 	    -n skip step dependencies
 	    -j number of parallel build procs
