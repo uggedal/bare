@@ -1,0 +1,26 @@
+From: Quentin Rameau <quinq@fifth.space>
+Date: Wed, 17 Feb 2016 13:07:02 +0100
+Subject: [sbase] install: treat target as file by default instead of dir
+
+When using 'install foo bar', bar should be treated as a file copy of
+foo, not a directory to create and into which install foo.
+
+---
+ xinstall.c | 2 --
+ 1 file changed, 2 deletions(-)
+diff --git a/xinstall.c b/xinstall.c
+index 1a6be47..f5f6956 100644
+--- a/xinstall.c
++++ b/xinstall.c
+@@ -247,8 +247,6 @@ main(int argc, char *argv[])
+ 					make_dirs(argv[argc - 1], 1);
+ 					*p = '/';
+ 				}
+-			} else {
+-				make_dirs(argv[argc - 1], 1);
+ 			}
+ 		}
+ 		enmasse(argc, argv, install);
+-- 
+2.7.1
+
