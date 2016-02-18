@@ -42,6 +42,7 @@ _usage() {
 	    query <pkg> <field>
 	    stale [pkg]
 	    bump <pkg> <version>
+	    list
 	    bootstrap
 	    enter
 
