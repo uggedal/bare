@@ -31,6 +31,11 @@ The contained rootfs can be entered with:
 
 	./mk enter
 
+To build all packages and their dependencies:
+
+	./mk gendeps
+	make
+
 Compatibility
 -------------
 

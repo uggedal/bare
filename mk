@@ -43,6 +43,7 @@ _usage() {
 	    stale [pkg]
 	    bump <pkg> <version>
 	    list
+	    gendeps
 	    bootstrap
 	    enter
 

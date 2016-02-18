@@ -6,3 +6,5 @@
 /dest/
 /dist/
 /repo/
+
+/deps.mk

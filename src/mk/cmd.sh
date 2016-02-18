@@ -7,7 +7,7 @@ run_cmd() {
 	shift
 
 	case $cmd in
-	bootstrap|enter|list)
+	bootstrap|enter|list|gendeps)
 		:
 		;;
 	clean|stale)
