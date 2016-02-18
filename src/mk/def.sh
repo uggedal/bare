@@ -37,6 +37,7 @@ PKG_OPTIONAL_VARS='
 	bdep
 	rdep
 	lib
+	style
 	configure
 	distdir
 	builddir

@@ -12,7 +12,8 @@ detect_style() {
 
 run_style() {
 	local func=$1
-	local style=$(detect_style)
+	local style=$PKG_STYLE
+	[ "$style" ] || style=$(detect_style)
 
 	progress $func "'$PKG_NAME' using $style"
 
