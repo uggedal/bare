@@ -52,7 +52,6 @@ _usage() {
 	Options:
 	    -k keep build artifacts
 	    -f force rebuild or total clean
-	    -r recursive forced rebuild
 	    -n skip step dependencies
 	    -j number of parallel build procs
 	    -v verbose output
@@ -60,13 +59,10 @@ _usage() {
 	exit 64
 }
 
-while getopts frknvj: opt; do
+while getopts fknvj: opt; do
 	case $opt in
 	f)
 		MK_FORCE=yes
-		;;
-	r)
-		MK_RECURSIVE=yes
 		;;
 	k)
 		MK_KEEP=yes
