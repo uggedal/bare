@@ -16,7 +16,7 @@ _manual_install() {
 	local prefix=$1
 	local name=$2
 
-	tar -C $prefix -xJf repo/$(./mk query $name qualified_name).tar.xz
+	tar -C $prefix -xJf $_REPO/$(./mk query $name qualified_name)$PKG_EXT
 }
 
 _prefix_install() {
