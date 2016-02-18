@@ -156,6 +156,10 @@ pkgfile_to_name() {
 	printf '%s' ${f%*.sh}
 }
 
+name_to_repo_pkg() {
+	printf 'repo/%s%s\n' $(./mk query $name qualified_name) $PKG_EXT
+}
+
 sub_to_main() {
 	local name=$1
 	local f=$_PKG/${name}.sh
