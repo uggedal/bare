@@ -1,6 +1,9 @@
-ver 1.4.17
-dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.xz
+ver 5.8
 
-post_install() {
-	rm $MK_DESTDIR$MK_PREFIX/lib/charset.alias
+bdep libbsd-bld
+
+do_extract() {
+	mkdir -p $MK_DIST
+	cp -a $_SRC/ext/$PKG_NAME/dist/* $MK_DIST
+	cp $_SRC/ext/$PKG_NAME/Makefile $MK_DIST
 }
