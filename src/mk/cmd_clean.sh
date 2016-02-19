@@ -75,6 +75,7 @@ cmd_clean() {
 			    $_BOOTSTRAP_SUPPORT
 			    $_CONTAIN
 			    $_CACHE
+			    $_LOG
 			    $_REPO
 			"
 		else
