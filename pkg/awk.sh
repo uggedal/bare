@@ -4,13 +4,13 @@ dist http://www.cs.princeton.edu/~bwk/btl.mirror/awk.tar.gz
 distdir .
 
 pre_configure() {
-	ed makefile <<EOF
-g/mv y\.tab\./d
-/^proctab.c/d
-d
-w
-q
-EOF
+	ed makefile <<-EOF
+	g/mv y\.tab\./d
+	/^proctab.c/d
+	d
+	w
+	q
+	EOF
 }
 
 do_build() {

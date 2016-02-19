@@ -61,11 +61,11 @@ builddir gcc-build
 export lt_cv_sys_max_cmd_len=8192
 
 pre_configure() {
-	ed $MK_DIST/gcc/Makefile.in <<EOF
-,s|tar xpf|tar -xf
-w
-q
-EOF
+	ed $MK_DIST/gcc/Makefile.in <<-EOF
+	,s|tar xpf|tar -xf
+	w
+	q
+	EOF
 }
 
 post_install() {

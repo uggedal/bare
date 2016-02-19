@@ -2,12 +2,12 @@ ver 1.13.3
 dist http://${PKG_NAME}.bsd.lv/snapshots/$PKG_NAME-${PKG_VER}.tar.gz
 
 pre_configure() {
-	cat <<EOF >configure.local
-PREFIX=$MK_PREFIX
-MANDIR=$MK_MANDIR
-CFLAGS="\$CFLAGS $CFLAGS"
-BUILD_DB=0
-EOF
+	cat <<-EOF >configure.local
+	PREFIX=$MK_PREFIX
+	MANDIR=$MK_MANDIR
+	CFLAGS="\$CFLAGS $CFLAGS"
+	BUILD_DB=0
+	EOF
 }
 
 do_configure() {

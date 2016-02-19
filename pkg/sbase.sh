@@ -10,13 +10,13 @@ if [ -z "$MK_CROSS" ] && [ -z "$MK_NO_DEP" ]; then
 fi
 
 pre_configure() {
-	ed config.mk <<EOF
-,s|^\(CC = \).*\$|\1$CC
-,s|^\(PREFIX = \).*\$|\1$MK_PREFIX
-/^CFLAGS/s|=|+=
-w
-q
-EOF
+	ed config.mk <<-EOF
+	,s|^\(CC = \).*\$|\1$CC
+	,s|^\(PREFIX = \).*\$|\1$MK_PREFIX
+	/^CFLAGS/s|=|+=
+	w
+	q
+	EOF
 }
 
 post_install() {

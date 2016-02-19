@@ -2,13 +2,13 @@ ver 1.0.6
 dist http://bzip.org/$PKG_VER/$PKG_NAME-${PKG_VER}.tar.gz
 
 pre_configure() {
-	ed Makefile <<EOF
-,s/^\(CC\)=\(.*\)\$/\1\?=\2
-,s/^\(AR\)=\(.*\)\$/\1\?=\2
-,s/^\(RANLIB\)=\(.*\)\$/\1\?=\2
-w
-q
-EOF
+	ed Makefile <<-EOF
+	,s/^\(CC\)=\(.*\)\$/\1\?=\2
+	,s/^\(AR\)=\(.*\)\$/\1\?=\2
+	,s/^\(RANLIB\)=\(.*\)\$/\1\?=\2
+	w
+	q
+	EOF
 }
 
 do_build() {

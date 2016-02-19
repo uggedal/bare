@@ -10,11 +10,11 @@ configure \
 	--with-system-zlib
 
 pre_configure() {
-	ed configure <<EOF
-,s|MAKEINFO="\$MISSING makeinfo"|MAKEINFO=true|g
-w
-q
-EOF
+	ed configure <<-EOF
+	,s|MAKEINFO="\$MISSING makeinfo"|MAKEINFO=true|g
+	w
+	q
+	EOF
 }
 
 post_install() {

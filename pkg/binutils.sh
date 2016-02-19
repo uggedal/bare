@@ -13,9 +13,9 @@ configure \
 	--target=$MK_TARGET_TRIPLE
 
 pre_configure() {
-	ed configure <<EOF
-,s|MAKEINFO="\$MISSING makeinfo"|MAKEINFO=true|g
-w
-q
-EOF
+	ed configure <<-EOF
+	,s|MAKEINFO="\$MISSING makeinfo"|MAKEINFO=true|g
+	w
+	q
+	EOF
 }
