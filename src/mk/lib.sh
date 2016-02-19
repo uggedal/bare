@@ -157,6 +157,8 @@ pkgfile_to_name() {
 }
 
 name_to_repo_pkg() {
+	local name=$1
+
 	printf '%s/%s%s\n' $_REPO $(./mk query $name qualified_name) $PKG_EXT
 }
 
@@ -208,7 +210,7 @@ list_pkgs() {
 
 	for f in $_PKG/*.sh; do
 		printf '%s\n' $(sub_to_main $(pkgfile_to_name $f))
-	done | sort | uniq
+	done | sort | uniq | grep -v '^bootstrap-'
 }
 
 inherit() {

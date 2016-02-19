@@ -31,10 +31,13 @@ The contained rootfs can be entered with:
 
 	./mk enter
 
-To build all packages and their dependencies:
+To build all unbuilt packages and their dependencies:
 
-	./mk gendeps
-	make
+	./mk pkg
+
+To rebuild all packages:
+
+	./mk -r pkg
 
 Compatibility
 -------------

@@ -42,13 +42,12 @@ _usage() {
 	    query <pkg> <field>
 	    stale [pkg]
 	    bump <pkg> <version>
-	    list
-	    gendeps
 	    bootstrap
 	    enter
 
 	Ordered steps:
-	$(printf '    %s <pkg>\n' $MK_STEPS)
+	$(printf '    %s <pkg>\n' $MK_STEPS | grep -v ' pkg <')
+	    pkg [pkg]
 
 	Options:
 	    -k keep build artifacts
@@ -93,7 +92,6 @@ action=$1
 shift
 
 if is_step $action; then
-	[ "$1" ] || _usage
 	run_step $action "$1"
 elif is_cmd $action; then
 	run_cmd $action "$@"
