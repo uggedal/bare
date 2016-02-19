@@ -61,10 +61,9 @@ cmd_clean() {
 
 	if [ "$PKG_NAME" ]; then
 		dirs="$MK_BUILD_ROOT $MK_DESTDIR $(_sub_dest_dirs)"
-		progress clean "'$PKG_NAME'"
+		progress clean
 		_clean_cache $PKG_NAME
 	else
-		progress clean "all"
 		_clean_obsolete_dist
 
 		if [ "$MK_FORCE" ]; then

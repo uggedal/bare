@@ -9,7 +9,7 @@ _filter_patch() {
 _patch() {
 	local p=$1
 
-	progress patch "'$PKG_NAME' using '${p##*/}'"
+	progress patch "using '${p##*/}'"
 	(
 		cd $MK_DIST
 		patch ${PKG_PATCHFLAG:-'-p1'} < $p
@@ -32,5 +32,5 @@ step_patch() {
 		haspatch=yes
 	done
 
-	[ "$haspatch" ] || progress patch "'$PKG_NAME' no patch"
+	[ "$haspatch" ] || progress patch "none"
 }

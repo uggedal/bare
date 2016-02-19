@@ -15,7 +15,7 @@ run_style() {
 	local style=$PKG_STYLE
 	[ "$style" ] || style=$(detect_style)
 
-	progress $func "'$PKG_NAME' using $style"
+	progress $func "using $style"
 
 	. $_SRC/mk/style_${style}.sh
 

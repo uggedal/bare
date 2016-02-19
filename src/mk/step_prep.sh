@@ -1,5 +1,5 @@
 step_prep() {
-	progress prep "'$PKG_NAME'"
+	progress prep
 
 	mkdir -p $MK_BUILD_ROOT
 

@@ -55,7 +55,7 @@ _validate() {
 	local name=$1
 	local dest=$2
 
-	progress validate "'$name'"
+	progress validate
 
 	{
 		_validate_name $name

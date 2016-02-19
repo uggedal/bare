@@ -1,3 +1,9 @@
+progress() {
+	local step=$1
+	shift
+	printf "%-${PKG_NAME_MAX}s %-11s %s\n" $PKG_NAME $step "$@"
+}
+
 uppercase() {
 	printf '%s' "$@" | tr a-z A-Z
 }

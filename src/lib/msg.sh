@@ -21,13 +21,6 @@ die() {
 	exit 1
 }
 
-progress() {
-	local step="$(printf '%-10s' $1:)"
-	shift
-
-	msg "$step $@"
-}
-
 usage() {
 	local progname=$(basename $0)
 	local prefix='usage: '

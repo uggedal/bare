@@ -4,7 +4,7 @@ _link_sub() {
 
 	[ ! -h $target ] || return 0
 
-	progress link "'$name' to '$PKG_NAME'"
+	msg "link '$name' to '$PKG_NAME'"
 
 	ln -s ${PKG_NAME}.sh $target
 }

@@ -1,5 +1,5 @@
 step_deppkg() {
-	progress deppkg "'$PKG_NAME'"
+	progress deppkg
 
 	[ -z "$MK_NO_DEP" ] || return 0
 

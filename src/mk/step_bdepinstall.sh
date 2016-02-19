@@ -1,5 +1,5 @@
 step_bdepinstall() {
-	progress bdepinstall "'$PKG_NAME'"
+	progress bdepinstall
 
 	[ -z "$MK_NO_DEP" ] || return 0
 
