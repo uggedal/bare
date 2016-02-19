@@ -1,7 +1,12 @@
 progress() {
 	local step=$1
 	shift
-	printf "%-${PKG_NAME_MAX}s %-11s %s\n" $PKG_NAME $step "$@"
+	printf "%s %s %s %s" \
+	    "$(date +%Y-%m-%d\ %H:%M:%S)" \
+	    $PKG_NAME \
+	    $step
+	[ -z "$@" ] || printf '(%s)' "$@"
+	printf '\n'
 }
 
 uppercase() {
