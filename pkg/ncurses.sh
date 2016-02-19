@@ -9,7 +9,8 @@ configure \
 	--with-manpage-symlinks \
 	--with-shared \
 	--without-ada \
-	--without-cxx-binding
+	--without-cxx-binding \
+	--without-tests
 
 sub libncurses type lib
 sub libncurses rdep terminfo
