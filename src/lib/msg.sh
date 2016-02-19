@@ -1,32 +1,5 @@
-if [ "$_FANCY_MSG" ] && [ -t 2 ] && tput colors >/dev/null 2>&1; then
-	_USE_COLOR=yes
-fi
-
-strong() {
-	if [ "$_USE_COLOR" ]; then
-		printf '\033[1m%s\033[0m\n' "$@"
-	else
-		printf '%s' "$@"
-	fi
-}
-
-color() {
-	local n=$1
-	shift
-
-	if [ "$_USE_COLOR" ]; then
-		printf '\033[%dm%s\033[39;49m' $n "$@"
-	else
-		printf '%s' "$@"
-	fi
-}
-
 msg() {
-	local prefix
-
-	[ -z "$_FANCY_MSG" ] || prefix='>>> '
-
-	printf '%s\n' "$(strong "$(color 37 "$prefix")$@")" 1>&2
+	printf '%s\n' "$@"
 }
 
 msglist() {
@@ -35,13 +8,12 @@ msglist() {
 
 	local part
 	for part; do
-		msg "$prefix '$part'"
+		printf '%-10s%s\n' '' $part
 	done
 }
 
 err() {
-	local progname=$(basename $0)
-	msg "$(color 31 $progname:) $@"
+	msg "error: $@" >&2
 }
 
 die() {
@@ -53,7 +25,7 @@ progress() {
 	local step="$(printf '%-10s' $1:)"
 	shift
 
-	msg "$(color 33 "$step") $@"
+	msg "$step $@"
 }
 
 usage() {

@@ -1,6 +1,5 @@
 step_deppkg() {
 	progress deppkg "'$PKG_NAME'"
-	msglist 'Bdep:' $PKG_BDEP
 
 	[ -z "$MK_NO_DEP" ] || return 0
 

@@ -21,7 +21,7 @@ _exec_step() {
 	local e
 
 	if [ -f $MK_BUILD_ROOT/.${step}.done ]; then
-		progress $step "'$PKG_NAME' $(color 34 cached)"
+		progress $step "'$PKG_NAME' cached"
 	else
 		if is_host_step $step || ! use_contain; then
 			mkdir -p $MK_LOG
@@ -32,7 +32,6 @@ _exec_step() {
 				exit $e
 			}
 			touch $MK_BUILD_ROOT/.${step}.done
-			progress $step "'$PKG_NAME' $(color 32 ok)"
 			[ -s "$log" ] || rm $MK_LOG/${step}.log
 		else
 			contain_mk -n$MK_FLAGS $step $PKG_NAME
@@ -50,7 +49,7 @@ _run_step_for_pkg() {
 	if [ $step = pkg ] &&
 		[ "$MK_FORCE" != yes ] &&
 		[ -s $_REPO/${PKG_QUALIFIED_NAME}$PKG_EXT ]; then
-		progress pkg "'$PKG_NAME' $(color 34 complete)"
+		progress pkg "'$PKG_NAME' complete"
 		return
 	fi
 

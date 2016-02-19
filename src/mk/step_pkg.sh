@@ -93,10 +93,10 @@ _pkg() {
 	progress pkg "'$name'"
 
 	[ "$libs" ] || libs="$(_provided_libs $dest)"
-	msglist 'Provided lib:' $libs
+	msglist 'provided lib:' $libs
 
 	deps="$deps $(_lib_deps $name $dest "$libs")"
-	msglist 'Run-time dep:' $deps
+	msglist 'run-time dep:' $deps
 
 	pkg-create \
 		-p $dest \

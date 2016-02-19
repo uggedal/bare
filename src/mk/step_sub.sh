@@ -71,6 +71,6 @@ _create_sub() {
 
 step_sub() {
 	progress sub "'$PKG_NAME'"
-	msglist 'Sub:' $PKG_SUB
+	msglist 'subpackage:' $PKG_SUB
 	foreach _create_sub $PKG_SUB
 }
