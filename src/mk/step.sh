@@ -18,6 +18,7 @@ is_host_step() {
 _exec_step() {
 	local step=$1
 	local log=$MK_LOG/${step}.log
+	local e
 
 	if [ -f $MK_BUILD_ROOT/.${step}.done ]; then
 		progress $step "'$PKG_NAME' $(color 34 cached)"
@@ -25,7 +26,11 @@ _exec_step() {
 		if is_host_step $step || ! use_contain; then
 			mkdir -p $MK_LOG
 			exec 3> $log
-			step_$step
+			step_$step || {
+				e=$?
+				tail -n20 $log
+				exit $e
+			}
 			touch $MK_BUILD_ROOT/.${step}.done
 			progress $step "'$PKG_NAME' $(color 32 ok)"
 			[ -s "$log" ] || rm $MK_LOG/${step}.log
