@@ -25,6 +25,7 @@ for _dir in \
     db \
     dest \
     dist \
+    log \
     repo; do
 	eval _$(undercase $(uppercase $_dir))=$_ROOT/$_dir
 	mkdir -p $_ROOT/$_dir

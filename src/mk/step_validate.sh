@@ -57,8 +57,10 @@ _validate() {
 
 	progress validate "'$name'"
 
-	_validate_name $name
-	_validate_conflicts $name $dest
+	{
+		_validate_name $name
+		_validate_conflicts $name $dest
+	} >&3 2>&3
 }
 
 _validate_sub() {

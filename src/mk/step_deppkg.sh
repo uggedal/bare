@@ -8,5 +8,5 @@ step_deppkg() {
 	for dep in $PKG_BDEP $PKG_RDEP; do
 		pkg_in_repo $_REPO $dep ||
 		    ./mk $MK_FLAGS pkg $(sub_to_main $dep)
-	done
+	done >&3 2>&3
 }

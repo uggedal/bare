@@ -6,7 +6,7 @@ _fetch() {
 	else
 		mkdir -p $(dirname $(distpath $d))
 		progress fetch "'$PKG_NAME' using '$d'"
-		curl -fL -o $(distpath $d) $(disturl $d) ||
+		curl -\# -fL -o $(distpath $d) $(disturl $d) ||
 			die "fetch failure for '$PKG_NAME' ($d)"
 	fi
 }

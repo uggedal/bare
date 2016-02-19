@@ -12,8 +12,10 @@ step_checksum() {
 
 	progress checksum "'$PKG_NAME' using '$(distfiles $PKG_DIST)'"
 
-	assert_distfiles
+	{
+		assert_distfiles
 
-	[ "$(_checksum)" = "$(cat $f)" ] ||
-		die "invalid checksum for '$PKG_NAME' ($(distfiles $PKG_DIST))"
+		[ "$(_checksum)" = "$(cat $f)" ] ||
+		    die "invalid checksum for '$PKG_NAME' ($(distfiles $PKG_DIST))"
+	} >&3 2>&3
 }

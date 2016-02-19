@@ -3,5 +3,5 @@ step_contain() {
 
 	progress contain "'$PKG_NAME'"
 
-	prepare_contain
+	prepare_contain >&3 2>&3
 }

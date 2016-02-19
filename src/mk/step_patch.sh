@@ -13,7 +13,7 @@ _patch() {
 	(
 		cd $MK_DIST
 		patch ${PKG_PATCHFLAG:-'-p1'} < $p
-	)
+	) >&3 2>&3
 }
 
 step_patch() {
