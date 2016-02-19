@@ -24,6 +24,9 @@ sub libncurses-bld mv \
 sub terminfo type custom
 sub terminfo mv usr/share/terminfo
 
+# configure resolves to /usr/bin/install -c which sbase don't support
+export ac_cv_path_install=$(command -v install)
+
 post_install() {
 	local conflicts='
 		clear
