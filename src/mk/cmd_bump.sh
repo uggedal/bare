@@ -3,11 +3,11 @@ cmd_bump() {
 	local pkg=$_PKG/$PKG_NAME.sh
 	local f
 
-	ed $pkg <<EOF
-,s|^\(ver \).*\$|\1$v
-w
-q
-EOF
+	ed $pkg <<-EOF
+	,s|^\(ver \).*\$|\1$v
+	w
+	q
+	EOF
 
 	./mk fetch $PKG_NAME
 	./mk sum $PKG_NAME
