@@ -69,16 +69,12 @@ _optimize() {
 	local name=$1
 	local dest=$2
 
-	progress optimize "'$name'"
-
-	{
-		remove_libtool_archives $dest
-		remove_below $dest share/info 'info page'
-		remove_below $dest share/doc doc
-		remove_below $dest share/examples examples
-		strip_binaries $dest
-		[ "$PKG_EMPTYDIRS" = keep ] || remove_empty_dirs $dest
-	} >&3 2>&3
+	remove_libtool_archives $dest
+	remove_below $dest share/info 'info page'
+	remove_below $dest share/doc doc
+	remove_below $dest share/examples examples
+	strip_binaries $dest
+	[ "$PKG_EMPTYDIRS" = keep ] || remove_empty_dirs $dest
 }
 
 _optimize_sub() {

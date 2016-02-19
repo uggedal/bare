@@ -55,12 +55,8 @@ _validate() {
 	local name=$1
 	local dest=$2
 
-	progress validate
-
-	{
-		_validate_name $name
-		_validate_conflicts $name $dest
-	} >&3 2>&3
+	_validate_name $name
+	_validate_conflicts $name $dest
 }
 
 _validate_sub() {

@@ -15,18 +15,27 @@ is_host_step() {
 	return 1
 }
 
+progress() {
+	printf "%s %s %s" \
+	    "$(date +%Y-%m-%d\ %H:%M:%S)" \
+	    $PKG_NAME \
+	    "$@"
+}
+
 _exec_step() {
 	local step=$1
 	local log=$MK_LOG/${step}.log
 	local e
 
 	if [ -f $MK_BUILD_ROOT/.${step}.done ]; then
-		progress $step cached
+		progress $step
+		printf ' (cached)\n'
 	else
 		if is_host_step $step || ! use_contain; then
+			progress $step
+			printf '\n'
 			mkdir -p $MK_LOG
-			exec 3> $log
-			step_$step || {
+			step_$step > $log 2>&1 || {
 				e=$?
 				tail -n20 $log
 				exit $e
@@ -49,7 +58,8 @@ _run_step_for_pkg() {
 	if [ $step = pkg ] &&
 		[ "$MK_FORCE" != yes ] &&
 		[ -s $_REPO/${PKG_QUALIFIED_NAME}$PKG_EXT ]; then
-		progress pkg complete
+		progress pkg
+		printf ' (complete)\n'
 		return
 	fi
 

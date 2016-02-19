@@ -1,11 +1,8 @@
 _fetch() {
 	local d=$1
 
-	if [ -r $(distpath $d) ]; then
-		progress fetch "cached in '$(relative $(distpath $d))'"
-	else
+	if ! [ -r $(distpath $d) ]; then
 		mkdir -p $(dirname $(distpath $d))
-		progress fetch "using '$d'"
 		curl -\# -fL -o $(distpath $d) $(disturl $d) ||
 			die "fetch failure for '$PKG_NAME' ($d)"
 	fi

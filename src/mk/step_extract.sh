@@ -20,20 +20,16 @@ _extract() {
 		;;
 	esac
 
-	progress extract "using '$(distfile $d)'"
-
-	${TAR:-tar} -C $MK_BUILD_ROOT -x${arg}f $(distpath $d) >&3 2>&3
+	${TAR:-tar} -C $MK_BUILD_ROOT -x${arg}f $(distpath $d)
 }
 
 step_extract() {
 	if [ "$(command -v do_extract)" ]; then
-		progress extract "using 'do_extract'"
 		do_extract
 		return 0
 	fi
 
 	[ "$PKG_DIST" ] || {
-		progress extract "no dist"
 		return 0
 	}
 

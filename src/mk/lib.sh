@@ -1,14 +1,3 @@
-progress() {
-	local step=$1
-	shift
-	printf "%s %s %s %s" \
-	    "$(date +%Y-%m-%d\ %H:%M:%S)" \
-	    $PKG_NAME \
-	    $step
-	[ -z "$@" ] || printf '(%s)' "$@"
-	printf '\n'
-}
-
 uppercase() {
 	printf '%s' "$@" | tr a-z A-Z
 }
