@@ -25,7 +25,6 @@ progress() {
 _exec_step() {
 	local step=$1
 	local log=$MK_LOG/${step}.log
-	local e
 
 	if [ -f $MK_BUILD_ROOT/.${step}.done ]; then
 		progress $step
@@ -34,12 +33,7 @@ _exec_step() {
 		if is_host_step $step || ! use_contain; then
 			progress $step
 			mkdir -p $MK_LOG
-			step_$step > $log 2>&1 || {
-				e=$?
-				printf '\n'
-				tail -n20 $log
-				exit $e
-			}
+			step_$step > $log 2>&1
 			touch $MK_BUILD_ROOT/.${step}.done
 			[ -s "$log" ] || rm $MK_LOG/${step}.log
 			printf '\n'
