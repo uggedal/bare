@@ -8,7 +8,7 @@ msglist() {
 
 	local part
 	for part; do
-		printf '%-10s%s\n' '' $part
+		printf '%s %s\n' "$prefix" $part
 	done
 }
 
