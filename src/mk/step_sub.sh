@@ -70,6 +70,5 @@ _create_sub() {
 }
 
 step_sub() {
-	msglist 'subpackage:' $PKG_SUB
 	foreach _create_sub $PKG_SUB
 }
