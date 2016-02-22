@@ -33,9 +33,15 @@ _exec_step() {
 		if is_host_step $step || ! use_contain; then
 			progress $step
 			mkdir -p $MK_LOG
-			step_$step > $log 2>&1
+
+			if use_contain || [ "$step" != deppkg ]; then
+				step_$step > $log 2>&1
+				[ -s "$log" ] || rm $log
+			else
+				step_$step
+			fi
+
 			touch $MK_BUILD_ROOT/.${step}.done
-			[ -s "$log" ] || rm $MK_LOG/${step}.log
 			printf '\n'
 		else
 			contain_mk -n$MK_FLAGS $step $PKG_NAME
