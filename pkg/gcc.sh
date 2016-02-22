@@ -3,7 +3,7 @@ dist \
 	$URI_GNU/$PKG_NAME/$PKG_NAME-$PKG_VER/$PKG_NAME-${PKG_VER}.tar.bz2 \
 	http://port70.net/~nsz/musl/$PKG_NAME-$PKG_VER/$PKG_NAME-$PKG_VER.diff
 
-bdep gxx mpc-bld libz-bld bsdtar
+bdep gxx mpc-bld libz-bld
 
 sub libgcc type custom
 sub libgcc mv usr/lib/libgcc_s.so.\*
@@ -46,10 +46,6 @@ if [ "$MK_CROSS" ]; then
 	_configure="$_configure --disable-libgomp"
 else
 	_configure="$_configure --with-system-zlib"
-
-	if [ -z "$MK_NO_DEP" ]; then
-		export TAR='bsdtar --no-same-owner'
-	fi
 fi
 
 configure $_configure

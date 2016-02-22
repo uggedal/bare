@@ -1,13 +1,7 @@
 ver 0.0.024.bb83ea
 dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
-bdep bsdtar
-
 distdir $PKG_NAME-${PKG_VER##*.}
-
-if [ -z "$MK_CROSS" ] && [ -z "$MK_NO_DEP" ]; then
-	export TAR='bsdtar --no-same-owner'
-fi
 
 pre_configure() {
 	ed config.mk <<-EOF

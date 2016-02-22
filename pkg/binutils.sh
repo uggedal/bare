@@ -1,7 +1,7 @@
 ver 2.26
 dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.bz2
 
-bdep libz-bld bsdtar
+bdep libz-bld
 
 sub binutils-bld type bld
 sub binutils-bld rdep binutils
@@ -17,7 +17,6 @@ _configure="
 
 if [ -z "$MK_CROSS" ] && [ -z "$MK_NO_DEP" ]; then
 	_configure="$_configure --with-system-zlib"
-	export TAR='bsdtar --no-same-owner'
 fi
 
 configure $_configure
