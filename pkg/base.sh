@@ -8,6 +8,7 @@ rdep \
 	awk \
 	diff \
 	ed \
+	bsdtar \
 	compress \
 	xz \
 	pkg

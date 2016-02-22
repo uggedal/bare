@@ -21,7 +21,7 @@ pre_configure() {
 
 post_install() {
 	local f
-	for f in strings ed; do
+	for f in ed strings tar; do
 		rm $MK_DESTDIR$MK_PREFIX/bin/$f
 		rm -f $MK_DESTDIR$MK_MANDIR/man1/${f}.1
 	done

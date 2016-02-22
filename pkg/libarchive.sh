@@ -18,5 +18,14 @@ sub libarchive-bld rdep libarchive
 sub libarchive-bld mv usr/share/man/man5
 
 sub bsdtar type custom
-sub bsdtar mv usr/bin/bsdtar usr/share/man/man1/bsdtar.1
+sub bsdtar mv \
+	usr/bin/bsdtar \
+	usr/bin/tar \
+	usr/share/man/man1/bsdtar.1 \
+	usr/share/man/man1/tar.1
 sub bsdtar pkgorder after_main
+
+post_install() {
+	ln -s bsdtar $MK_DESTDIR$MK_PREFIX/bin/tar
+	ln -s bsdtar.1 $MK_DESTDIR$MK_MANDIR/man1/tar.1
+}

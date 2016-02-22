@@ -182,8 +182,8 @@ cmd_bootstrap() {
 	export MK_NO_DEP=yes
 	export MK_NO_CONTAIN=yes
 
-	# If host has GNU tar a format that sbase tar
-	# manges to extract is used:
+	# If host has GNU tar we use a sane format so that we
+	# potentially can enable sbase tar in the future:
 	export TAR_OPTIONS=--format=posix
 
 	_bootstrap_reqs
