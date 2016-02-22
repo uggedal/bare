@@ -1,16 +1,16 @@
 _extract() {
 	local d=$1
-	local arg
+	local flag arg
 
 	case $(distfile $d) in
 	*.tar.gz)
-		arg=z
+		flag=z
 		;;
 	*.tar.bz2)
-		arg=j
+		flag=j
 		;;
 	*.tar.xz)
-		arg=J
+		flag=J
 		;;
 	*.diff|*.patch)
 		return 0
@@ -20,7 +20,11 @@ _extract() {
 		;;
 	esac
 
-	${TAR:-tar} -C $MK_BUILD_ROOT -x${arg}f $(distpath $d)
+	if [ "$MK_CONTAINED" ]; then
+		arg=--no-same-owner
+	fi
+
+	tar $arg -C $MK_BUILD_ROOT -x${flag}f $(distpath $d)
 }
 
 step_extract() {

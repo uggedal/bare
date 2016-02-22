@@ -226,8 +226,13 @@ extract_db_file() {
 	local ver=$2
 	local qualified_name=$3
 	local pkg=$4
+	local arg
 
-	tar -C $_DB -xJf $_REPO/$pkg $PKG_DB/$name
+	if [ "$MK_CONTAINED" ]; then
+		arg=--no-same-owner
+	fi
+
+	tar $arg -C $_DB -xJf $_REPO/$pkg $PKG_DB/$name
 }
 
 use_contain() {
