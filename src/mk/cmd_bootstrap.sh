@@ -157,7 +157,7 @@ _bootstrap_contain() {
 		_prefix_install $p-bld $_BOOTSTRAP_NATIVE
 	done
 
-	for p in make xz file; do
+	for p in make xz file libarchive; do
 		MK_CONFIGURE="
 			--host=$TRIPLE
 			--prefix=/usr" \
