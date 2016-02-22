@@ -74,7 +74,7 @@ trap "rm -f $TMP" INT TERM EXIT
 	mv $TMP $PKG_DB/$NAME
 
 	set -- *
-	tar -c "$@" | xz > $OUTPUT
+	tar -cf - "$@" | xz > $OUTPUT
 
 	[ -s $OUTPUT ] || die "empty package '$OUTPUT'"
 	xz -l $OUTPUT >/dev/null || die "corrupt package '$OUTPUT'"
