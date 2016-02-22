@@ -2231,7 +2231,7 @@ index b778cfb79215..e9e803311394 100644
  	/* Note: We always return ARCHIVE_OK here, even if some of the
  	 * above return ARCHIVE_WARN.  The intent here is to enable
 diff --git a/libarchive/archive_read_support_filter_xz.c b/libarchive/archive_read_support_filter_xz.c
-index 15824b1d0974..e007422ab089 100644
+index 15824b1d0974..f2abca8331ff 100644
 --- a/libarchive/archive_read_support_filter_xz.c
 +++ b/libarchive/archive_read_support_filter_xz.c
 @@ -150,14 +150,6 @@ archive_read_support_filter_xz(struct archive *_a)
@@ -2249,10 +2249,18 @@ index 15824b1d0974..e007422ab089 100644
  int
  archive_read_support_filter_lzma(struct archive *_a)
  {
-@@ -196,33 +188,6 @@ archive_read_support_compression_lzip(struct archive *a)
+@@ -188,41 +180,6 @@ archive_read_support_filter_lzma(struct archive *_a)
  }
- #endif
  
+ 
+-#if ARCHIVE_VERSION_NUMBER < 4000000
+-int
+-archive_read_support_compression_lzip(struct archive *a)
+-{
+-	return archive_read_support_filter_lzip(a);
+-}
+-#endif
+-
 -int
 -archive_read_support_filter_lzip(struct archive *_a)
 -{
