@@ -35,7 +35,14 @@ _exec_step() {
 			mkdir -p $MK_LOG
 
 			if use_contain || [ "$step" != deppkg ]; then
-				step_$step > $log 2>&1
+				(
+					step_$step > $log 2>&1
+				) || {
+					printf '\nERROR (%s):\n' \
+					    $(relative $log $_ROOT)
+					tail $log
+					exit 1
+				}
 				[ -s "$log" ] || rm $log
 			else
 				step_$step
