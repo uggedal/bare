@@ -1,0 +1,43 @@
+From 65fe1034c3833e990a72396dd01bac6618acaaf8 Mon Sep 17 00:00:00 2001
+From: Romain Fliedel <rfliedel@freebox.fr>
+Date: Fri, 20 Jun 2014 15:45:09 +0200
+Subject: [PATCH] Silently ignore lchmod failure in when not supported
+
+lchmod might be defined but not supported by the platform,
+(this is the case with musl implementation of fchmodat) in
+this case we can safely ignore the error.
+---
+ libarchive/archive_write_disk_posix.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/libarchive/archive_write_disk_posix.c b/libarchive/archive_write_disk_posix.c
+index 3deb551..ff2173f 100644
+--- a/libarchive/archive_write_disk_posix.c
++++ b/libarchive/archive_write_disk_posix.c
+@@ -3056,9 +3056,23 @@ set_mode(struct archive_write_disk *a, int mode)
+ 		 * impact.
+ 		 */
+ 		if (lchmod(a->name, mode) != 0) {
+-			archive_set_error(&a->archive, errno,
+-			    "Can't set permissions to 0%o", (int)mode);
+-			r = ARCHIVE_WARN;
++			switch (errno) {
++			case ENOTSUP:
++			case ENOSYS:
++#if ENOTSUP != EOPNOTSUPP
++			case EOPNOTSUPP:
++#endif
++				/*
++				 * if lchmod is defined but the platform
++				 * doesn't support it, silently ignore
++				 * error
++				 */
++				break;
++			default:
++				archive_set_error(&a->archive, errno,
++				    "Can't set permissions to 0%o", (int)mode);
++				r = ARCHIVE_WARN;
++			}
+ 		}
+ #endif
+ 	} else if (!S_ISDIR(a->mode)) {
