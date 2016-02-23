@@ -37,7 +37,7 @@ To build all unbuilt packages and their dependencies:
 
 To rebuild all packages:
 
-	./mk -r pkg
+	./mk -f pkg
 
 Compatibility
 -------------
