@@ -8,8 +8,6 @@ _PKG=$_ROOT/pkg
 _SRC=$_ROOT/src
 _SUM=$_ROOT/sum
 
-_FANCY_MSG=yes
-
 for _f in $_SRC/lib/*.sh $_SRC/mk/*.sh; do
 	. $_f
 done
