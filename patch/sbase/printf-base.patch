@@ -1,0 +1,47 @@
+From 4d480ff3e9e669667c8dc6481a350a0ee9e569a1 Mon Sep 17 00:00:00 2001
+From: Quentin Rameau <quinq@fifth.space>
+Date: Sun, 28 Feb 2016 16:15:46 +0100
+Subject: [PATCH] printf: replace strtonum with strtol functions in conversions
+
+Use strtol and strtoll respectively for d, i and o, u, x, X conversions.
+This way we can convert other bases than 10, which strtonum doesn't
+provide.
+---
+ printf.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/printf.c b/printf.c
+index 72cbe46..2bb7f83 100644
+--- a/printf.c
++++ b/printf.c
+@@ -1,5 +1,6 @@
+ /* See LICENSE file for copyright and license details. */
+ #include <ctype.h>
++#include <errno.h>
+ #include <limits.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -136,7 +137,19 @@ main(int argc, char *argv[])
+ 				utftorunestr(arg, rarg);
+ 				num = rarg[0];
+ 			} else {
+-				num = (strlen(arg) > 0) ? estrtonum(arg, LLONG_MIN, LLONG_MAX) : 0;
++				errno = 0;
++				if (format[i] == 'd' || format[i] == 'i')
++					num = strtol(arg, &tmp, 0);
++				else
++					num = strtoll(arg, &tmp, 0);
++				if (!(strlen(arg) > 0)) {
++					num = 0;
++				} else {
++					if (tmp == arg || *tmp != '\0')
++						enprintf(1, "strtoll %s: invalid\n", arg);
++					else if (errno == ERANGE)
++						enprintf(1, "strtoll %s: out of range\n", arg);
++				}
+ 			}
+ 			fmt = estrdup(flag ? "%#*.*ll#" : "%*.*ll#");
+ 			if (flag)
+-- 
+2.7.2
+
