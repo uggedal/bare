@@ -1,0 +1,82 @@
+From b128f1ee912da22cf3b5c15cb859b1b9e4cc9c93 Mon Sep 17 00:00:00 2001
+From: Eivind Uggedal <eivind@uggedal.com>
+Date: Sun, 28 Feb 2016 18:37:23 +0000
+Subject: [PATCH] ln: support -h/n for not following directory targets
+
+Implement -h with -n as an alias since linux kernel relies on -n.
+---
+ ln.1 | 13 ++++++++++++-
+ ln.c |  8 ++++++--
+ 2 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/ln.1 b/ln.1
+index 8d299da69d7d..beb66ba5f28c 100644
+--- a/ln.1
++++ b/ln.1
+@@ -7,6 +7,7 @@
+ .Sh SYNOPSIS
+ .Nm
+ .Op Fl f
++.Op Fl h | Fl n
+ .Op Fl L | Fl P | Fl s
+ .Ar target
+ .Op Ar name
+@@ -52,6 +53,14 @@ Disables
+ and
+ .Fl P ,
+ because their purpose does not apply to symbolic links.
++.It Fl h | Fl n
++If
++.Ar target
++is a symbolic link to a directory, do not dereference it.
++.Fl n
++is an alias to
++.Fl h
++for compatibility.
+ .El
+ .Sh SEE ALSO
+ .Xr cp 1 ,
+@@ -62,4 +71,6 @@ The
+ .Nm
+ utility is compliant with the
+ .St -p1003.1-2013
+-specification.
++specification except from the
++.Op Fl nh
++flags.
+diff --git a/ln.c b/ln.c
+index ab1ec4e068e2..98c0d84f965a 100644
+--- a/ln.c
++++ b/ln.c
+@@ -20,7 +20,7 @@ int
+ main(int argc, char *argv[])
+ {
+ 	char *targetdir = ".", *target = NULL;
+-	int ret = 0, sflag = 0, fflag = 0, dirfd = AT_FDCWD,
++	int ret = 0, sflag = 0, fflag = 0, hflag = 0, dirfd = AT_FDCWD,
+ 	    hastarget = 0, flags = AT_SYMLINK_FOLLOW;
+ 	struct stat st, tst;
+ 
+@@ -37,6 +37,10 @@ main(int argc, char *argv[])
+ 	case 's':
+ 		sflag = 1;
+ 		break;
++	case 'h':
++	case 'n':
++		hflag = 1;
++		break;
+ 	default:
+ 		usage();
+ 	} ARGEND
+@@ -45,7 +49,7 @@ main(int argc, char *argv[])
+ 		usage();
+ 
+ 	if (argc > 1) {
+-		if (!stat(argv[argc - 1], &st) && S_ISDIR(st.st_mode)) {
++		if (!(hflag ? lstat : stat)(argv[argc - 1], &st) && S_ISDIR(st.st_mode)) {
+ 			if ((dirfd = open(argv[argc - 1], O_RDONLY)) < 0)
+ 				eprintf("open %s:", argv[argc - 1]);
+ 			targetdir = argv[argc - 1];
+-- 
+2.1.4
+
