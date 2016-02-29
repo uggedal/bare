@@ -1,7 +1,9 @@
 detect_style() {
 	local style=noop
 
-	if [ -x $MK_DIST/configure ]; then
+	if [ -r $MK_DIST/Kconfig ]; then
+		style=kconfig
+	elif [ -x $MK_DIST/configure ]; then
 		style=configure
 	elif [ -r $MK_DIST/Makefile ] || [ -r $MK_DIST/makefile ]; then
 		style=make
