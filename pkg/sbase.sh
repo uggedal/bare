@@ -1,4 +1,4 @@
-ver 0.0.025.b83916
+ver 0.0.026.ea0d16
 dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
 distdir $PKG_NAME-${PKG_VER##*.}
@@ -14,9 +14,40 @@ pre_configure() {
 }
 
 post_install() {
+	local conflicts='
+		ed
+		strings
+		tar
+	'
+	local core='
+		cat
+		chmod
+		cp
+		date
+		echo
+		expr
+		hostname
+		kill
+		ln
+		ls
+		mkdir
+		mv
+		pwd
+		rm
+		rmdir
+		sleep
+		sync
+		test
+	'
 	local f
-	for f in ed strings tar; do
+
+	for f in $conflicts; do
 		rm $MK_DESTDIR$MK_PREFIX/bin/$f
 		rm -f $MK_DESTDIR$MK_MANDIR/man1/${f}.1
+	done
+
+	mkdir -p $MK_DESTDIR/bin
+	for f in $core; do
+		mv $MK_DESTDIR$MK_PREFIX/bin/$f $MK_DESTDIR/bin
 	done
 }
