@@ -219,6 +219,10 @@ inherit() {
 	PKG_NAME=$PKG_PARENT_NAME
 	source_pkg $PKG_PARENT_NAME
 	PKG_NAME=$childname
+
+	if [ "$PKG_STYLE" = phony ]; then
+		unset PKG_STYLE
+	fi
 }
 
 extract_db_file() {

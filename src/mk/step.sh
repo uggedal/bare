@@ -56,6 +56,10 @@ _run_step_for_pkg() {
 
 	read_pkg $pkg
 
+	if [ "$PKG_STYLE" = phony ]; then
+		return
+	fi
+
 	if [ $step = pkg ] &&
 		[ "$MK_FORCE" != yes ] &&
 		[ -s $_REPO/${PKG_QUALIFIED_NAME}$PKG_EXT ]; then
