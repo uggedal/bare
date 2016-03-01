@@ -1,7 +1,7 @@
 ver 0.8.2
 dist http://libbsd.freedesktop.org/releases/$PKG_NAME-${PKG_VER}.tar.xz
 
-bdep bsd-headers linux-headers
+bdep bsd-headers kernel-headers
 
 sub libbsd-bld type bld
 sub libbsd-bld rdep libbsd bsd-headers

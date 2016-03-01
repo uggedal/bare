@@ -143,7 +143,7 @@ _bootstrap_contain() {
 		--with-mpc=$prefix" \
 		./mk pkg gcc
 
-	for p in bsd-headers linux-headers; do
+	for p in bsd-headers kernel-headers; do
 		_contain_pkg $p
 		_prefix_install $p $_BOOTSTRAP_NATIVE
 	done

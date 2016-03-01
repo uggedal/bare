@@ -1,7 +1,7 @@
 ver 7.10.1
 dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.xz
 
-bdep libz-bld linux-headers readline-bld
+bdep libz-bld kernel-headers readline-bld
 
 configure \
 	--disable-gdbserver \
