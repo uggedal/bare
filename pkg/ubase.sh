@@ -18,10 +18,20 @@ post_install() {
 		eject
 		fsfreeze
 	'
-
+	local core='
+		dd
+		df
+		ps
+	'
 	local f
+
 	for f in $unneeded; do
 		rm $MK_DESTDIR$MK_PREFIX/bin/$f
 		rm -f $MK_DESTDIR$MK_MANDIR/man[18]/${f}.[18]
+	done
+
+	mkdir -p $MK_DESTDIR/bin
+	for f in $core; do
+		mv $MK_DESTDIR$MK_PREFIX/bin/$f $MK_DESTDIR/bin
 	done
 }
