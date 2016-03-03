@@ -4,7 +4,6 @@ MK_STEPS='
 	deppkg
 	contain
 	bdepinstall
-	fetch
 	checksum
 	extract
 	patch
