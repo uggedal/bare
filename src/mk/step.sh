@@ -29,24 +29,26 @@ _exec_step() {
 	if [ -f $MK_BUILD_ROOT/.${step}.done ]; then
 		progress $step
 		printf ' (cached)\n'
-	else
-		if is_host_step $step || ! use_contain; then
-			progress $step
-			mkdir -p $MK_LOG
-
-			if use_contain || [ "$step" != deppkg ]; then
-				step_$step > $log 2>&1
-				[ -s "$log" ] || rm $log
-			else
-				step_$step
-			fi
-
-			touch $MK_BUILD_ROOT/.${step}.done
-			printf '\n'
-		else
-			contain_mk -n$MK_FLAGS $step $PKG_NAME
-		fi
+		return 0
 	fi
+
+	if ! is_host_step $step && use_contain; then
+		contain_mk -n$MK_FLAGS $step $PKG_NAME
+		return 0
+	fi
+
+	progress $step
+	mkdir -p $MK_LOG
+
+	if is_host_step $step; then
+		step_$step
+	else
+		step_$step > $log 2>&1
+		[ -s "$log" ] || rm $log
+	fi
+
+	touch $MK_BUILD_ROOT/.${step}.done
+	printf '\n'
 }
 
 _run_step_for_pkg() {

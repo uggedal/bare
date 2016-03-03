@@ -3,6 +3,7 @@ _fetch() {
 
 	if ! [ -r $(distpath $d) ]; then
 		mkdir -p $(dirname $(distpath $d))
+		printf '\n'
 		curl -\# -fL -o $(distpath $d) $(disturl $d) ||
 			die "fetch failure for '$PKG_NAME' ($d)"
 	fi
