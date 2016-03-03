@@ -1,9 +1,13 @@
-MK_STEPS='
+MK_HOST_STEPS='
 	prep
 	fetch
 	deppkg
 	contain
 	bdepinstall
+	'
+
+MK_STEPS="
+	$MK_HOST_STEPS
 	checksum
 	extract
 	patch
@@ -15,15 +19,7 @@ MK_STEPS='
 	db
 	validate
 	pkg
-'
-
-MK_HOST_STEPS='
-	prep
-	fetch
-	deppkg
-	contain
-	bdepinstall
-	'
+"
 
 PKG_REQUIRED_VARS='
 	name
