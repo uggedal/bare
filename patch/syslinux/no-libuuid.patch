@@ -1,0 +1,61 @@
+diff --git a/extlinux/xfs_sb.h b/extlinux/xfs_sb.h
+index 8f72d6ad11d1..df35bdc7874e 100644
+--- a/extlinux/xfs_sb.h
++++ b/extlinux/xfs_sb.h
+@@ -25,7 +25,8 @@
+ #include <stddef.h>
+ 
+ #include <sys/types.h>
+-#include <uuid/uuid.h>
++
++typedef unsigned char uuid_t[16];
+ 
+ /*
+  * Super block
+diff --git a/Makefile b/Makefile
+index fb387c5b0fa0..663e2ace0eb4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -190,7 +190,7 @@ BSUBDIRS = codepage com32 lzo core memdisk mbr gpxe sample \
+ 
+ ITARGET  =
+ IOBJECTS = $(ITARGET) \
+-	utils/gethostip utils/isohybrid utils/mkdiskimage \
++	utils/gethostip utils/mkdiskimage \
+ 	mtools/syslinux linux/syslinux extlinux/extlinux
+ ISUBDIRS = libinstaller mtools linux extlinux utils
+ 
+diff --git a/utils/Makefile b/utils/Makefile
+index dfe625902ce8..bd2a2ea3aa5e 100644
+--- a/utils/Makefile
++++ b/utils/Makefile
+@@ -20,9 +20,8 @@ include $(MAKEDIR)/syslinux.mk
+ CFLAGS   = $(GCCWARN) -Os -fomit-frame-pointer -D_FILE_OFFSET_BITS=64 -I$(SRC)
+ LDFLAGS  = -O2
+ 
+-C_TARGETS	 = isohybrid gethostip memdiskfind
++C_TARGETS	 = gethostip memdiskfind
+ SCRIPT_TARGETS	 = mkdiskimage
+-SCRIPT_TARGETS	+= isohybrid.pl  # about to be obsoleted
+ ASIS		 = $(addprefix $(SRC)/,keytab-lilo lss16toppm md5pass \
+ 		   ppmtolss16 sha1pass syslinux2ansi pxelinux-options)
+ 
+@@ -41,18 +40,9 @@ mkdiskimage: mkdiskimage.in ../mbr/mbr.bin bin2hex.pl
+ 	$(PERL) $(SRC)/bin2hex.pl < $(OBJ)/../mbr/mbr.bin | cat $(SRC)/mkdiskimage.in - > $@
+ 	chmod a+x $@
+ 
+-# Works on anything with a Perl interpreter...
+-isohybrid.pl: isohybrid.in $(ISOHDPFX) bin2hex.pl
+-	cp -f $(SRC)/isohybrid.in $@
+-	for f in $(ISOHDPFX) ; do $(PERL) $(SRC)/bin2hex.pl < $$f >> $@ ; done
+-	chmod a+x $@
+-
+ isohdpfx.c: $(ISOHDPFX) isohdpfxarray.pl
+ 	$(PERL) $(SRC)/isohdpfxarray.pl $(ISOHDPFX) > $@
+ 
+-isohybrid: isohybrid.o isohdpfx.o
+-	$(CC) $(LDFLAGS) -o $@ $^ -luuid
+-
+ gethostip: gethostip.o
+ 	$(CC) $(LDFLAGS) -o $@ $^
+ 
