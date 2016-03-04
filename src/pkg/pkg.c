@@ -168,9 +168,8 @@ main(int argc, char **argv)
 {
 	int ret = 0;
 	int mode = NONE;
-	char *repopath;
-	char indexpath[PATH_MAX];
-	FILE *indexfp = NULL;
+	char *repopath, path[PATH_MAX];
+	FILE *fp = NULL;
 	struct pkg *pkg = NULL;
 
 	ARGBEGIN{
@@ -191,20 +190,20 @@ main(int argc, char **argv)
 	case INSTALL:
 		if (!(repopath = getenv("REPO")))
 			eprintf("REPO env variable not set\n");
-		estrlcpy(indexpath, repopath, PATH_MAX);
-		estrlcat(indexpath, "/INDEX", PATH_MAX);
+		estrlcpy(path, repopath, PATH_MAX);
+		estrlcat(path, "/INDEX", PATH_MAX);
 
-		if (!(indexfp = fopen(indexpath, "r")))
-			eprintf("fopen %s:", indexpath);
+		if (!(fp = fopen(path, "r")))
+			eprintf("fopen %s:", path);
 
 		if (!argc)
 			usage();
 		while (*argv)
-			if ((pkg = pkg_load(indexfp, *(argv++)))) {
+			if ((pkg = pkg_load(fp, *(argv++)))) {
 				ret |= install(pkg, NULL);
 				pkg_free(pkg);
 			}
-		fclose(indexfp);
+		fclose(fp);
 		break;
 	default:
 		usage();
