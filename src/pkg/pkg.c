@@ -145,9 +145,26 @@ usage(void)
 }
 
 static int
+extract(struct pkg *pkg)
+{
+	(void) pkg;
+	return 0;
+}
+
+static int
+record(struct pkg *pkg, int explicit)
+{
+	(void) pkg;
+	(void) explicit;
+	return 0;
+}
+
+
+static int
 install(struct pkg *pkg, const char *parent)
 {
 	struct pkg *p;
+	int ret;
 
 	LIST_FOREACH(p, &pkg->dep_head, dep_entries) {
 		install(p, pkg->name);
@@ -157,10 +174,16 @@ install(struct pkg *pkg, const char *parent)
 		printf("install: %s", pkg->name);
 		if (parent)
 			printf(" <- %s", parent);
-		printf("\n");
+		fflush(stdout);
 	}
 
-	return 0;
+	if ((ret = extract(pkg)))
+		ret |= record(pkg, parent == NULL);
+
+	if (vflag)
+		printf("\n");
+
+	return ret;
 }
 
 int
