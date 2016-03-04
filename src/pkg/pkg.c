@@ -13,7 +13,7 @@ enum { I_FILE, I_LIB, I_DEP, I_SUM };
 enum { I_FILE_NAME, I_FILE_VER, I_FILE_EPOC };
 
 struct pkg {
-	char *path;
+	char path[PATH_MAX];
 	char *name;
 	char *ver;
 	char *epoc;
@@ -23,6 +23,7 @@ struct pkg {
 };
 
 static char *prefix = "/";
+static char *repopath = NULL;
 static int vflag = 0;
 
 /* parses file format: name_1.0.0_24.txz */
@@ -31,6 +32,10 @@ parse_file_field(struct pkg *pkg, char *field)
 {
 	char *p;
 	int i;
+
+	estrlcpy(pkg->path, repopath, PATH_MAX);
+	estrlcat(pkg->path, "/", PATH_MAX);
+	estrlcat(pkg->path, field, PATH_MAX);
 
 	p = strrchr(field, '.');
 	if (p)
@@ -191,7 +196,7 @@ main(int argc, char **argv)
 {
 	int ret = 0;
 	int mode = NONE;
-	char *repopath, path[PATH_MAX];
+	char path[PATH_MAX];
 	FILE *fp = NULL;
 	struct pkg *pkg = NULL;
 
