@@ -144,9 +144,14 @@ usage(void)
 }
 
 static int
-install(struct pkg *p)
+install(struct pkg *pkg, const char *parent)
 {
-	(void) p;
+	struct pkg *p;
+
+	LIST_FOREACH(p, &pkg->dep_head, dep_entries) {
+		install(p, pkg->name);
+	}
+
 	return 0;
 }
 
@@ -185,7 +190,7 @@ main(int argc, char **argv)
 			usage();
 		while (*argv)
 			if ((pkg = pkg_load(indexfp, *(argv++)))) {
-				ret |= install(pkg);
+				ret |= install(pkg, NULL);
 				pkg_free(pkg);
 			}
 		fclose(indexfp);
