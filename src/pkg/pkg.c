@@ -79,13 +79,12 @@ pkg_load(FILE *fp, char *name)
 	int i, match = 0;
 	struct pkg *pkg;
 
-	while ((len = getline(&line, &size, fp)) > 0) {
+	while ((len = getline(&line, &size, fp)) > 0)
 		if (!strncmp(line, name, strlen(name)) &&
 		    line[strlen(name)] == '_') {
 				match = 1;
 				break;
 		}
-	}
 	rewind(fp);
 
 	if (!match)
@@ -159,7 +158,7 @@ main(int argc, char **argv)
 	char *repopath;
 	char indexpath[PATH_MAX];
 	FILE *indexfp = NULL;
-	struct pkg *p = NULL;
+	struct pkg *pkg = NULL;
 
 	ARGBEGIN{
 	case 'i':
@@ -185,9 +184,9 @@ main(int argc, char **argv)
 		if (!argc)
 			usage();
 		while (*argv)
-			if ((p = pkg_load(indexfp, *(argv++)))) {
-				ret |= install(p);
-				pkg_free(p);
+			if ((pkg = pkg_load(indexfp, *(argv++)))) {
+				ret |= install(pkg);
+				pkg_free(pkg);
 			}
 		fclose(indexfp);
 		break;
