@@ -59,5 +59,9 @@ PKG_SUB_VARS='
 	pkgorder
 	'
 
+PKG_EXT=.tar.xz
+PKG_NAME_MAX=20
+PKG_DB=var/db/pkg
+
 URI_GNU=http://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu
 URI_SF=http://downloads.sourceforge.net/sourceforge

@@ -8,7 +8,7 @@ _PKG=$_ROOT/pkg
 _SRC=$_ROOT/src
 _SUM=$_ROOT/sum
 
-for _f in $_SRC/lib/*.sh $_SRC/mk/*.sh; do
+for _f in $_SRC/mk/*.sh; do
 	. $_f
 done
 unset _f
