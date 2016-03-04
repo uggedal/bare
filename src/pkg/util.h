@@ -1,4 +1,3 @@
-/* See LICENSE file for copyright and license details. */
 #include "arg.h"
 
 extern char *argv0;
