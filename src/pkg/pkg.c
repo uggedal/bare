@@ -23,6 +23,7 @@ struct pkg {
 };
 
 static char *prefix = "/";
+static int vflag = 0;
 
 /* parses file format: name_1.0.0_24.txz */
 static void
@@ -152,6 +153,13 @@ install(struct pkg *pkg, const char *parent)
 		install(p, pkg->name);
 	}
 
+	if (vflag) {
+		printf("install: %s", pkg->name);
+		if (parent)
+			printf(" <- %s", parent);
+		printf("\n");
+	}
+
 	return 0;
 }
 
@@ -171,6 +179,9 @@ main(int argc, char **argv)
 		break;
 	case 'p':
 		prefix = EARGF(usage());
+		break;
+	case 'v':
+		vflag = 1;
 		break;
 	default:
 		usage();
