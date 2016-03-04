@@ -141,6 +141,7 @@ pkg_free(struct pkg *pkg)
 	free(pkg->name);
 	free(pkg->ver);
 	free(pkg->epoc);
+	free(pkg);
 }
 
 static void
