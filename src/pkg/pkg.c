@@ -65,9 +65,7 @@ parse_dep_field(struct pkg *pkg, FILE *fp, char *field)
 		if (p)
 			*p = '\0';
 		dep = pkg_load(fp, tmp);
-		printf("a: %s %s\n", pkg->name, tmp);
 		LIST_INSERT_HEAD(&pkg->dep_head, dep, dep_entries);
-		printf("b: %s %s\n", pkg->name, tmp);
 		free(tmp);
 	}
 }
@@ -121,10 +119,6 @@ pkg_load(FILE *fp, char *name)
 
 	if (!pkg->name || !pkg->ver || !pkg->epoc)
 		eprintf("invalid INDEX for '%s'\n", name);
-
-	printf("name: %s\n", pkg->name);
-	printf("ver:  %s\n", pkg->ver);
-	printf("epoc: %s\n", pkg->epoc);
 
 	return pkg;
 }
