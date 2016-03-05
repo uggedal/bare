@@ -9,6 +9,7 @@
 #include <archive_entry.h>
 
 #include "util/queue.h"
+#include "util/sha256.h"
 #include "util.h"
 
 #define EXTRACT_FLAGS	ARCHIVE_EXTRACT_PERM | \
@@ -205,17 +206,41 @@ usage(void)
 	eprintf("usage: %s [-i] [-p prefix] [name ...]\n", argv0);
 }
 
+int
+cksum(FILE *fp, const char *path, uint8_t *md)
+{
+	struct sha256 ctx;
+	uint8_t buf[BUFSIZ];
+	size_t n;
+
+	sha256_init(&ctx);
+	while ((n = fread(buf, 1, sizeof(buf), fp)) > 0)
+		sha256_update(&ctx, buf, n);
+	if (ferror(fp)) {
+		weprintf("unable to read %s:", path);
+		return -1;
+	}
+	sha256_sum(&ctx, md);
+	return 0;
+}
+
 static int
 record_entry(FILE *fp, struct archive_entry *entry)
 {
 	int n;
 	char t = 'U';
+	uint8_t md[SHA256_DIGEST_LENGTH];
+	FILE *entryfp;
+	const char *path;
+	size_t i;
+
+	path = archive_entry_pathname(entry);
 
 	switch (archive_entry_filetype(entry)) {
 	case AE_IFREG:
 		t = 'F';
 		if (vflag > 1)
-			printf("  %s\n", archive_entry_pathname(entry));
+			printf("  %s\n", path);
 		break;
 	case AE_IFDIR:
 		t = 'D';
@@ -226,8 +251,7 @@ record_entry(FILE *fp, struct archive_entry *entry)
 		if (archive_entry_symlink(entry) != NULL) {
 			t = 'L';
 			if (vflag > 1)
-				printf("  %s -> %s\n",
-				    archive_entry_pathname(entry),
+				printf("  %s -> %s\n", path,
 				    archive_entry_symlink(entry));
 		}
 		break;
@@ -235,13 +259,29 @@ record_entry(FILE *fp, struct archive_entry *entry)
 
 	if (t == 'U') {
 		weprintf("unknown file type '%d': %s\n",
-		    archive_entry_filetype(entry),
-		    archive_entry_pathname(entry));
+		    archive_entry_filetype(entry), path);
 		return -1;
 	}
 
-	n = fprintf(fp, "%s|%c|TODO_SUM\n", archive_entry_pathname(entry), t);
-	return n < 0 ? n : 0;
+	if (!(entryfp = fopen(path, "r"))) {
+		weprintf("fopen %s:", path);
+		return -1;
+	}
+
+	if (t == 'F' || t == 'H')
+		if (cksum(entryfp, path, md))
+			return -1;
+
+	if ((n = fprintf(fp, "%s|%c|", path, t)) < 0)
+		return n;
+	if (t == 'F' || t == 'H')
+		for (i = 0; i < sizeof(md); i++)
+			if ((n = fprintf(fp, "%02x", md[i])) < 0)
+				return n;
+	if ((n = fprintf(fp, "\n")) < 0)
+		return n;
+
+	return 0;
 }
 
 static int
@@ -440,7 +480,7 @@ main(int argc, char **argv)
 	}ARGEND;
 
 	prefixify(tmpdir, "tmp/pkg");
-	prefixify(dbdir, "var/pkg/db");
+	prefixify(dbdir, "var/db/pkg");
 
 	switch (mode) {
 	case INSTALL:
