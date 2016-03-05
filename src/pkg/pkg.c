@@ -23,6 +23,9 @@ struct pkg {
 	char *ver;
 	char *epoc;
 	char *sum;
+	char *raw_fname;
+	char *raw_lib;
+	char *raw_dep;
 	LIST_ENTRY(pkg) dep_entries;
 	LIST_HEAD(dep_listhead, pkg) dep_head;
 };
@@ -37,6 +40,8 @@ parse_file_field(struct pkg *pkg, char *field)
 {
 	char *p;
 	int i;
+
+	pkg->raw_fname = estrdup(field);
 
 	estrlcpy(pkg->path, repopath, PATH_MAX);
 	estrlcat(pkg->path, "/", PATH_MAX);
@@ -73,6 +78,8 @@ parse_dep_field(struct pkg *pkg, FILE *fp, char *field)
 {
 	char *p, *tmp;
 	struct pkg *dep;
+
+	pkg->raw_dep = estrdup(field);
 
 	int i;
 	for (i = 0; (p = strsep(&field, ",")); i++) {
@@ -111,7 +118,18 @@ pkg_load(FILE *fp, char *name)
 
 	for (i = 0; (p = strsep(&line, "|")); i++) {
 		if (*p == '\0')
-			continue;
+			switch (i) {
+			case I_LIB:
+				pkg->raw_lib = estrdup("");
+				continue;
+			case I_DEP:
+				pkg->raw_dep = estrdup("");
+				continue;
+			case I_FILE:
+			case I_SUM:
+			default:
+				eprintf("invalid INDEX for '%s'\n", name);
+			}
 
 		tmp = estrdup(p);
 
@@ -122,11 +140,15 @@ pkg_load(FILE *fp, char *name)
 				    " '%s'\n", name);
 			break;
 		case I_LIB:
+			pkg->raw_lib = estrdup(tmp);
 			break;
 		case I_DEP:
 			parse_dep_field(pkg, fp, tmp);
 			break;
 		case I_SUM:
+			if (tmp[strlen(tmp) - 1] == '\n')
+				tmp[strlen(tmp) - 1] = '\0';
+			pkg->sum = estrdup(tmp);
 			break;
 		}
 		free(tmp);
@@ -153,6 +175,10 @@ pkg_free(struct pkg *pkg)
 	free(pkg->name);
 	free(pkg->ver);
 	free(pkg->epoc);
+	free(pkg->sum);
+	free(pkg->raw_fname);
+	free(pkg->raw_lib);
+	free(pkg->raw_dep);
 	free(pkg);
 }
 
