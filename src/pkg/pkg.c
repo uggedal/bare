@@ -9,6 +9,10 @@
 #include "util/queue.h"
 #include "util.h"
 
+#define EXTRACT_FLAGS	ARCHIVE_EXTRACT_PERM | \
+			ARCHIVE_EXTRACT_TIME | \
+			ARCHIVE_EXTRACT_SECURE_NODOTDOT
+
 enum { NONE, INSTALL };
 enum { I_FILE, I_LIB, I_DEP, I_SUM };
 enum { I_FILE_NAME, I_FILE_VER, I_FILE_EPOC };
@@ -154,8 +158,62 @@ usage(void)
 static int
 extract(struct pkg *pkg)
 {
-	(void) pkg;
-	return 0;
+	struct archive *ar;
+	struct archive_entry *entry;
+	char cwd[PATH_MAX];
+	int ret;
+
+	if (!getcwd(cwd, sizeof(cwd))) {
+		weprintf("getcwd:");
+		return -1;
+	}
+
+	if (chdir(prefix) < 0) {
+		weprintf("chdir %s:", prefix);
+		return -1;
+	}
+
+	ar = archive_read_new();
+	archive_read_support_filter_xz(ar);
+	archive_read_support_format_tar(ar);
+
+	if (archive_read_open_filename(ar, pkg->path, BUFSIZ) < 0) {
+		weprintf("unable to open %s: %s\n", pkg->path,
+		    archive_error_string(ar));
+		ret = 1;
+		goto cleanup;
+	}
+
+	while ((ret = archive_read_next_header(ar, &entry)) != ARCHIVE_EOF) {
+		if (ret != ARCHIVE_OK) {
+			weprintf("unable to read header %s: %s\n",
+			    archive_entry_pathname(entry),
+			    archive_error_string(ar));
+			goto cleanup;
+		}
+
+		ret = archive_read_extract(ar, entry, EXTRACT_FLAGS);
+
+		if (ret != ARCHIVE_OK) {
+			weprintf("unable to extract %s: %s\n",
+			    archive_entry_pathname(entry),
+			    archive_error_string(ar));
+			goto cleanup;
+		}
+
+		if (vflag > 1)
+			printf("  %s\n", archive_entry_pathname(entry));
+	}
+
+cleanup:
+	archive_read_free(ar);
+
+	if (chdir(cwd) < 0) {
+		weprintf("chdir %s:", cwd);
+		ret = -1;
+	}
+
+	return ret == ARCHIVE_EOF ? 0 : ret;
 }
 
 static int
@@ -178,9 +236,9 @@ install(struct pkg *pkg, const char *parent)
 	}
 
 	if (vflag) {
-		printf("install: %s", pkg->name);
+		printf("install: %s ", pkg->name);
 		if (parent)
-			printf(" <- %s", parent);
+			printf("<- %s ", parent);
 		fflush(stdout);
 	}
 
@@ -210,7 +268,7 @@ main(int argc, char **argv)
 		prefix = EARGF(usage());
 		break;
 	case 'v':
-		vflag = 1;
+		vflag++;
 		break;
 	default:
 		usage();
