@@ -4,7 +4,8 @@ SRC = pkg.c \
       util/eprintf.c \
       util/ealloc.c \
       util/strlcpy.c \
-      util/strlcat.c
+      util/strlcat.c \
+      util/mkdirp.c
 HDR = util.h util/arg.h util/queue.h
 OBJ =$(SRC:.c=.o)
 
