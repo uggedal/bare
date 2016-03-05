@@ -89,10 +89,10 @@ parse_dep_field(struct pkg *pkg, FILE *fp, char *field)
 {
 	char *p, *tmp;
 	struct pkg *dep;
+	int i;
 
 	pkg->raw_dep = estrdup(field);
 
-	int i;
 	for (i = 0; (p = strsep(&field, ",")); i++) {
 		tmp = estrdup(p);
 		p = strrchr(tmp, ':');
