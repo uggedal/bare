@@ -211,10 +211,12 @@ record_entry(FILE *fp, struct archive_entry *entry)
 		break;
 	}
 
-	if (t == 'U')
+	if (t == 'U') {
 		weprintf("unknown file type '%d': %s\n",
 		    archive_entry_filetype(entry),
 		    archive_entry_pathname(entry));
+		return -1;
+	}
 
 	n = fprintf(fp, "%s|%c|TODO_SUM\n", archive_entry_pathname(entry), t);
 	return n < 0 ? n : 0;
