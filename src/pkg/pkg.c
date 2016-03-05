@@ -32,6 +32,8 @@ struct pkg {
 
 static char *prefix = "/";
 static char *repopath = NULL;
+static char tmpdir[PATH_MAX];
+static char dbdir[PATH_MAX];
 static int vflag = 0;
 
 /* parses file format: name_1.0.0_24.txz */
@@ -189,7 +191,85 @@ usage(void)
 }
 
 static int
-extract(struct pkg *pkg)
+record_entry(FILE *fp, struct archive_entry *entry)
+{
+	int n;
+	char t = 'U';
+
+	switch (archive_entry_filetype(entry)) {
+	case AE_IFREG:
+		t = 'F';
+		break;
+	case AE_IFDIR:
+		t = 'D';
+		break;
+	case AE_IFLNK:
+		if (archive_entry_hardlink(entry) != NULL)
+			t = 'H';
+		if (archive_entry_symlink(entry) != NULL)
+			t = 'L';
+		break;
+	}
+
+	if (t == 'U')
+		weprintf("unknown file type '%d': %s\n",
+		    archive_entry_filetype(entry),
+		    archive_entry_pathname(entry));
+
+	n = fprintf(fp, "%s|%c|TODO_SUM\n", archive_entry_pathname(entry), t);
+	return n < 0 ? n : 0;
+}
+
+static int
+record_meta(struct pkg *pkg, FILE *infp, char *inpath, int explicit)
+{
+	char path[PATH_MAX], buf[BUFSIZ];
+	FILE *fp;
+	size_t n;
+
+	if (mkdirp(dbdir)) {
+		weprintf("mkdirp %s:", path);
+		return -1;
+	}
+
+	estrlcpy(path, dbdir, PATH_MAX);
+	estrlcat(path, "/", PATH_MAX);
+	estrlcat(path, pkg->name, PATH_MAX);
+
+	if (!(fp = fopen(path, "w"))) {
+		weprintf("fopen %s:", path);
+		return -1;
+	}
+
+	if (fprintf(fp, "%s|%s|%s|%s|%c\n", pkg->raw_fname,
+	    pkg->raw_lib, pkg->raw_dep, pkg->sum,
+	    explicit ? 'E' : 'D') < 0) {
+		weprintf("fprintf %s:", path);
+		return -1;
+	}
+
+	rewind(infp);
+	while ((n = fread(buf, 1, sizeof(buf), infp))) {
+		if (ferror(infp)) {
+			weprintf("fread %s:", inpath);
+			return -1;
+		}
+
+		if (fwrite(buf, 1, n, fp) != n) {
+			weprintf("fwrite %s:", path);
+			return -1;
+		}
+
+		if (feof(infp))
+			break;
+	}
+	fclose(fp);
+
+	return 0;
+}
+
+static int
+extract(struct pkg *pkg, FILE *fp)
 {
 	struct archive *ar;
 	struct archive_entry *entry;
@@ -234,6 +314,13 @@ extract(struct pkg *pkg)
 			goto cleanup;
 		}
 
+		if (record_entry(fp, entry)) {
+			weprintf("unable to record entry: %s\n",
+			    archive_entry_pathname(entry));
+			ret = -1;
+			goto cleanup;
+		}
+
 		if (vflag > 1)
 			printf("  %s\n", archive_entry_pathname(entry));
 	}
@@ -250,38 +337,54 @@ cleanup:
 }
 
 static int
-record(struct pkg *pkg, int explicit)
-{
-	(void) pkg;
-	(void) explicit;
-	return 0;
-}
-
-
-static int
 install(struct pkg *pkg, const char *parent)
 {
-	struct pkg *p;
+	struct pkg *dep;
 	int ret;
+	FILE *fp = NULL;
+	char path[PATH_MAX];
 
-	LIST_FOREACH(p, &pkg->dep_head, dep_entries) {
-		install(p, pkg->name);
+	LIST_FOREACH(dep, &pkg->dep_head, dep_entries) {
+		install(dep, pkg->name);
 	}
 
 	if (vflag) {
-		printf("install: %s ", pkg->name);
+		printf("install: %s", pkg->name);
 		if (parent)
-			printf("<- %s ", parent);
-		fflush(stdout);
+			printf(" <- %s", parent);
+		printf("\n");
 	}
 
-	if ((ret = extract(pkg)))
-		ret |= record(pkg, parent == NULL);
+	estrlcpy(path, tmpdir, PATH_MAX);
+	estrlcat(path, "/", PATH_MAX);
+	estrlcat(path, pkg->name, PATH_MAX);
 
-	if (vflag)
-		printf("\n");
+	if (mkdirp(tmpdir)) {
+		weprintf("mkdirp %s:", path);
+		return -1;
+	}
+
+	if (!(fp = fopen(path, "w+"))) {
+		weprintf("fopen %s:", path);
+		return -1;
+	}
+
+	if (!(ret = extract(pkg, fp)))
+		ret |= record_meta(pkg, fp, path, parent == NULL);
+
+	fclose(fp);
+	unlink(path);
 
 	return ret;
+}
+
+static void
+prefixify(char *path, const char *suffix)
+{
+	estrlcpy(path, prefix, PATH_MAX);
+	if (path[strlen(path) - 1] != '/')
+		estrlcat(path, "/", PATH_MAX);
+	estrlcat(path, suffix, PATH_MAX);
 }
 
 int
@@ -306,6 +409,9 @@ main(int argc, char **argv)
 	default:
 		usage();
 	}ARGEND;
+
+	prefixify(tmpdir, "tmp/pkg");
+	prefixify(dbdir, "var/pkg/db");
 
 	switch (mode) {
 	case INSTALL:
