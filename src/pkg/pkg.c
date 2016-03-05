@@ -378,7 +378,7 @@ install(struct pkg *pkg, const char *parent)
 	}
 
 	if (vflag) {
-		printf("install: %s", pkg->name);
+		printf("install: %s %s_%s", pkg->name, pkg->ver, pkg->epoc);
 		if (parent)
 			printf(" <- %s", parent);
 		printf("\n");
