@@ -32,7 +32,7 @@ static char *repopath = NULL;
 static int vflag = 0;
 
 /* parses file format: name_1.0.0_24.txz */
-static void
+static int
 parse_file_field(struct pkg *pkg, char *field)
 {
 	char *p;
@@ -48,16 +48,21 @@ parse_file_field(struct pkg *pkg, char *field)
 	for (i = 0; (p = strsep(&field, "_")); i++) {
 		switch (i) {
 		case I_FILE_NAME:
-			pkg->name = strdup(p);
+			pkg->name = estrdup(p);
 			break;
 		case I_FILE_VER:
-			pkg->ver = strdup(p);
+			pkg->ver = estrdup(p);
 			break;
 		case I_FILE_EPOC:
-			pkg->epoc = strdup(p);
+			pkg->epoc = estrdup(p);
 			break;
 		}
 	}
+
+	if (i != I_FILE_EPOC + 1 || *pkg->name == '\0' ||
+	    *pkg->ver == '\0' || pkg->epoc == '\0')
+		return -1;
+	return 0;
 }
 
 static struct pkg *pkg_load(FILE *, char *);
@@ -112,7 +117,9 @@ pkg_load(FILE *fp, char *name)
 
 		switch (i) {
 		case I_FILE:
-			parse_file_field(pkg, tmp);
+			if (parse_file_field(pkg, tmp))
+				eprintf("invalid file field in INDEX for"
+				    " '%s'\n", name);
 			break;
 		case I_LIB:
 			break;
@@ -127,7 +134,7 @@ pkg_load(FILE *fp, char *name)
 
 	free(line);
 
-	if (!pkg->name || !pkg->ver || !pkg->epoc)
+	if (i != I_SUM + 1)
 		eprintf("invalid INDEX for '%s'\n", name);
 
 	return pkg;
