@@ -1,9 +1,15 @@
 #include <errno.h>
+#include <fcntl.h>
 #include <limits.h>
+#include <sched.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/mount.h>
 #include <sys/stat.h>
+#include <sys/syscall.h>
+#include <sys/wait.h>
 
 #include <archive.h>
 #include <archive_entry.h>
@@ -15,8 +21,16 @@
 #define EXTRACT_FLAGS	ARCHIVE_EXTRACT_PERM | \
 			ARCHIVE_EXTRACT_TIME | \
 			ARCHIVE_EXTRACT_SECURE_NODOTDOT
+#define CLONE_FLAGS	SIGCHLD | \
+			CLONE_NEWUSER | \
+			CLONE_NEWNS | \
+			CLONE_NEWPID | \
+			CLONE_NEWNET | \
+			CLONE_NEWUTS | \
+			CLONE_NEWIPC
+#define SETGRP_FILE	"/proc/self/setgroups"
 
-enum { NONE, INSTALL };
+enum { NONE, INSTALL, ENTER };
 enum { I_FILE, I_LIB, I_DEP, I_SUM };
 enum { I_FILE_NAME, I_FILE_VER, I_FILE_EPOC };
 
@@ -448,6 +462,78 @@ install(struct pkg *pkg, const char *parent)
 }
 
 static void
+idmap(const char *path, const uid_t id) {
+	int fd;
+	char buf[32];
+
+	if ((fd = open(path, O_WRONLY)) < 0)
+		eprintf("unable to open %s:", path);
+	if (write(fd, buf, snprintf(buf, sizeof buf, "0 %u 1\n", id)) < 0)
+		eprintf("unable to write %s:", path);
+	if (close(fd))
+		eprintf("unable to close %s:", path);
+}
+
+static void
+mnt(const char *s, const char *d, const char *t, const int f) {
+	if (mount(s, d, t, f, 0))
+		eprintf("unable to mount '%s' to '%s'", s, d);
+}
+
+static int
+enter(const char *dir, char **argv)
+{
+	pid_t pid;
+	siginfo_t si;
+	int fd;
+	uid_t uid;
+	uid_t gid;
+	char cwd[PATH_MAX];
+
+	uid = getuid();
+	gid = getgid();
+
+	if (!getcwd(cwd, sizeof(cwd)))
+		eprintf("getcwd:");
+
+	if ((pid = syscall(__NR_clone, CLONE_FLAGS, NULL)) < 0)
+		eprintf("clone:");
+
+	if (pid == 0) {
+		if ((fd = open(SETGRP_FILE, O_WRONLY)) < 0)
+			eprintf("unable to open %s:", SETGRP_FILE);
+		if (write(fd, "deny", 4) < 0)
+			eprintf("unable to write %s:", SETGRP_FILE);
+		if (close(fd))
+			eprintf("unable to close %s:", SETGRP_FILE);
+		idmap("/proc/self/uid_map", uid);
+		idmap("/proc/self/gid_map", gid);
+
+		if (chdir(dir))
+			eprintf("chdir %s:", dir);
+
+		mnt("/dev", "./dev", 0, MS_BIND|MS_REC);
+		mnt("proc", "./proc", "proc", 0);
+		mnt("/sys", "./sys", 0, MS_BIND|MS_REC);
+
+		if (mkdirp("./host"))
+			eprintf("mkdirp %s:", "./host");
+		mnt(cwd, "./host", 0, MS_BIND);
+
+		if (chroot("."))
+			eprintf("chroot %s:", dir);
+
+		if (execv(argv[0], argv))
+			eprintf("unable to exec %s:", argv[0]);
+	}
+
+	if (waitid(P_PID, pid, &si, WEXITED))
+		eprintf("wait %u:", pid);
+
+	return si.si_status;
+}
+
+static void
 prefixify(char *path, const char *suffix)
 {
 	estrlcpy(path, prefix, PATH_MAX);
@@ -467,7 +553,14 @@ main(int argc, char **argv)
 
 	ARGBEGIN{
 	case 'i':
+		if (mode != NONE)
+			usage();
 		mode = INSTALL;
+		break;
+	case 'e':
+		if (mode != NONE)
+			usage();
+		mode = ENTER;
 		break;
 	case 'p':
 		prefix = EARGF(usage());
@@ -500,6 +593,11 @@ main(int argc, char **argv)
 				pkg_free(pkg);
 			}
 		fclose(fp);
+		break;
+	case ENTER:
+		if (argc < 2)
+			usage();
+			ret = enter(argv[0], argv+1);
 		break;
 	default:
 		usage();
