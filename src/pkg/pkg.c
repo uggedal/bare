@@ -1,7 +1,9 @@
+#include <errno.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include <archive.h>
 #include <archive_entry.h>
@@ -19,6 +21,7 @@ enum { I_FILE_NAME, I_FILE_VER, I_FILE_EPOC };
 
 struct pkg {
 	char path[PATH_MAX];
+	char dbpath[PATH_MAX];
 	char *name;
 	char *ver;
 	char *epoc;
@@ -69,6 +72,11 @@ parse_file_field(struct pkg *pkg, char *field)
 	if (i != I_FILE_EPOC + 1 || *pkg->name == '\0' ||
 	    *pkg->ver == '\0' || pkg->epoc == '\0')
 		return -1;
+
+	estrlcpy(pkg->dbpath, dbdir, PATH_MAX);
+	estrlcat(pkg->dbpath, "/", PATH_MAX);
+	estrlcat(pkg->dbpath, pkg->name, PATH_MAX);
+
 	return 0;
 }
 
@@ -184,6 +192,13 @@ pkg_free(struct pkg *pkg)
 	free(pkg);
 }
 
+static int
+pkg_installed(struct pkg *pkg)
+{
+	struct stat st;
+	return ! (stat(pkg->dbpath, &st) < 0 && errno == ENOENT);
+}
+
 static void
 usage(void)
 {
@@ -232,28 +247,24 @@ record_entry(FILE *fp, struct archive_entry *entry)
 static int
 record_meta(struct pkg *pkg, FILE *infp, char *inpath, int explicit)
 {
-	char path[PATH_MAX], buf[BUFSIZ];
+	char buf[BUFSIZ];
 	FILE *fp;
 	size_t n;
 
 	if (mkdirp(dbdir)) {
-		weprintf("mkdirp %s:", path);
+		weprintf("mkdirp %s:", pkg->dbpath);
 		return -1;
 	}
 
-	estrlcpy(path, dbdir, PATH_MAX);
-	estrlcat(path, "/", PATH_MAX);
-	estrlcat(path, pkg->name, PATH_MAX);
-
-	if (!(fp = fopen(path, "w"))) {
-		weprintf("fopen %s:", path);
+	if (!(fp = fopen(pkg->dbpath, "w"))) {
+		weprintf("fopen %s:", pkg->dbpath);
 		return -1;
 	}
 
 	if (fprintf(fp, "%s|%s|%s|%s|%c\n", pkg->raw_fname,
 	    pkg->raw_lib, pkg->raw_dep, pkg->sum,
 	    explicit ? 'E' : 'D') < 0) {
-		weprintf("fprintf %s:", path);
+		weprintf("fprintf %s:", pkg->dbpath);
 		return -1;
 	}
 
@@ -265,7 +276,7 @@ record_meta(struct pkg *pkg, FILE *infp, char *inpath, int explicit)
 		}
 
 		if (fwrite(buf, 1, n, fp) != n) {
-			weprintf("fwrite %s:", path);
+			weprintf("fwrite %s:", pkg->dbpath);
 			return -1;
 		}
 
@@ -350,8 +361,20 @@ install(struct pkg *pkg, const char *parent)
 	FILE *fp = NULL;
 	char path[PATH_MAX];
 
+	if (pkg_installed(pkg)) {
+		if (vflag > 1) {
+			printf("skip: %s", pkg->name);
+			if (parent)
+				printf(" <- %s", parent);
+			printf(" (installed)\n");
+		}
+		return 0;
+	}
+
+
 	LIST_FOREACH(dep, &pkg->dep_head, dep_entries) {
-		install(dep, pkg->name);
+		if ((ret = install(dep, pkg->name)))
+			return ret;
 	}
 
 	if (vflag) {
