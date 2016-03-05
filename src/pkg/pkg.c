@@ -199,6 +199,8 @@ record_entry(FILE *fp, struct archive_entry *entry)
 	switch (archive_entry_filetype(entry)) {
 	case AE_IFREG:
 		t = 'F';
+		if (vflag > 1)
+			printf("  %s\n", archive_entry_pathname(entry));
 		break;
 	case AE_IFDIR:
 		t = 'D';
@@ -206,8 +208,13 @@ record_entry(FILE *fp, struct archive_entry *entry)
 	case AE_IFLNK:
 		if (archive_entry_hardlink(entry) != NULL)
 			t = 'H';
-		if (archive_entry_symlink(entry) != NULL)
+		if (archive_entry_symlink(entry) != NULL) {
 			t = 'L';
+			if (vflag > 1)
+				printf("  %s -> %s\n",
+				    archive_entry_pathname(entry),
+				    archive_entry_symlink(entry));
+		}
 		break;
 	}
 
@@ -322,9 +329,6 @@ extract(struct pkg *pkg, FILE *fp)
 			ret = -1;
 			goto cleanup;
 		}
-
-		if (vflag > 1)
-			printf("  %s\n", archive_entry_pathname(entry));
 	}
 
 cleanup:
