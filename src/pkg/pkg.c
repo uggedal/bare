@@ -40,6 +40,12 @@ static char tmpdir[PATH_MAX];
 static char dbdir[PATH_MAX];
 static int vflag = 0;
 
+static void
+usage(void)
+{
+	eprintf("usage: %s [-i | -e] [-p prefix] [arg ...]\n", argv0);
+}
+
 /* parses file format: name_1.0.0_24.txz */
 static int
 parse_file_field(struct pkg *pkg, char *field)
@@ -198,12 +204,6 @@ pkg_installed(struct pkg *pkg)
 {
 	struct stat st;
 	return ! (stat(pkg->dbpath, &st) < 0 && errno == ENOENT);
-}
-
-static void
-usage(void)
-{
-	eprintf("usage: %s [-i] [-p prefix] [name ...]\n", argv0);
 }
 
 int
