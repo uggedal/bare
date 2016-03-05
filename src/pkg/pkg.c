@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 #include <archive.h>
 #include <archive_entry.h>
 
-#include "queue.h"
+#include "util/queue.h"
 #include "util.h"
 
 enum { NONE, INSTALL };

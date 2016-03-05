@@ -1,7 +1,11 @@
 include config.mk
 
-SRC = pkg.c eprintf.c ealloc.c strlcpy.c strlcat.c
-HDR = util.h arg.h queue.h
+SRC = pkg.c \
+      util/eprintf.c \
+      util/ealloc.c \
+      util/strlcpy.c \
+      util/strlcat.c
+HDR = util.h util/arg.h util/queue.h
 OBJ =$(SRC:.c=.o)
 
 all: pkg
