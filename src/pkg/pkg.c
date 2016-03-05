@@ -292,7 +292,7 @@ record_meta(struct pkg *pkg, FILE *infp, char *inpath, int explicit)
 	size_t n;
 
 	if (mkdirp(dbdir)) {
-		weprintf("mkdirp %s:", pkg->dbpath);
+		weprintf("mkdirp %s:", dbdir);
 		return -1;
 	}
 
@@ -429,7 +429,7 @@ install(struct pkg *pkg, const char *parent)
 	estrlcat(path, pkg->name, PATH_MAX);
 
 	if (mkdirp(tmpdir)) {
-		weprintf("mkdirp %s:", path);
+		weprintf("mkdirp %s:", tmpdir);
 		return -1;
 	}
 
