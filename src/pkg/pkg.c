@@ -598,7 +598,7 @@ main(int argc, char **argv)
 	case ENTER:
 		if (argc < 2)
 			usage();
-			ret = enter(argv[0], argv+1);
+		ret = enter(argv[0], argv+1);
 		break;
 	default:
 		usage();
