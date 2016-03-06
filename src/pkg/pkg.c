@@ -397,6 +397,7 @@ extract(struct pkg *pkg, FILE *fp)
 	}
 
 cleanup:
+	archive_read_close(ar);
 	archive_read_free(ar);
 
 	if (chdir(cwd) < 0) {
