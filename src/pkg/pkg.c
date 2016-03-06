@@ -49,7 +49,7 @@ struct pkg {
 };
 
 static char *prefix = "/";
-static char *repopath = NULL;
+static char *repodir = NULL;
 static char tmpdir[PATH_MAX];
 static char dbdir[PATH_MAX];
 static int vflag = 0;
@@ -69,7 +69,7 @@ parse_file_field(struct pkg *pkg, char *field)
 
 	pkg->raw_fname = estrdup(field);
 
-	estrlcpy(pkg->path, repopath, PATH_MAX);
+	estrlcpy(pkg->path, repodir, PATH_MAX);
 	estrlcat(pkg->path, "/", PATH_MAX);
 	estrlcat(pkg->path, field, PATH_MAX);
 
@@ -578,9 +578,9 @@ main(int argc, char **argv)
 
 	switch (mode) {
 	case INSTALL:
-		if (!(repopath = getenv("REPO")))
+		if (!(repodir = getenv("REPO")))
 			eprintf("REPO env variable not set\n");
-		estrlcpy(path, repopath, PATH_MAX);
+		estrlcpy(path, repodir, PATH_MAX);
 		estrlcat(path, "/INDEX", PATH_MAX);
 
 		if (!(fp = fopen(path, "r")))
