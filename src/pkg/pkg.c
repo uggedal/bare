@@ -504,7 +504,7 @@ create(FILE *fp, const char *fname, const char *lib, const char *dep,
 	DIR *dp;
 	struct dirent *d;
 	char t;
-	int r, n;
+	int r;
 
 	estrlcpy(path, repodir, PATH_MAX);
 	estrlcat(path, "/", PATH_MAX);
