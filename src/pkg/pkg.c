@@ -38,15 +38,19 @@
 
 enum { NONE, INSTALL, CREATE, ENTER };
 enum { I_FILE, I_LIB, I_DEP, I_SUM };
-enum { I_FILE_NAME, I_FILE_VER, I_FILE_EPOC };
+enum { I_ID_NAME, I_ID_VER, I_ID_EPOC };
 
-struct pkg {
-	char path[PATH_MAX];
-	char dbpath[PATH_MAX];
+struct id {
 	char *name;
 	char *ver;
-	char *epoc;
+	unsigned epoc;
+};
+
+struct pkg {
+	struct id id;
 	char *sum;
+	char path[PATH_MAX];
+	char dbpath[PATH_MAX];
 	char *raw_fname;
 	char *raw_lib;
 	char *raw_dep;
@@ -66,45 +70,48 @@ usage(void)
 	eprintf("usage: %s [-i | -c | -e] [-p prefix] [arg ...]\n", argv0);
 }
 
-/* parses file format: name_1.0.0_24.txz */
-static int
-parse_file_field(struct pkg *pkg, char *field)
+static void
+id_free(struct id *id)
 {
-	char *p;
-	int i;
+	free(id->name);
+	free(id->ver);
+}
 
-	pkg->raw_fname = estrdup(field);
+/* parses id format: name_1.0.0_24.txz */
+static int
+parse_id(struct id *id, char *field)
+{
+	char *p, *tmp;
+	int i, r = 0;
 
-	estrlcpy(pkg->path, repodir, PATH_MAX);
-	estrlcat(pkg->path, "/", PATH_MAX);
-	estrlcat(pkg->path, field, PATH_MAX);
+	tmp = estrdup(field);
 
-	p = strrchr(field, '.');
+	p = strchr(tmp, '|');
 	if (p)
 		*p = '\0';
-	for (i = 0; (p = strsep(&field, "_")); i++) {
+	p = strrchr(tmp, '.');
+	if (p)
+		*p = '\0';
+
+	for (i = 0; (p = strsep(&tmp, "_")); i++) {
 		switch (i) {
-		case I_FILE_NAME:
-			pkg->name = estrdup(p);
+		case I_ID_NAME:
+			id->name = estrdup(p);
 			break;
-		case I_FILE_VER:
-			pkg->ver = estrdup(p);
+		case I_ID_VER:
+			id->ver = estrdup(p);
 			break;
-		case I_FILE_EPOC:
-			pkg->epoc = estrdup(p);
+		case I_ID_EPOC:
+			id->epoc = estrtonum(p, 0, UINT_MAX);
 			break;
 		}
 	}
 
-	if (i != I_FILE_EPOC + 1 || *pkg->name == '\0' ||
-	    *pkg->ver == '\0' || pkg->epoc == '\0')
-		return -1;
+	if (i != I_ID_EPOC + 1 || *id->name == '\0' || *id->ver == '\0')
+		r = -1;
 
-	estrlcpy(pkg->dbpath, dbdir, PATH_MAX);
-	estrlcat(pkg->dbpath, "/", PATH_MAX);
-	estrlcat(pkg->dbpath, pkg->name, PATH_MAX);
-
-	return 0;
+	free(tmp);
+	return r;
 }
 
 static struct pkg *pkg_load(FILE *, char *);
@@ -130,30 +137,57 @@ parse_dep_field(struct pkg *pkg, FILE *fp, char *field)
 	}
 }
 
+static void
+pkg_free(struct pkg *pkg)
+{
+	struct pkg *dep;
+
+	while (!LIST_EMPTY(&pkg->dep_head)) {
+		dep = LIST_FIRST(&pkg->dep_head);
+		LIST_REMOVE(dep, dep_entries);
+		pkg_free(dep);
+	}
+	id_free(&pkg->id);
+	free(pkg->sum);
+	free(pkg->raw_fname);
+	free(pkg->raw_lib);
+	free(pkg->raw_dep);
+	free(pkg);
+}
+
+
 static struct pkg *
 pkg_load(FILE *fp, char *name)
 {
-	char *line = NULL, *p, *tmp;
+	char *line = NULL, *match_line = NULL, *p, *tmp;
 	size_t size = 0;
 	ssize_t len;
-	int i, match = 0;
 	struct pkg *pkg;
+	struct id *id;
+	unsigned match_epoc = 0;
+	int i;
 
-	while ((len = getline(&line, &size, fp)) > 0)
-		if (!strncmp(line, name, strlen(name)) &&
-		    line[strlen(name)] == '_') {
-				match = 1;
-				break;
+	id = emalloc(sizeof(*id));
+	while ((len = getline(&line, &size, fp)) > 0) {
+		if (parse_id(id, line))
+			eprintf("invalid file field in INDEX: %s\n", line);
+		if (!strcmp(id->name, name) && id->epoc >= match_epoc) {
+			match_epoc = id->epoc;
+			match_line = estrdup(line);
 		}
+		id_free(id);
+	}
 	rewind(fp);
+	free(id);
+	free(line);
 
-	if (!match)
+	if (!match_line)
 		eprintf("no package named '%s'\n", name);
 
 	pkg = emalloc(sizeof(*pkg));
 	LIST_INIT(&pkg->dep_head);
 
-	for (i = 0; (p = strsep(&line, "|")); i++) {
+	for (i = 0; (p = strsep(&match_line, "|")); i++) {
 		if (*p == '\0')
 			switch (i) {
 			case I_LIB:
@@ -165,16 +199,24 @@ pkg_load(FILE *fp, char *name)
 			case I_FILE:
 			case I_SUM:
 			default:
-				eprintf("invalid INDEX for '%s'\n", name);
+				eprintf("invalid INDEX for %s\n", name);
 			}
 
 		tmp = estrdup(p);
 
 		switch (i) {
 		case I_FILE:
-			if (parse_file_field(pkg, tmp))
-				eprintf("invalid file field in INDEX for"
-				    " '%s'\n", name);
+			if (parse_id(&pkg->id, p))
+				eprintf("invalid file field in INDEX: "
+				    "%s\n", p);
+			pkg->raw_fname = estrdup(tmp);
+			estrlcpy(pkg->path, repodir, PATH_MAX);
+			estrlcat(pkg->path, "/", PATH_MAX);
+			estrlcat(pkg->path, tmp, PATH_MAX);
+
+			estrlcpy(pkg->dbpath, dbdir, PATH_MAX);
+			estrlcat(pkg->dbpath, "/", PATH_MAX);
+			estrlcat(pkg->dbpath, pkg->id.name, PATH_MAX);
 			break;
 		case I_LIB:
 			pkg->raw_lib = estrdup(tmp);
@@ -191,32 +233,12 @@ pkg_load(FILE *fp, char *name)
 		free(tmp);
 	}
 
-	free(line);
+	free(match_line);
 
 	if (i != I_SUM + 1)
-		eprintf("invalid INDEX for '%s'\n", name);
+		eprintf("invalid INDEX for %s\n", name);
 
 	return pkg;
-}
-
-static void
-pkg_free(struct pkg *pkg)
-{
-	struct pkg *dep;
-
-	while (!LIST_EMPTY(&pkg->dep_head)) {
-		dep = LIST_FIRST(&pkg->dep_head);
-		LIST_REMOVE(dep, dep_entries);
-		pkg_free(dep);
-	}
-	free(pkg->name);
-	free(pkg->ver);
-	free(pkg->epoc);
-	free(pkg->sum);
-	free(pkg->raw_fname);
-	free(pkg->raw_lib);
-	free(pkg->raw_dep);
-	free(pkg);
 }
 
 static int
@@ -450,7 +472,7 @@ install(struct pkg *pkg, const char *parent)
 
 	if (pkg_installed(pkg)) {
 		if (vflag > 1) {
-			printf("skip: %s", pkg->name);
+			printf("skip: %s", pkg->id.name);
 			if (parent)
 				printf(" <- %s", parent);
 			printf(" (installed)\n");
@@ -460,12 +482,13 @@ install(struct pkg *pkg, const char *parent)
 
 
 	LIST_FOREACH(dep, &pkg->dep_head, dep_entries) {
-		if ((ret = install(dep, pkg->name)))
+		if ((ret = install(dep, pkg->id.name)))
 			return ret;
 	}
 
 	if (vflag) {
-		printf("install: %s %s_%s", pkg->name, pkg->ver, pkg->epoc);
+		printf("install: %s %s_%u",
+		    pkg->id.name, pkg->id.ver, pkg->id.epoc);
 		if (parent)
 			printf(" <- %s", parent);
 		printf("\n");
@@ -473,7 +496,7 @@ install(struct pkg *pkg, const char *parent)
 
 	estrlcpy(path, tmpdir, PATH_MAX);
 	estrlcat(path, "/", PATH_MAX);
-	estrlcat(path, pkg->name, PATH_MAX);
+	estrlcat(path, pkg->id.name, PATH_MAX);
 
 	if (mkdirp(tmpdir)) {
 		weprintf("mkdirp %s:", tmpdir);
