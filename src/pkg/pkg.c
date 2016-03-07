@@ -1,3 +1,4 @@
+#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -35,7 +36,7 @@
 			CLONE_NEWIPC
 #define SETGRP_FILE	"/proc/self/setgroups"
 
-enum { NONE, INSTALL, ENTER };
+enum { NONE, INSTALL, CREATE, ENTER };
 enum { I_FILE, I_LIB, I_DEP, I_SUM };
 enum { I_FILE_NAME, I_FILE_VER, I_FILE_EPOC };
 
@@ -62,7 +63,7 @@ static int vflag = 0;
 static void
 usage(void)
 {
-	eprintf("usage: %s [-i | -e] [-p prefix] [arg ...]\n", argv0);
+	eprintf("usage: %s [-i | -c | -e] [-p prefix] [arg ...]\n", argv0);
 }
 
 /* parses file format: name_1.0.0_24.txz */
@@ -493,6 +494,105 @@ install(struct pkg *pkg, const char *parent)
 	return ret;
 }
 
+static int
+create(FILE *fp, const char *fname, const char *lib, const char *dep,
+    const char *dir)
+{
+	struct archive *ar, *disk;
+	struct archive_entry *ent;
+	char path[PATH_MAX], cwd[PATH_MAX];
+	DIR *dp;
+	struct dirent *d;
+	char t;
+	int r, n;
+
+	estrlcpy(path, repodir, PATH_MAX);
+	estrlcat(path, "/", PATH_MAX);
+	estrlcat(path, fname, PATH_MAX);
+
+	if (vflag) {
+		printf("creating %s:\n",  fname);
+		printf("  repo: %s\n",  repodir);
+		if (strlen(lib))
+			printf("  lib: %s\n",  lib);
+		if (strlen(dep))
+			printf("  dep: %s\n",  dep);
+		printf("  src: %s\n",  dir);
+	}
+
+	ar = archive_write_new();
+	archive_write_add_filter_xz(ar);
+	archive_write_set_format_pax_restricted(ar);
+	if (archive_write_open_filename(ar, path) != ARCHIVE_OK)
+		eprintf("write open %s: %s\n", path,
+		    archive_error_string(ar));
+
+	if (!getcwd(cwd, sizeof(cwd)))
+		eprintf("getcwd:");
+
+	if (chdir(dir) < 0)
+		eprintf("chdir %s:", dir);
+
+	if (!(dp = opendir(".")))
+		eprintf("opendir %s:", dir);
+
+	disk = archive_read_disk_new();
+
+	while ((d = readdir(dp))) {
+		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
+			continue;
+
+		if (archive_read_disk_open(disk, d->d_name) != ARCHIVE_OK)
+			eprintf("disk open %s: %s\n", d->d_name,
+			    archive_error_string(disk));
+
+		for (;;) {
+			ent = archive_entry_new();
+			if ((r = archive_read_next_header2(disk, ent) ==
+			    ARCHIVE_EOF))
+				break;
+			if (r != ARCHIVE_OK)
+				eprintf("disk: %s\n",
+				    archive_error_string(disk));
+			archive_read_disk_descend(disk);
+
+			t = entry_to_type(ent);
+
+			if (t == ENT_UNKNOWN)
+				eprintf("unknown entry type: %d\n",
+				    archive_entry_filetype(ent));
+
+			r = archive_write_header(ar, ent);
+			if (r < ARCHIVE_OK)
+				eprintf("write header: %s\n",
+				    archive_error_string(ar));
+			if (vflag)
+				printf("  %c %s\n", t,
+				    archive_entry_pathname(ent));
+		}
+
+		archive_read_close(disk);
+		archive_read_free(disk);
+	}
+
+	closedir(dp);
+
+	if (chdir(cwd) < 0)
+		eprintf("chdir %s:", cwd);
+
+	archive_read_close(ar);
+	archive_read_free(ar);
+
+	if (fprintf(fp, "%s|%s|%s|", fname, lib, dep) < 0)
+		eprintf("fprintf INDEX:");
+	if (write_cksum(path, fp))
+		eprintf("unable to write checksum");
+	if (fprintf(fp, "\n") < 0)
+		eprintf("fprintf INDEX:");
+
+	return 0;
+}
+
 static void
 idmap(const char *path, const uid_t id) {
 	int fd;
@@ -589,6 +689,11 @@ main(int argc, char **argv)
 			usage();
 		mode = INSTALL;
 		break;
+	case 'c':
+		if (mode != NONE)
+			usage();
+		mode = CREATE;
+		break;
 	case 'e':
 		if (mode != NONE)
 			usage();
@@ -609,21 +714,33 @@ main(int argc, char **argv)
 
 	switch (mode) {
 	case INSTALL:
+	case CREATE:
 		if (!(repodir = getenv("REPO")))
 			eprintf("REPO env variable not set\n");
 		estrlcpy(path, repodir, PATH_MAX);
 		estrlcat(path, "/INDEX", PATH_MAX);
+	}
 
-		if (!(fp = fopen(path, "r")))
-			eprintf("fopen %s:", path);
-
+	switch (mode) {
+	case INSTALL:
 		if (!argc)
 			usage();
+		if (!(fp = fopen(path, "r")))
+			eprintf("fopen %s:", path);
 		while (*argv)
 			if ((pkg = pkg_load(fp, *(argv++)))) {
 				ret |= install(pkg, NULL);
 				pkg_free(pkg);
 			}
+		fclose(fp);
+		break;
+	case CREATE:
+		if (argc != 4)
+			usage();
+
+		if (!(fp = fopen(path, "a")))
+			eprintf("fopen %s:", path);
+		create(fp, argv[0], argv[1], argv[2], argv[3]);
 		fclose(fp);
 		break;
 	case ENTER:
