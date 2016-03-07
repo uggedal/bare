@@ -239,18 +239,18 @@ cksum(FILE *fp, const char *path, uint8_t *md)
 }
 
 static int
-record_entry(FILE *fp, struct archive_entry *entry)
+record_entry(FILE *fp, struct archive_entry *ent)
 {
 	int n;
 	char t = 'U';
 	uint8_t md[SHA256_DIGEST_LENGTH];
-	FILE *entryfp;
+	FILE *entfp;
 	const char *path;
 	size_t i;
 
-	path = archive_entry_pathname(entry);
+	path = archive_entry_pathname(ent);
 
-	switch (archive_entry_filetype(entry)) {
+	switch (archive_entry_filetype(ent)) {
 	case AE_IFREG:
 		t = 'F';
 		if (vflag > 1)
@@ -260,30 +260,30 @@ record_entry(FILE *fp, struct archive_entry *entry)
 		t = 'D';
 		break;
 	case AE_IFLNK:
-		if (archive_entry_hardlink(entry) != NULL)
+		if (archive_entry_hardlink(ent) != NULL)
 			t = 'H';
-		if (archive_entry_symlink(entry) != NULL) {
+		if (archive_entry_symlink(ent) != NULL) {
 			t = 'L';
 			if (vflag > 1)
 				printf("  %s -> %s\n", path,
-				    archive_entry_symlink(entry));
+				    archive_entry_symlink(ent));
 		}
 		break;
 	}
 
 	if (t == 'U') {
 		weprintf("unknown file type '%d': %s\n",
-		    archive_entry_filetype(entry), path);
+		    archive_entry_filetype(ent), path);
 		return -1;
 	}
 
-	if (!(entryfp = fopen(path, "r"))) {
+	if (!(entfp = fopen(path, "r"))) {
 		weprintf("fopen %s:", path);
 		return -1;
 	}
 
 	if (t == 'F' || t == 'H')
-		if (cksum(entryfp, path, md))
+		if (cksum(entfp, path, md))
 			return -1;
 
 	if ((n = fprintf(fp, "%s|%c|", path, t)) < 0)
@@ -346,7 +346,7 @@ static int
 extract(struct pkg *pkg, FILE *fp)
 {
 	struct archive *ar;
-	struct archive_entry *entry;
+	struct archive_entry *ent;
 	char cwd[PATH_MAX];
 	int ret;
 
@@ -371,26 +371,26 @@ extract(struct pkg *pkg, FILE *fp)
 		goto cleanup;
 	}
 
-	while ((ret = archive_read_next_header(ar, &entry)) != ARCHIVE_EOF) {
+	while ((ret = archive_read_next_header(ar, &ent)) != ARCHIVE_EOF) {
 		if (ret != ARCHIVE_OK) {
 			weprintf("unable to read header %s: %s\n",
-			    archive_entry_pathname(entry),
+			    archive_entry_pathname(ent),
 			    archive_error_string(ar));
 			goto cleanup;
 		}
 
-		ret = archive_read_extract(ar, entry, EXTRACT_FLAGS);
+		ret = archive_read_extract(ar, ent, EXTRACT_FLAGS);
 
 		if (ret != ARCHIVE_OK) {
 			weprintf("unable to extract %s: %s\n",
-			    archive_entry_pathname(entry),
+			    archive_entry_pathname(ent),
 			    archive_error_string(ar));
 			goto cleanup;
 		}
 
-		if (record_entry(fp, entry)) {
+		if (record_entry(fp, ent)) {
 			weprintf("unable to record entry: %s\n",
-			    archive_entry_pathname(entry));
+			    archive_entry_pathname(ent));
 			ret = -1;
 			goto cleanup;
 		}
