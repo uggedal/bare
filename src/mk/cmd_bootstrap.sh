@@ -1,9 +1,13 @@
 _bootstrap_reqs() {
-	local b
+	local b h
 	local missing
 
 	for b in cc c++ make patch tar xz curl file m4 ed; do
 		which $b >/dev/null 2>&1 || missing="$missing $b"
+	done
+
+	for h in archive.h lzma.h; do
+		[ -f /usr/include/$h ] || missing="$missing $h"
 	done
 
 	if [ "$missing" ]; then
