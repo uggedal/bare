@@ -1,4 +1,5 @@
 ver 0.8.2
+epoc 1
 dist http://libbsd.freedesktop.org/releases/$PKG_NAME-${PKG_VER}.tar.xz
 
 bdep bsd-headers kernel-headers

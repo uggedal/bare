@@ -1,4 +1,5 @@
 ver 5.8
+epoc 1
 
 bdep libbsd-bld libz-bld
 

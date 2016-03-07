@@ -20,7 +20,6 @@ for _dir in \
     build \
     cache \
     contain \
-    db \
     dest \
     dist \
     log \

@@ -79,7 +79,7 @@ _optimize() {
 
 _optimize_sub() {
 	local name=$1
-	local qualified_name=$name-${PKG_VER}_$PKG_REV
+	local qualified_name=${name}_${PKG_VER}_$PKG_EPOC
 	local dest=$_DEST/$qualified_name
 
 	_optimize $name $dest

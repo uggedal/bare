@@ -64,6 +64,20 @@ dump() {
 	done
 }
 
+csv() {
+	local v
+	local ret
+	for v; do
+		ret="$ret,$v"
+	done
+
+	printf '%s' "${ret#,*}"
+}
+
+uncvs() {
+	printf '%s' "$1" | sed 's/,/ /'
+}
+
 pkg_to_qualified_name() {
 	local pkg=$1
 
@@ -73,77 +87,39 @@ pkg_to_qualified_name() {
 pkg_to_name() {
 	local pkg=$1
 
-	printf '%s' ${pkg%-*}
+	printf '%s' ${pkg%%_*}
 }
 
 pkg_to_version() {
-	local pkg=$1
-	local qualified_name=$(pkg_to_qualified_name $pkg)
+	local qualified_name=$(pkg_to_qualified_name $1)
+	local tmp=${qualified_name#*_}
 
-	printf '%s' ${qualified_name##*-}
+	printf '%s' ${tmp%_*}
 }
 
-pkg_db() {
-	local prefix=$1
-	local name=$2
-	local type=$3
+pkg_to_epoc() {
+	local qualified_name=$(pkg_to_qualified_name $1)
 
-	[ -z "$type" ] || type=$type/
-
-	printf '%s' ${prefix%/}/$PKG_DB/$type$name
+	printf '%s' ${qualified_name##*_}
 }
 
 read_repo() {
-	local repo=$1
-	local cb=$2
+	local cb=$1
 
-	[ -d $repo ] || die "unable to read repo: '$REPO'"
+	[ -f $_REPO/INDEX ] || return 0
 
-	local f p
-	for f in $repo/*$PKG_EXT; do
-		case $f in
-		$repo/\*$PKG_EXT)
-			return 0
-			;;
-		esac
-
-		p=$(basename $f)
-		$cb $(pkg_to_name $p) $(pkg_to_version $p) $(pkg_to_qualified_name $p) $p
-	done
-}
-
-read_db() {
-	local prefix=$1
-	local name=$2
-	local cb=$3
-	local db=$(pkg_db $prefix $name)
-
-	[ -f $db ] || die "unable to read '$name' ($db)"
-
-	local t f1 f2
-	while IFS='|' read -r t f1 f2; do
-		$cb $t $f1 $f2
-	done < $db
-}
-
-_pkg_in_repo_check() {
-	local name=$1
-
-	[ "$_PKG_NAME" = "$name" ] || return 0
-
-	_HAS_PKG_IN_REPO=yes
+	local p raw_lib raw_dep sum
+	while IFS='|' read -r p raw_lib raw_dep sum; do
+		$cb $(pkg_to_name $p) $(pkg_to_version $p) $(pkg_to_epoc $p) \
+		    "$(uncvs $raw_lib)" "$(uncvs $raw_dep)" $sum
+	done < $_REPO/INDEX
 }
 
 pkg_in_repo() {
 	local repo=$1
-	_PKG_NAME=$2
+	name=$2
 
-	read_repo $repo _pkg_in_repo_check
-
-	local has_pkg="$_HAS_PKG_IN_REPO"
-	unset _PKG_NAME _HAS_PKG_IN_REPO
-
-	[ "$has_pkg" ]
+	grep -q ^${name}_ $repo/INDEX
 }
 
 distfile() {
@@ -301,7 +277,6 @@ read_pkg() {
 
 	PKG_NAME=$1
 	PKG_PARENT_NAME=$PKG_NAME
-	PKG_REV=1
 
 	source_pkg $PKG_NAME
 
@@ -309,8 +284,8 @@ read_pkg() {
 		unset -f $_v
 	done
 
-	PKG_QUALIFIED_NAME=$PKG_NAME-${PKG_VER}_$PKG_REV
-	PKG_QUALIFIED_PARENT_NAME=$PKG_PARENT_NAME-${PKG_VER}_$PKG_REV
+	PKG_QUALIFIED_NAME=${PKG_NAME}_${PKG_VER}_$PKG_EPOC
+	PKG_QUALIFIED_PARENT_NAME=${PKG_PARENT_NAME}_${PKG_VER}_$PKG_EPOC
 
 	validate_pkg
 
@@ -337,28 +312,12 @@ inherit() {
 	fi
 }
 
-extract_db_file() {
-	local name=$1
-	local ver=$2
-	local qualified_name=$3
-	local pkg=$4
-	local arg
-
-	if [ "$MK_CONTAINED" ]; then
-		arg=--no-same-owner
-	fi
-
-	tar $arg -C $_DB -xJf $_REPO/$pkg $PKG_DB/$name
-}
-
 use_contain() {
 	[ -z "$MK_NO_CONTAIN" ] && [ -z "$MK_CONTAINED" ]
 }
 
 pkgpath() {
-	local cmd=pkg-$1
-	shift
-
+	local cmd=pkg
 	command -v $cmd >/dev/null || cmd=$_BOOTSTRAP_SUPPORT/bin/$cmd
 
 	printf '%s' $cmd
@@ -374,7 +333,7 @@ contain() {
 		HOME=/root \
 		HOSTDIR=$_ROOT \
 		MK_CONTAINED=yes \
-		$(pkgpath contain) $_CONTAIN "$@"
+		$(pkgpath) -c $_CONTAIN "$@"
 
 	rm -f $conf
 }
@@ -387,7 +346,7 @@ contain_mk() {
 }
 
 prepare_contain() {
-	REPO=$_ROOT/repo $(pkgpath install) -p $_CACHE base-bld
+	REPO=$_ROOT/repo $(pkgpath) -ip $_CACHE base-bld
 
 	mkdir -p $_CONTAIN
 

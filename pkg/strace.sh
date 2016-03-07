@@ -1,4 +1,5 @@
 ver 4.10
+epoc 1
 dist $URI_SF/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.xz
 
 bdep kernel-headers

@@ -26,7 +26,7 @@ _manual_install() {
 _prefix_install() {
 	local name="$1"
 	local prefix=$2
-	REPO=$_ROOT/repo pkg-install -p $prefix "$name"
+	REPO=$_ROOT/repo pkg -ip $prefix "$name"
 }
 
 _build_gcc() {
@@ -53,7 +53,7 @@ _bootstrap_cross() {
 
 	mkdir -p $prefix/$TRIPLE
 
-	if ! [ -x $_BOOTSTRAP_SUPPORT/bin/pkg-contain ]; then
+	if ! [ -x $_BOOTSTRAP_SUPPORT/bin/pkg ]; then
 		MK_PREFIX=$_BOOTSTRAP_SUPPORT \
 		MK_DESTDIR=no \
 			./mk install bootstrap-pkg
