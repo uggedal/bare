@@ -5,6 +5,7 @@ SRC = pkg.c \
       util/ealloc.c \
       util/strlcpy.c \
       util/strlcat.c \
+      util/strtonum.c \
       util/mkdirp.c \
       util/sha256.c
 HDR = util.h util/arg.h util/queue.h util/sha256.h
