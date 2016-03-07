@@ -163,22 +163,20 @@ pkg_load(FILE *fp, char *name)
 	size_t size = 0;
 	ssize_t len;
 	struct pkg *pkg;
-	struct id *id;
+	struct id id;
 	unsigned match_epoc = 0;
 	int i;
 
-	id = emalloc(sizeof(*id));
 	while ((len = getline(&line, &size, fp)) > 0) {
-		if (parse_id(id, line))
+		if (parse_id(&id, line))
 			eprintf("invalid file field in INDEX: %s\n", line);
-		if (!strcmp(id->name, name) && id->epoc >= match_epoc) {
-			match_epoc = id->epoc;
+		if (!strcmp(id.name, name) && id.epoc >= match_epoc) {
+			match_epoc = id.epoc;
 			match_line = estrdup(line);
 		}
-		id_free(id);
+		id_free(&id);
 	}
 	rewind(fp);
-	free(id);
 	free(line);
 
 	if (!match_line)
