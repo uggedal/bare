@@ -37,3 +37,5 @@ post_install() {
 			rm $f
 	done
 }
+
+stale ignore '[13579]\.[0-9][0-9]*$'
