@@ -572,8 +572,8 @@ create(FILE *fp, const char *fname, const char *lib, const char *dep,
 		}
 
 		archive_read_close(disk);
-		archive_read_free(disk);
 	}
+	archive_read_free(disk);
 
 	closedir(dp);
 
