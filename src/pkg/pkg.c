@@ -21,6 +21,11 @@
 #define EXTRACT_FLAGS	ARCHIVE_EXTRACT_PERM | \
 			ARCHIVE_EXTRACT_TIME | \
 			ARCHIVE_EXTRACT_SECURE_NODOTDOT
+#define ENT_FILE	'F'
+#define ENT_DIR		'D'
+#define ENT_HARDLINK	'H'
+#define ENT_SYMLINK	'L'
+#define ENT_UNKNOWN	'U'
 #define CLONE_FLAGS	SIGCHLD | \
 			CLONE_NEWUSER | \
 			CLONE_NEWNS | \
@@ -238,60 +243,86 @@ cksum(FILE *fp, const char *path, uint8_t *md)
 	return 0;
 }
 
+static char
+entry_to_type(struct archive_entry *ent)
+{
+	char t = ENT_UNKNOWN;
+
+	switch (archive_entry_filetype(ent)) {
+	case AE_IFREG:
+		t = ENT_FILE;
+		break;
+	case AE_IFDIR:
+		t = ENT_DIR;
+		break;
+	case AE_IFLNK:
+		if (archive_entry_hardlink(ent) != NULL)
+			t = ENT_HARDLINK;
+		if (archive_entry_symlink(ent) != NULL)
+			t = ENT_SYMLINK;
+		break;
+	}
+
+	return t;
+}
+
+static int
+write_cksum(const char *path, FILE *out)
+{
+	FILE *in;
+	uint8_t md[SHA256_DIGEST_LENGTH];
+	size_t i;
+	int n;
+
+	if (!(in = fopen(path, "r"))) {
+		weprintf("fopen %s:", path);
+		return -1;
+	}
+
+	if (cksum(in, path, md)) {
+		fclose(in);
+		return -1;
+	}
+
+	for (i = 0; i < sizeof(md); i++)
+		if ((n = fprintf(out, "%02x", md[i])) < 0) {
+			fclose(in);
+			return n;
+		}
+
+	fclose(in);
+	return 0;
+}
+
 static int
 record_entry(FILE *fp, struct archive_entry *ent)
 {
 	int n;
-	char t = 'U';
-	uint8_t md[SHA256_DIGEST_LENGTH];
-	FILE *entfp;
+	char t;
 	const char *path;
-	size_t i;
 
 	path = archive_entry_pathname(ent);
+	t = entry_to_type(ent);
 
-	switch (archive_entry_filetype(ent)) {
-	case AE_IFREG:
-		t = 'F';
-		if (vflag > 1)
-			printf("  %s\n", path);
-		break;
-	case AE_IFDIR:
-		t = 'D';
-		break;
-	case AE_IFLNK:
-		if (archive_entry_hardlink(ent) != NULL)
-			t = 'H';
-		if (archive_entry_symlink(ent) != NULL) {
-			t = 'L';
-			if (vflag > 1)
-				printf("  %s -> %s\n", path,
-				    archive_entry_symlink(ent));
-		}
-		break;
-	}
-
-	if (t == 'U') {
+	if (t == ENT_UNKNOWN) {
 		weprintf("unknown file type '%d': %s\n",
 		    archive_entry_filetype(ent), path);
 		return -1;
 	}
 
-	if (!(entfp = fopen(path, "r"))) {
-		weprintf("fopen %s:", path);
-		return -1;
+	if (vflag > 1) {
+		if (t == ENT_FILE)
+			printf("  %s\n", path);
+		if (t == ENT_SYMLINK)
+			printf("  %s -> %s\n", path,
+			    archive_entry_symlink(ent));
 	}
-
-	if (t == 'F' || t == 'H')
-		if (cksum(entfp, path, md))
-			return -1;
 
 	if ((n = fprintf(fp, "%s|%c|", path, t)) < 0)
 		return n;
-	if (t == 'F' || t == 'H')
-		for (i = 0; i < sizeof(md); i++)
-			if ((n = fprintf(fp, "%02x", md[i])) < 0)
-				return n;
+	if (t == ENT_FILE || t == ENT_HARDLINK)
+		if (write_cksum(path, fp))
+			return -1;
 	if ((n = fprintf(fp, "\n")) < 0)
 		return n;
 
