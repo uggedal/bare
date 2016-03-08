@@ -563,7 +563,9 @@ create(FILE *fp, const char *fname, const char *lib, const char *dep,
 	}
 
 	ar = archive_write_new();
-	archive_write_add_filter_xz(ar);
+	if (archive_write_add_filter_xz(ar) != ARCHIVE_OK)
+		eprintf("write add xz filter: %s\n",
+		    archive_error_string(ar));
 	archive_write_set_format_pax_restricted(ar);
 	if (archive_write_open_filename(ar, path) != ARCHIVE_OK)
 		eprintf("write open %s: %s\n", path,
