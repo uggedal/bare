@@ -413,7 +413,9 @@ extract(struct pkg *pkg, FILE *fp)
 	}
 
 	ar = archive_read_new();
-	archive_read_support_filter_xz(ar);
+	if (archive_read_support_filter_program(ar, "xz") != ARCHIVE_OK)
+		eprintf("read add xz filter: %s\n",
+		    archive_error_string(ar));
 	archive_read_support_format_tar(ar);
 
 	if (archive_read_open_filename(ar, pkg->path, BUFSIZ) < 0) {
@@ -563,7 +565,7 @@ create(FILE *fp, const char *fname, const char *lib, const char *dep,
 	}
 
 	ar = archive_write_new();
-	if (archive_write_add_filter_xz(ar) != ARCHIVE_OK)
+	if (archive_write_add_filter_program(ar, "xz") != ARCHIVE_OK)
 		eprintf("write add xz filter: %s\n",
 		    archive_error_string(ar));
 	archive_write_set_format_pax_restricted(ar);
