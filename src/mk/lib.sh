@@ -75,7 +75,7 @@ csv() {
 }
 
 uncvs() {
-	printf '%s' "$1" | sed 's/,/ /'
+	printf '%s' "$1" | sed 's/,/ /g'
 }
 
 pkg_to_qualified_name() {
