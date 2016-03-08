@@ -99,7 +99,7 @@ _pkg() {
 		"$(csv $deps)" \
 		$dest
 
-	local stat="$(xz -l $pkg | tail -n1)"
+	local stat="$(xz -l $_REPO/$pkg | tail -n1)"
 	msg "uncompressed: $(_xz_stat "$stat" 5 6)"
 	msg "compressed: $(_xz_stat "$stat" 3 4)"
 }
