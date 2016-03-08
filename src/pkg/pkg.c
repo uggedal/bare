@@ -573,7 +573,7 @@ create(FILE *fp, const char *fname, const char *lib, const char *dep,
 			    ARCHIVE_EOF))
 				break;
 			if (r != ARCHIVE_OK)
-				eprintf("disk: %s\n",
+				eprintf("disk read: %s\n",
 				    archive_error_string(disk));
 			archive_read_disk_descend(disk);
 
