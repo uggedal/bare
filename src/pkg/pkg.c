@@ -413,7 +413,7 @@ extract(struct pkg *pkg, FILE *fp)
 	}
 
 	ar = archive_read_new();
-	if (archive_read_support_filter_program(ar, "xz") != ARCHIVE_OK)
+	if (archive_read_support_filter_program(ar, "xz -d") != ARCHIVE_OK)
 		eprintf("read add xz filter: %s\n",
 		    archive_error_string(ar));
 	archive_read_support_format_tar(ar);
