@@ -324,18 +324,13 @@ pkgpath() {
 }
 
 contain() {
-	local conf=$_CONTAIN/etc/pkg.conf
-
-	printf 'REPO=%s\n' /host/repo > $conf
-
 	env -i \
 		PS1='[contain] \w \$ ' \
 		HOME=/root \
 		HOSTDIR=$_ROOT \
 		MK_CONTAINED=yes \
-		$(pkgpath) -c $_CONTAIN "$@"
-
-	rm -f $conf
+		REPO=/host/repo \
+		$(pkgpath) -e $_CONTAIN "$@"
 }
 
 contain_mk() {
