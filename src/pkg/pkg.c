@@ -615,6 +615,8 @@ create(FILE *fp, const char *fname, const char *lib, const char *dep,
 			if (vflag)
 				printf("  %c %s\n", t,
 				    archive_entry_pathname(ent));
+
+			archive_entry_free(ent);
 		}
 
 		archive_read_close(disk);
