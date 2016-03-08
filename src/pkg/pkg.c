@@ -516,6 +516,27 @@ install(struct pkg *pkg, const char *parent)
 }
 
 static int
+write_archive_data(struct archive *disk,
+    struct archive *ar, struct archive_entry *ent)
+{
+	int r;
+	size_t	n;
+	int64_t	off;
+	const void *buf;
+
+	if (archive_write_header(ar, ent) < ARCHIVE_OK)
+		eprintf("write header: %s\n", archive_error_string(ar));
+
+	while ((r = archive_read_data_block(disk, &buf, &n, &off)) ==
+	    ARCHIVE_OK)
+		if (archive_write_data(ar, buf, n) < 0)
+			eprintf("write data block: %s\n",
+			    archive_error_string(ar));
+
+	return r == ARCHIVE_EOF ? 0 : r;
+}
+
+static int
 create(FILE *fp, const char *fname, const char *lib, const char *dep,
     const char *dir)
 {
@@ -583,10 +604,10 @@ create(FILE *fp, const char *fname, const char *lib, const char *dep,
 				eprintf("unknown entry type: %d\n",
 				    archive_entry_filetype(ent));
 
-			r = archive_write_header(ar, ent);
-			if (r < ARCHIVE_OK)
-				eprintf("write header: %s\n",
-				    archive_error_string(ar));
+			if (write_archive_data(disk, ar, ent))
+				eprintf("unable to write entry: %s\n",
+				    archive_entry_pathname(ent));
+
 			if (vflag)
 				printf("  %c %s\n", t,
 				    archive_entry_pathname(ent));
