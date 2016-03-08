@@ -6,9 +6,8 @@ _bootstrap_reqs() {
 		which $b >/dev/null 2>&1 || missing="$missing $b"
 	done
 
-	for h in archive.h lzma.h; do
-		[ -f /usr/include/$h ] || missing="$missing $h"
-	done
+	[ -f /usr/include/archive.h ] ||
+		missing="$missing archive.h (libarchive)"
 
 	if [ "$missing" ]; then
 		printf "need '%s'\n" $missing
