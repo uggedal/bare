@@ -152,7 +152,7 @@ _bootstrap_contain() {
 		_prefix_install $p $_BOOTSTRAP_NATIVE
 	done
 
-	for p in libbsd libz; do
+	for p in libbsd libz libarchive; do
 		CPPFLAGS="-isystem $prefix/include" \
 		MK_CONFIGURE="
 			--host=$TRIPLE
@@ -161,16 +161,17 @@ _bootstrap_contain() {
 		_prefix_install $p-bld $_BOOTSTRAP_NATIVE
 	done
 
-	for p in make xz file libarchive; do
+	for p in make xz file; do
 		MK_CONFIGURE="
 			--host=$TRIPLE
 			--prefix=/usr" \
 			./mk pkg $p
 	done
+	_prefix_install liblzma-bld $_BOOTSTRAP_NATIVE
 
 	export CPPFLAGS="$CPPFLAGS -isystem $prefix/include"
 	export LDFLAGS="$LDFLAGS -L$prefix/lib"
-	_contain_pkg ksh patch diff compress ed sbase
+	_contain_pkg pkg ksh patch diff compress ed sbase
 	unset MK_NO_DEP
 	_contain_pkg base-bld
 }
