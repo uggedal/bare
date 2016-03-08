@@ -1,4 +1,5 @@
 ver 7.10.1
+epoc 1
 dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.xz
 
 bdep libz-bld kernel-headers readline-bld

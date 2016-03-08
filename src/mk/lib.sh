@@ -34,6 +34,94 @@ foreach() {
 	done
 }
 
+msg() {
+	printf '%s\n' "$@"
+}
+
+msglist() {
+	local prefix="$1"
+	shift
+
+	local part
+	for part; do
+		printf '%s %s\n' "$prefix" $part
+	done
+}
+
+err() {
+	msg "error: $@" >&2
+}
+
+die() {
+	err "$@"
+	exit 1
+}
+
+dump() {
+	local w
+	for w; do
+		printf '%-4s%s\n' '' $w
+	done
+}
+
+csv() {
+	local v
+	local ret
+	for v; do
+		ret="$ret,$v"
+	done
+
+	printf '%s' "${ret#,*}"
+}
+
+uncvs() {
+	printf '%s' "$1" | sed 's/,/ /g'
+}
+
+pkg_to_qualified_name() {
+	local pkg=$1
+
+	printf '%s' ${pkg%$PKG_EXT*}
+}
+
+pkg_to_name() {
+	local pkg=$1
+
+	printf '%s' ${pkg%%_*}
+}
+
+pkg_to_version() {
+	local qualified_name=$(pkg_to_qualified_name $1)
+	local tmp=${qualified_name#*_}
+
+	printf '%s' ${tmp%_*}
+}
+
+pkg_to_epoc() {
+	local qualified_name=$(pkg_to_qualified_name $1)
+
+	printf '%s' ${qualified_name##*_}
+}
+
+read_repo() {
+	local cb=$1
+
+	[ -f $_REPO/INDEX ] || return 0
+
+	local p raw_lib raw_dep sum
+	while IFS='|' read -r p raw_lib raw_dep sum; do
+		$cb $(pkg_to_name $p) $(pkg_to_version $p) $(pkg_to_epoc $p) \
+		    "$(uncvs $raw_lib)" "$(uncvs $raw_dep)" $sum
+	done < $_REPO/INDEX
+}
+
+pkg_in_repo() {
+	local repo=$1
+	name=$2
+
+	grep -q ^${name}_ $repo/INDEX
+}
+
 distfile() {
 	case $1 in
 	*\|*)
@@ -189,7 +277,6 @@ read_pkg() {
 
 	PKG_NAME=$1
 	PKG_PARENT_NAME=$PKG_NAME
-	PKG_REV=1
 
 	source_pkg $PKG_NAME
 
@@ -197,8 +284,8 @@ read_pkg() {
 		unset -f $_v
 	done
 
-	PKG_QUALIFIED_NAME=$PKG_NAME-${PKG_VER}_$PKG_REV
-	PKG_QUALIFIED_PARENT_NAME=$PKG_PARENT_NAME-${PKG_VER}_$PKG_REV
+	PKG_QUALIFIED_NAME=${PKG_NAME}_${PKG_VER}_$PKG_EPOC
+	PKG_QUALIFIED_PARENT_NAME=${PKG_PARENT_NAME}_${PKG_VER}_$PKG_EPOC
 
 	validate_pkg
 
@@ -225,46 +312,25 @@ inherit() {
 	fi
 }
 
-extract_db_file() {
-	local name=$1
-	local ver=$2
-	local qualified_name=$3
-	local pkg=$4
-	local arg
-
-	if [ "$MK_CONTAINED" ]; then
-		arg=--no-same-owner
-	fi
-
-	tar $arg -C $_DB -xJf $_REPO/$pkg $PKG_DB/$name
-}
-
 use_contain() {
 	[ -z "$MK_NO_CONTAIN" ] && [ -z "$MK_CONTAINED" ]
 }
 
 pkgpath() {
-	local cmd=pkg-$1
-	shift
-
+	local cmd=pkg
 	command -v $cmd >/dev/null || cmd=$_BOOTSTRAP_SUPPORT/bin/$cmd
 
 	printf '%s' $cmd
 }
 
 contain() {
-	local conf=$_CONTAIN/etc/pkg.conf
-
-	printf 'REPO=%s\n' /host/repo > $conf
-
 	env -i \
 		PS1='[contain] \w \$ ' \
 		HOME=/root \
 		HOSTDIR=$_ROOT \
 		MK_CONTAINED=yes \
-		$(pkgpath contain) $_CONTAIN "$@"
-
-	rm -f $conf
+		REPO=/host/repo \
+		$(pkgpath) -e $_CONTAIN "$@"
 }
 
 contain_mk() {
@@ -275,7 +341,7 @@ contain_mk() {
 }
 
 prepare_contain() {
-	REPO=$_ROOT/repo $(pkgpath install) -p $_CACHE base-bld
+	REPO=$_ROOT/repo $(pkgpath) -ip $_CACHE base-bld
 
 	mkdir -p $_CONTAIN
 

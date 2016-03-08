@@ -1,6 +1,7 @@
 _ver=6.3
 _patchver=008
 ver ${_ver}.p$_patchver
+epoc 1
 
 _dist=$URI_GNU/$PKG_NAME
 for _patch in $(seq -w $_patchver); do

@@ -125,7 +125,8 @@ $pr: $dr"
 	if [ "$MK_FORCE" ]; then
 		printf '\t%s\n' './mk -f pkg $@'
 	else
-		printf '\t%s\n' './mk pkg $(shell f=$$(basename $@); echo $${f%-*})'
+		printf '\t%s\n' \
+		    './mk pkg $(shell f=$$(basename $@); echo $${f%%_*})'
 	fi
 
 	printf '%s\n' "$deps"

@@ -1,4 +1,5 @@
 ver 1.13.3
+epoc 1
 dist http://${PKG_NAME}.bsd.lv/snapshots/$PKG_NAME-${PKG_VER}.tar.gz
 
 pre_configure() {

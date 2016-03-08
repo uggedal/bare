@@ -1,4 +1,5 @@
 ver 6.0
+epoc 1
 dist ftp://invisible-island.net/$PKG_NAME/$PKG_NAME-$PKG_VER.tar.gz
 
 configure \

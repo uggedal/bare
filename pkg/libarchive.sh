@@ -1,4 +1,5 @@
 ver 3.1.2
+epoc 1
 dist http://www.libarchive.org/downloads/libarchive-${PKG_VER}.tar.gz
 
 configure \

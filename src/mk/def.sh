@@ -16,7 +16,6 @@ MK_STEPS="
 	install
 	sub
 	optimize
-	db
 	validate
 	pkg
 "
@@ -24,7 +23,7 @@ MK_STEPS="
 PKG_REQUIRED_VARS='
 	name
 	ver
-	rev
+	epoc
 	'
 
 PKG_OPTIONAL_VARS='
@@ -58,6 +57,9 @@ PKG_SUB_VARS='
 	lib
 	pkgorder
 	'
+
+PKG_EXT=.txz
+PKG_NAME_MAX=20
 
 URI_GNU=http://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu
 URI_SF=http://downloads.sourceforge.net/sourceforge

@@ -1,10 +1,13 @@
 _bootstrap_reqs() {
-	local b
+	local b h
 	local missing
 
 	for b in cc c++ make patch tar xz curl file m4 ed; do
 		which $b >/dev/null 2>&1 || missing="$missing $b"
 	done
+
+	[ -f /usr/include/archive.h ] ||
+		missing="$missing archive.h (libarchive)"
 
 	if [ "$missing" ]; then
 		printf "need '%s'\n" $missing
@@ -22,7 +25,7 @@ _manual_install() {
 _prefix_install() {
 	local name="$1"
 	local prefix=$2
-	REPO=$_ROOT/repo pkg-install -p $prefix "$name"
+	REPO=$_ROOT/repo pkg -ip $prefix "$name"
 }
 
 _build_gcc() {
@@ -49,7 +52,7 @@ _bootstrap_cross() {
 
 	mkdir -p $prefix/$TRIPLE
 
-	if ! [ -x $_BOOTSTRAP_SUPPORT/bin/pkg-contain ]; then
+	if ! [ -x $_BOOTSTRAP_SUPPORT/bin/pkg ]; then
 		MK_PREFIX=$_BOOTSTRAP_SUPPORT \
 		MK_DESTDIR=no \
 			./mk install bootstrap-pkg
@@ -148,7 +151,7 @@ _bootstrap_contain() {
 		_prefix_install $p $_BOOTSTRAP_NATIVE
 	done
 
-	for p in libbsd libz; do
+	for p in libbsd libz libarchive; do
 		CPPFLAGS="-isystem $prefix/include" \
 		MK_CONFIGURE="
 			--host=$TRIPLE
@@ -157,16 +160,17 @@ _bootstrap_contain() {
 		_prefix_install $p-bld $_BOOTSTRAP_NATIVE
 	done
 
-	for p in make xz file libarchive; do
+	for p in make xz file; do
 		MK_CONFIGURE="
 			--host=$TRIPLE
 			--prefix=/usr" \
 			./mk pkg $p
 	done
+	_prefix_install liblzma-bld $_BOOTSTRAP_NATIVE
 
 	export CPPFLAGS="$CPPFLAGS -isystem $prefix/include"
 	export LDFLAGS="$LDFLAGS -L$prefix/lib"
-	_contain_pkg ksh patch diff compress ed sbase
+	_contain_pkg pkg ksh patch diff compress ed sbase
 	unset MK_NO_DEP
 	_contain_pkg base-bld
 }

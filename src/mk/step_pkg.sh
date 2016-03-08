@@ -35,24 +35,20 @@ _needed_libs() {
 	done
 }
 
-_find_lib_in_db() {
-	local t=$1
-	local f1=$2
-
-	[ "$_NEEDED_LIB" != "$f1" ] || printf '%s:%s\n' $_LIB_PKG_NAME $_NEEDED_LIB
-}
-
 _find_pkg_with_lib() {
 	local name=$1
 	local ver=$2
-	local qualified_name=$3
-	local pkg=$4
+	local epoc=$3
+	local lib="$4"
 
 	[ $name != $_PKG_NAME ] || return 0
 
-	_LIB_PKG_NAME=$name
-	read_db $_DB $name _find_lib_in_db
-	unset _LIB_PKG_NAME
+	local l
+	for l in $lib; do
+		if [ "$_NEEDED_LIB" = "$l" ]; then
+			printf '%s:%s\n' $name $l
+		fi
+	done
 }
 
 _lib_deps() {
@@ -70,7 +66,7 @@ _lib_deps() {
 			[ "$provided_lib" != "$_NEEDED_LIB" ] || continue 2
 		done
 
-		lib_dep=$(read_repo $_REPO _find_pkg_with_lib)
+		lib_dep=$(read_repo _find_pkg_with_lib)
 
 		[ "$lib_dep" ] ||
 			die "unable to find package providing '$_NEEDED_LIB'"
@@ -87,8 +83,7 @@ _pkg() {
 	local dest=$3
 	local libs="$4"
 	local deps="$5"
-
-	local pkg=$_REPO/${qualified_name}$PKG_EXT
+	local pkg=${qualified_name}$PKG_EXT
 
 	msg "packaging $name"
 
@@ -98,19 +93,15 @@ _pkg() {
 	deps="$deps $(_lib_deps $name $dest "$libs")"
 	msglist 'run-time dep:' $deps
 
-	pkg-create \
-		-p $dest \
-		-o $pkg \
-		-l "$libs" \
-		-d "$deps" \
-		$qualified_name
+	REPO=$_REPO pkg -cv \
+		$pkg \
+		"$(csv $libs)" \
+		"$(csv $deps)" \
+		$dest
 
-	local stat="$(xz -l $pkg | tail -n1)"
+	local stat="$(xz -l $_REPO/$pkg | tail -n1)"
 	msg "uncompressed: $(_xz_stat "$stat" 5 6)"
 	msg "compressed: $(_xz_stat "$stat" 3 4)"
-
-	extract_db_file $name $PKG_VER $qualified_name \
-	    ${qualified_name}$PKG_EXT
 }
 
 _pkg_sub() {
@@ -126,7 +117,7 @@ _pkg_sub() {
 		return 0
 	fi
 
-	local qualified_name=$name-${PKG_VER}_$PKG_REV
+	local qualified_name=${name}_${PKG_VER}_${PKG_EPOC}
 	local dest=$_DEST/$qualified_name
 	local lib="$(get_sub_var $name lib)"
 	local rdep="$(get_sub_var $name rdep)"

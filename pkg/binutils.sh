@@ -1,4 +1,5 @@
 ver 2.26
+epoc 1
 dist $URI_GNU/$PKG_NAME/$PKG_NAME-${PKG_VER}.tar.bz2
 
 bdep libz-bld

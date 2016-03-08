@@ -1,4 +1,5 @@
 ver 5.22.1
+epoc 1
 dist http://www.cpan.org/src/5.0/$PKG_NAME-$PKG_VER.tar.gz
 
 do_configure() {
