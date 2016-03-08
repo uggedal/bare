@@ -7,8 +7,7 @@ _validate_name() {
 _validate_confict() {
 	local name=$1
 	local ver=$2
-	local qualified_name=$3
-	local pkg=$4
+	local epoc=$3
 
 	case $name in
 	$_PKG_NAME|$PKG_NAME)
