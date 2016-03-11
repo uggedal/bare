@@ -1,0 +1,45 @@
+From b8cc5b9399a488388f2b2d52b7cadada726b6347 Mon Sep 17 00:00:00 2001
+From: Eivind Uggedal <eivind@uggedal.com>
+Date: Fri, 11 Mar 2016 15:06:18 +0000
+Subject: [PATCH] uniq: always store previous line length
+
+A bug was introduced in the NUL support refactor leading to
+the length of the previous line only being saved if the
+previous line was shorter than the current line. If triggered
+this lead to copying too much data into the previous line buffer.
+
+Behavior before:
+
+	printf '1234\na\n' | ./uniq
+	1234
+	a
+	4
+
+Behavior after:
+
+	printf '1234\na\n' | ./uniq
+	1234
+	a
+---
+ uniq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/uniq.c b/uniq.c
+index 4f35d056dba2..f1ad6a7ba97a 100644
+--- a/uniq.c
++++ b/uniq.c
+@@ -62,9 +62,9 @@ uniqline(FILE *ofp, struct line *l)
+ 
+ 	if (l) {
+ 		if (!prevl.data || l->len >= prevl.len) {
+-			prevl.len = l->len;
+-			prevl.data = erealloc(prevl.data, prevl.len);
++			prevl.data = erealloc(prevl.data, l->len);
+ 		}
++		prevl.len = l->len;
+ 		memcpy(prevl.data, l->data, prevl.len);
+ 		prevoff = loff;
+ 	}
+-- 
+2.1.4
+
