@@ -1,3 +1,12 @@
+_pkg_recursive() {
+	local p
+	./mk pkg $PKG_NAME
+	for p in $(list_pkgs); do
+		[ "$(./mk query $p parent_name)" = $PKG_NAME ] || continue
+		./mk pkg $p
+	done
+}
+
 cmd_bump() {
 	local v=$1
 	local pkg=$_PKG/$PKG_NAME.sh
@@ -33,7 +42,7 @@ cmd_bump() {
 
 	./mk fetch $PKG_NAME
 	./mk sum $PKG_NAME
-	./mk pkg $PKG_NAME
+	_pkg_recursive
 
 	for f in $files; do
 		if [ -e $f ]; then
