@@ -58,7 +58,7 @@ _run_step_for_pkg() {
 
 	read_pkg $pkg
 
-	if [ "$PKG_STYLE" = phony ]; then
+	if [ "$PKG_STYLE" = phony ] && [ "$step" != fetch ]; then
 		return
 	fi
 
