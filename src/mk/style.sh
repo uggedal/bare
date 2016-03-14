@@ -5,10 +5,12 @@ detect_style() {
 		style=kconfig
 	elif [ -x $MK_DIST/configure ]; then
 		style=configure
-	elif [ -r $MK_DIST/Makefile ] || [ -r $MK_DIST/makefile ]; then
+	elif [ -r $MK_DIST/Makefile ] ||
+	    [ -r $MK_DIST/makefile ] ||
+	    [ -r $MK_DIST/GNUmakefile ]; then
 		style=make
 	fi
-		
+
 	printf '%s' $style
 }
 
