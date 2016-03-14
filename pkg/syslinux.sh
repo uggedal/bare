@@ -1,6 +1,6 @@
 ver 6.03
 epoc 1
-dist https://www.kernel.org/pub/linux/utils/boot/$PKG_NAME/$PKG_NAME-$PKG_VER.tar.xz
+dist $URI_LINUX/utils/boot/$PKG_NAME/$PKG_NAME-$PKG_VER.tar.xz
 
 bdep kernel-headers nasm perl
 
