@@ -4,19 +4,20 @@ _xz_stat() {
 
 _provided_libs() {
 	local dest=$1
-	local libdir=$dest$MK_PREFIX/lib
-	local f mime
+	local d f mime
 
-	[ -d $libdir ] || return 0
-
-	find $libdir -type f | while read f; do
-		mime="$(file -bi "$f")"
-		case "$mime" in
-		application/x-sharedlib*)
-			objdump -p $f | awk '/^ +SONAME/ { print $2 }'
-			;;
-		esac
+	for d in $dest$MK_PREFIX/lib $dest/lib; do
+		[ -d $d ] || continue
+		find $d -type f | while read f; do
+			mime="$(file -bi "$f")"
+			case "$mime" in
+			application/x-sharedlib*)
+				objdump -p $f | awk '/^ +SONAME/ { print $2 }'
+				;;
+			esac
+		done
 	done
+
 }
 
 _needed_libs() {
