@@ -1,20 +1,20 @@
-From de4262a58f9c5974c1ab35db790273e9b7d8b5ae Mon Sep 17 00:00:00 2001
+From 262f21a32f59d2482e32d9b0893a641491625bae Mon Sep 17 00:00:00 2001
 From: Eivind Uggedal <eivind@uggedal.com>
-Date: Tue, 15 Mar 2016 10:05:34 +0000
-Subject: [PATCH] dd: remove useless O_NOATIME optimization
+Date: Tue, 15 Mar 2016 16:03:14 +0000
+Subject: [PATCH 2/2] dd: remove if= noatime optimization
 
 ---
  dd.c | 6 ------
  1 file changed, 6 deletions(-)
 
 diff --git a/dd.c b/dd.c
-index 977f0f0a666f..f4be88426559 100644
+index e37c6c7472b2..07fdbc99eeea 100644
 --- a/dd.c
 +++ b/dd.c
 @@ -43,7 +43,6 @@ prepare_copy(struct dd_config *ddc, int *ifd, int *ofd)
  {
  	struct stat st;
- 	int fli = O_RDONLY|O_LARGEFILE|O_NOCTTY, flo = O_WRONLY|O_LARGEFILE|O_NOATIME|O_NOCTTY;
+ 	int fli = O_RDONLY|O_LARGEFILE|O_NOCTTY, flo = O_WRONLY|O_LARGEFILE|O_CREAT|O_NOATIME|O_NOCTTY;
 -	uid_t euid = 0;
  	long pagesize;
  
