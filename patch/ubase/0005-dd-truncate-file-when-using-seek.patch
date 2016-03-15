@@ -1,0 +1,32 @@
+From 64fd12a7719b3902952430811d308bb9a2c1c25a Mon Sep 17 00:00:00 2001
+From: Eivind Uggedal <eivind@uggedal.com>
+Date: Tue, 15 Mar 2016 21:06:28 +0000
+Subject: [PATCH 5/5] dd: truncate file when using seek=
+
+---
+ dd.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/dd.c b/dd.c
+index 977f0f0a666f..6152d42a2b43 100644
+--- a/dd.c
++++ b/dd.c
+@@ -114,6 +114,15 @@ prepare_copy(struct dd_config *ddc, int *ifd, int *ofd)
+ 		return -1;
+ 	}
+ 
++	if (ddc->seek) {
++		if (fstat(*ofd, &st) < 0)
++			return -1;
++		if (!S_ISREG(st.st_mode))
++			;
++		else if (ftruncate(*ofd, ddc->seek) < 0)
++			return -1;
++	}
++
+ 	if (lseek(*ifd, ddc->skip, SEEK_CUR) < 0) {
+ 		char buffer[ddc->bs];
+ 		for (uint64_t i = 0; i < ddc->skip; i += ddc->bs) {
+-- 
+2.1.4
+

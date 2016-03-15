@@ -1,7 +1,7 @@
 From 200b75a3f30a98aa531d77a76d804616a2fae53c Mon Sep 17 00:00:00 2001
 From: Eivind Uggedal <eivind@uggedal.com>
 Date: Tue, 15 Mar 2016 16:02:33 +0000
-Subject: [PATCH 1/4] dd: always create of= even if seek= is used
+Subject: [PATCH 1/5] dd: always create of= even if seek= is used
 
 ---
  dd.c | 4 ++--
