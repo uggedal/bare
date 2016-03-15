@@ -1,0 +1,33 @@
+From 0a099379d88e1ef79a267e5f54660749e23a668b Mon Sep 17 00:00:00 2001
+From: Eivind Uggedal <eivind@uggedal.com>
+Date: Tue, 15 Mar 2016 20:16:05 +0000
+Subject: [PATCH 3/3] dd: allow count=0
+
+---
+ dd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/dd.c b/dd.c
+index 07fdbc99eeea..1e1fda1c28c2 100644
+--- a/dd.c
++++ b/dd.c
+@@ -126,7 +126,7 @@ prepare_copy(struct dd_config *ddc, int *ifd, int *ofd)
+ 	ddc->count *= ddc->bs;
+ 
+ 	/* If no count is given, its the filesize minus skip offset */
+-	if (ddc->count == 0)
++	if (ddc->count == (uint64_t) -1)
+ 		ddc->count = ddc->fsize - ddc->skip;
+ 
+ 	return 0;
+@@ -243,6 +243,7 @@ main(int argc, char *argv[])
+ 	config.bs = 1<<16;
+ 	config.in = NULL;
+ 	config.out = NULL;
++	config.count = (uint64_t) -1;
+ 
+ 	/* emulate 'dd' argument parsing */
+ 	for (i = 1; i < argc; ++i) {
+-- 
+2.1.4
+

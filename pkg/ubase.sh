@@ -1,5 +1,5 @@
 ver 0e7ab0
-epoc 3
+epoc 4
 dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
 distdir $PKG_NAME-${PKG_VER##*.}

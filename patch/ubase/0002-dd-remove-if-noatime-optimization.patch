@@ -1,7 +1,7 @@
 From 262f21a32f59d2482e32d9b0893a641491625bae Mon Sep 17 00:00:00 2001
 From: Eivind Uggedal <eivind@uggedal.com>
 Date: Tue, 15 Mar 2016 16:03:14 +0000
-Subject: [PATCH 2/2] dd: remove if= noatime optimization
+Subject: [PATCH 2/3] dd: remove if= noatime optimization
 
 ---
  dd.c | 6 ------
