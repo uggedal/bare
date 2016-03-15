@@ -324,20 +324,25 @@ pkgpath() {
 }
 
 contain() {
+	local target=$1
+	shift
+
 	env -i \
 		PS1='[contain] \w \$ ' \
 		HOME=/root \
 		HOSTDIR=$_ROOT \
 		MK_CONTAINED=yes \
 		REPO=/host/repo \
-		$(pkgpath) -e $_CONTAIN "$@"
+		$(pkgpath) -e $target "$@"
 }
 
 contain_mk() {
+	local target=$1
+	shift
 	local args
 	args="$@"
 
-	contain /bin/sh -lc "cd /host && ./mk $args"
+	contain $target /bin/sh -lc "cd /host && ./mk $args"
 }
 
 prepare_contain() {

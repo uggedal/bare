@@ -33,7 +33,7 @@ _exec_step() {
 	fi
 
 	if ! is_host_step $step && use_contain; then
-		contain_mk -n$MK_FLAGS $step $PKG_NAME
+		contain_mk $_CONTAIN -n$MK_FLAGS $step $PKG_NAME
 		return 0
 	fi
 
@@ -83,7 +83,7 @@ _run_step_for_pkg() {
 
 		if [ $step = pkg ] && [ "$MK_KEEP" != yes ]; then
 			if use_contain; then
-				contain_mk clean $PKG_NAME
+				contain_mk $_CONTAIN clean $PKG_NAME
 				_clean_contain
 			else
 				run_cmd clean $PKG_NAME
