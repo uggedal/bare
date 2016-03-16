@@ -11,7 +11,7 @@ case "$1" in
 		;;
 esac
 
-cat <<EOF
+cat <<"EOF"
  _
 | |  Barely a linux
 | |__   __ _ _ __ ___
