@@ -14,7 +14,7 @@ cmd_image() {
 	REPO=$_ROOT/repo $(pkgpath) -ip $support \
 		base util-linux e2fsprogs extlinux syslinux-bios
 
-	REPO=$_ROOT/repo $(pkgpath) -ip $src base kernel-vm
+	REPO=$_ROOT/repo $(pkgpath) -ip $src base sinit smdev kernel-vm
 
 	cat <<-EOF >$src/boot/extlinux.conf
 	DEFAULT bare
