@@ -1,8 +1,9 @@
 cmd_image() {
-	local src=$_ROOT/image/src
+	local support=$_ROOT/image/support
+	local src=$support/src
 	local dest=$_ROOT/image/bare-$(date +%Y%m%d).img
 	local mnt=$_ROOT/image/mnt
-	local mbr=$src/usr/lib/syslinux/mbr.bin
+	local mbr=$support/usr/lib/syslinux/mbr.bin
 	local bytes_per_sector=512
 	local part_start_sector=2048
 	local part_start=$(($bytes_per_sector * $part_start_sector))
@@ -10,8 +11,10 @@ cmd_image() {
 
 	mkdir -p $src $mnt
 
-	REPO=$_ROOT/repo $(pkgpath) -ip $src \
-		base util-linux e2fsprogs extlinux syslinux-bios kernel-vm
+	REPO=$_ROOT/repo $(pkgpath) -ip $support \
+		base util-linux e2fsprogs extlinux syslinux-bios
+
+	REPO=$_ROOT/repo $(pkgpath) -ip $src base kernel-vm
 
 	cat <<-EOF >$src/boot/extlinux.conf
 	DEFAULT bare
