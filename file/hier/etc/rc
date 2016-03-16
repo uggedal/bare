@@ -1,0 +1,30 @@
+#!/bin/sh
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+case "$1" in
+	reboot)
+		exit 0
+		;;
+	poweroff)
+		exit 0
+		;;
+esac
+
+cat <<EOF
+ _
+| |  Barely a linux
+| |__   __ _ _ __ ___
+| '_ \ / _` | '__/ _ \
+| |_) | (_| | | |  __/
+|_.__/ \__,_|_|  \___|
+
+EOF
+
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+
+echo /sbin/smdev >/proc/sys/kernel/hotplug
+smdev -s
+
+/bin/sh
