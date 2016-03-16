@@ -41,6 +41,7 @@ _usage() {
 	    stale [pkg]
 	    bump <pkg> <version>
 	    bootstrap
+	    image
 	    enter
 
 	Ordered steps:
