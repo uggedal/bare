@@ -64,3 +64,4 @@ PKG_NAME_MAX=20
 URI_GNU=http://ftp.hosteurope.de/mirror/ftp.gnu.org/gnu
 URI_SF=http://downloads.sourceforge.net/sourceforge
 URI_LINUX=https://www.kernel.org/pub/linux
+URI_SUCK=http://dl.suckless.org
