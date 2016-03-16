@@ -53,12 +53,13 @@ _usage() {
 	    -f force rebuild or total clean
 	    -n skip step dependencies
 	    -j number of parallel build procs
+	    -m message for bump
 	    -v verbose output
 	EOF
 	exit 64
 }
 
-while getopts fknvj: opt; do
+while getopts fknvj:m: opt; do
 	case $opt in
 	f)
 		MK_FORCE=yes
@@ -74,6 +75,9 @@ while getopts fknvj: opt; do
 		;;
 	j)
 		MK_NPROC=$OPTARG
+		;;
+	m)
+		MK_MSG="$OPTARG"
 		;;
 	esac
 done

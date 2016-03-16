@@ -34,6 +34,10 @@ cmd_bump() {
 		EOF
 	fi
 
+	if [ "$MK_MSG" ]; then
+		msg="$MK_MSG"
+	fi
+
 	ed $pkg <<-EOF
 	,s|^\(epoc \).*\$|\1$epoc
 	w
