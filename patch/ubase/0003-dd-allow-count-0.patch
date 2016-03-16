@@ -1,7 +1,7 @@
 From 0a099379d88e1ef79a267e5f54660749e23a668b Mon Sep 17 00:00:00 2001
 From: Eivind Uggedal <eivind@uggedal.com>
 Date: Tue, 15 Mar 2016 20:16:05 +0000
-Subject: [PATCH 3/5] dd: allow count=0
+Subject: [PATCH 3/6] dd: allow count=0
 
 ---
  dd.c | 3 ++-

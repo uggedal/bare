@@ -1,7 +1,7 @@
 From 64fd12a7719b3902952430811d308bb9a2c1c25a Mon Sep 17 00:00:00 2001
 From: Eivind Uggedal <eivind@uggedal.com>
 Date: Tue, 15 Mar 2016 21:06:28 +0000
-Subject: [PATCH 5/5] dd: truncate file when using seek=
+Subject: [PATCH 5/6] dd: truncate file when using seek=
 
 ---
  dd.c | 9 +++++++++

@@ -1,7 +1,7 @@
 From 3f9138636e3565c3571d41afe490cfb8b0a31e8c Mon Sep 17 00:00:00 2001
 From: Eivind Uggedal <eivind@uggedal.com>
 Date: Tue, 15 Mar 2016 20:27:49 +0000
-Subject: [PATCH 4/5] dd: don't let failure to change pipe size affect exit code
+Subject: [PATCH 4/6] dd: don't let failure to change pipe size affect exit code
 
 ---
  dd.c | 1 +
