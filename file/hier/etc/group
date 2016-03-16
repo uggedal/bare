@@ -1,1 +1,6 @@
 root:x:0:
+tty:x:5:
+disk:x:6:
+cdrom:x:10:
+audio:x:20:
+video:x:21:

@@ -1,5 +1,5 @@
 ver 0.0.1
-epoc 2
+epoc 3
 
 builddir .
 emptydirs keep
