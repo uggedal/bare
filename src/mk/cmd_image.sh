@@ -21,7 +21,7 @@ cmd_image() {
 
 	LABEL bare
 		KERNEL vmlinuz
-		APPEND root=/dev/sda1 rw init=/bin/sh
+		APPEND root=/dev/sda1 rw
 	EOF
 
 	dd if=/dev/zero of=$dest bs=1 count=0 seek=$((1024*1024*1024*4))
