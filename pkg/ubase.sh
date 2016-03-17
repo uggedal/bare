@@ -1,5 +1,5 @@
 ver e0dc3f
-epoc 8
+epoc 9
 dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
 distdir $PKG_NAME-${PKG_VER##*.}
@@ -8,6 +8,7 @@ pre_configure() {
 	ed config.mk <<-EOF
 	,s|^\(CC = \).*\$|\1$CC
 	,s|^\(PREFIX = \).*\$|\1$MK_PREFIX
+	,s|^\(LDFLAGS.*=.*\)-s.*\$|\1 -static
 	/^CFLAGS/s|=|+=
 	w
 	q
