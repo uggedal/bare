@@ -1,5 +1,5 @@
 ver 756119
-epoc 6
+epoc 7
 dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
 distdir $PKG_NAME-${PKG_VER##*.}
@@ -21,8 +21,10 @@ post_install() {
 		strings
 		tar
 	'
-	local core='
+	local bin='
+		[
 		cat
+		chgrp
 		chmod
 		cp
 		date
@@ -41,6 +43,13 @@ post_install() {
 		sync
 		test
 	'
+	local sbin='
+		chown
+		mkfifo
+	'
+	local usrsbin='
+		chroot
+	'
 	local f
 
 	for f in $conflicts; do
@@ -48,8 +57,14 @@ post_install() {
 		rm -f $MK_DESTDIR$MK_MANDIR/man1/${f}.1
 	done
 
-	mkdir -p $MK_DESTDIR/bin
-	for f in $core; do
+	mkdir -p $MK_DESTDIR/bin $MK_DESTDIR/sbin $MK_DESTDIR$MK_PREFIX/sbin
+	for f in $bin; do
 		mv $MK_DESTDIR$MK_PREFIX/bin/$f $MK_DESTDIR/bin
+	done
+	for f in $sbin; do
+		mv $MK_DESTDIR$MK_PREFIX/bin/$f $MK_DESTDIR/sbin
+	done
+	for f in $usrsbin; do
+		mv $MK_DESTDIR$MK_PREFIX/bin/$f $MK_DESTDIR$MK_PREFIX/sbin
 	done
 }
