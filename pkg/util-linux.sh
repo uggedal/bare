@@ -1,5 +1,5 @@
 ver 2.27.1
-epoc 1
+epoc 2
 dist $URI_LINUX/utils/util-linux/v2.27/util-linux-2.27.1.tar.xz
 
 bdep libcurses-bld kernel-headers
@@ -19,7 +19,6 @@ configure \
 	--enable-fsck \
 	--enable-losetup \
 	--enable-partx \
-	--enable-pivot_root \
 	--with-ncurses
 
 sub libuuid type custom
