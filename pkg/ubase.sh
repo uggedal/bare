@@ -1,5 +1,5 @@
 ver e0dc3f
-epoc 10
+epoc 11
 dist http://git.suckless.org/$PKG_NAME/snapshot/$PKG_NAME-${PKG_VER##*.}.tar.bz2
 
 distdir $PKG_NAME-${PKG_VER##*.}
@@ -22,6 +22,7 @@ post_install() {
 		fsfreeze
 		lastlog
 		switch_root
+		watch
 	'
 	local bin='
 		dd
@@ -42,6 +43,7 @@ post_install() {
 		mount
 		pivot_root
 		sysctl
+		swaplabel
 		swapon
 		swapoff
 		rmmod
