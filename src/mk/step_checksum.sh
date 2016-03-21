@@ -1,5 +1,8 @@
 _checksum() {
-	sha512sum $(merge $(foreach relative $(distpaths $PKG_DIST)))
+	(
+		cd $_DIST/$PKG_QUALIFIED_PARENT_NAME
+		sha512sum $(merge $(foreach basename $(distpaths $PKG_DIST)))
+	)
 }
 
 step_checksum() {
