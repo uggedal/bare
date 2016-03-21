@@ -8,7 +8,6 @@ pre_configure() {
 	ed config.mk <<-EOF
 	,s|^\(CC = \).*\$|\1$CC
 	,s|^\(PREFIX = \).*\$|\1$MK_PREFIX
-	,s|^\(LDFLAGS.*=.*\)-s.*\$|\1 -static
 	/^CFLAGS/s|=|+=
 	w
 	q
