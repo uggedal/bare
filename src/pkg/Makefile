@@ -18,8 +18,8 @@ pkg: $(OBJ)
 $(OBJ): $(HDR)
 
 install:
-	mkdir -p $(DESTDIR)/sbin
-	cp pkg $(DESTDIR)/sbin
+	mkdir -p $(DESTDIR)$(PREFIX)/sbin
+	cp pkg $(DESTDIR)$(PREFIX)/sbin
 
 clean:
 	rm -f pkg $(OBJ)
